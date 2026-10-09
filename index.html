@@ -1,0 +1,1957 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<title>小二複習樂園｜國語・數學</title>
+<style>
+:root{
+  --kai:"TW-Kai","BiauKai","DFKai-SB","標楷體","Kaiti TC","STKaiti","Noto Serif CJK TC","Noto Serif TC","Noto Sans CJK TC","PingFang TC","Microsoft JhengHei",serif;
+  --zyfont:"Noto Sans CJK TC","Noto Sans TC","PingFang TC","Microsoft JhengHei","Heiti TC",sans-serif;
+  --bpmf-font:"BpmfGenSenRounded";
+  --bg:#fff8ec; --ink:#3b3355; --pri:#ff8a65; --blue:#5b8def; --green:#43b581; --red:#ef6f6c;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--kai);-webkit-tap-highlight-color:transparent}
+body{background-image:radial-gradient(#ffe2c4 1.5px,transparent 1.5px);background-size:28px 28px;min-height:100vh}
+#app{max-width:960px;margin:0 auto;padding:18px 18px 60px}
+button{font-family:inherit;color:inherit;cursor:pointer;border:none}
+.row{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin:18px 0}
+.hidden{display:none!important}
+
+/* ---- 注音：右側直排 ---- */
+.zc{display:inline-flex;align-items:center;vertical-align:middle;margin:0 .03em;line-height:1}
+.zh{display:inline-block;line-height:1.15}
+.zb{display:inline-flex;flex-direction:column;justify-content:center;align-items:center;font-family:var(--zyfont);font-size:.34em;line-height:1;width:1.05em;margin:0 .5em 0 .1em;height:3.2em;font-weight:normal}
+.zr{position:relative;display:block}
+.zt{position:absolute;left:100%;top:-.35em;margin-left:.02em}
+.zl{display:block;line-height:.5;margin-bottom:.1em}
+ruby{ruby-position:over}
+rt{font-family:var(--zyfont);font-size:.36em;letter-spacing:.02em}
+body.fontmode .fz{font-family:var(--bpmf-font),var(--kai)}
+.nozy,body.fontmode .nozy{font-family:var(--kai)!important}
+
+/* ---- 首頁 ---- */
+.logo{font-size:52px;text-align:center;margin:18px 0 8px;color:#e8505b;text-shadow:3px 3px 0 #ffd6a5}
+.chip{background:#fff;border:3px solid #ffd6a5;border-radius:999px;padding:8px 26px;font-size:30px;box-shadow:0 4px 0 #f3c99a}
+.chip.small{font-size:26px;padding:6px 22px}
+.chip.on{background:#ffb48a;border-color:#ff8a65;color:#fff;box-shadow:0 4px 0 #e0704f}
+.chip.on .zb{color:#fff}
+.cards{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin:26px 0}
+.bigcard{border-radius:28px;padding:26px 18px;font-size:40px;display:flex;flex-direction:column;align-items:center;gap:6px;box-shadow:0 8px 0 rgba(0,0,0,.12);transition:transform .1s}
+.bigcard:active,.opt:active,.chip:active,.next:active,.pill:active{transform:translateY(3px)}
+.bigcard small{font-size:18px;opacity:.75;font-family:var(--zyfont)}
+.bigcard .emoji{font-size:64px}
+.bigcard.practice{background:#c8f0d8}
+.bigcard.test{background:#cfe0ff}
+.pill{background:#fff;border-radius:999px;padding:12px 26px;font-size:24px;box-shadow:0 4px 0 #e6d6c4}
+.next{background:var(--pri);color:#fff;border-radius:999px;padding:12px 40px;font-size:30px;box-shadow:0 5px 0 #d9653f}
+.next .zb{color:#fff}
+
+.lessons{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;background:#fff;border-radius:20px;padding:12px;margin:6px 0}
+.lessons .note{width:100%;text-align:center}
+.lchip{background:#f3f0fa;border:3px solid #e1d9f3;border-radius:16px;padding:6px 12px;font-size:20px;display:flex;flex-direction:column;align-items:center;min-width:120px;font-family:var(--zyfont)}
+.lchip small{font-size:14px;opacity:.8}
+.lchip.on{background:#cfe0ff;border-color:var(--blue)}
+/* ---- 作答畫面 ---- */
+.topbar{display:flex;align-items:center;gap:14px;font-size:24px}
+.iconbtn{background:#fff;border-radius:50%;width:56px;height:56px;font-size:28px;box-shadow:0 3px 0 #e6d6c4}
+.progress{flex:1;height:16px;background:#fff;border-radius:999px;overflow:hidden;border:2px solid #ffd6a5}
+.bar{height:100%;background:linear-gradient(90deg,#ffb48a,#ff8a65);transition:width .3s}
+.stars{font-family:var(--zyfont);font-weight:bold}
+.qcard{background:#fff;border-radius:28px;padding:22px 26px;margin:18px 0;box-shadow:0 6px 0 rgba(0,0,0,.07)}
+.math .qcard{border-top:10px solid var(--blue)}
+.chinese .qcard{border-top:10px solid var(--pri)}
+.qtitle{font-size:32px;color:#7a6f96;margin-bottom:10px}
+.qbody{text-align:center}
+.sent{font-size:54px;line-height:1.5;text-align:left;display:inline-block}
+.blank{display:inline-flex;align-items:center;justify-content:center;min-width:1.3em;height:1.35em;border:3px dashed var(--pri);border-radius:12px;margin:0 .08em;vertical-align:middle;background:#fff3ea}
+.blank .zb{margin:0 .3em 0 0;color:#e8505b;font-size:.42em;font-weight:bold}
+.blankch{width:0}
+.target{color:#e8505b;font-weight:bold;border-bottom:4px solid #e8505b;padding:0 .05em;margin:0 .05em}
+.vert{display:inline-grid;grid-template-columns:auto auto;column-gap:.4em;font-size:64px;font-family:var(--zyfont);text-align:right;line-height:1.2;letter-spacing:.12em}
+.vert .line{grid-column:1/3;border-top:5px solid var(--ink);height:6px}
+.bigexpr{font-size:64px;font-family:var(--zyfont);font-weight:bold;letter-spacing:.04em}
+.clock{width:260px;height:260px}
+.legend{font-size:18px;font-family:var(--zyfont)}
+.coins{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;align-items:center;margin:8px 0}
+.coin{display:inline-flex;align-items:center;justify-content:center;border-radius:50%;font-family:var(--zyfont);font-weight:bold;background:radial-gradient(circle at 35% 35%,#f4f4f4,#b9bec5);border:3px solid #9aa0a8;color:#444}
+.coin.c1{width:54px;height:54px;font-size:22px}.coin.c5{width:64px;height:64px;font-size:24px}.coin.c10{width:74px;height:74px;font-size:26px}
+.coin.c50{width:80px;height:80px;font-size:28px;background:radial-gradient(circle at 35% 35%,#fff3b0,#e0b84a);border-color:#c49a2c}
+.bill{display:inline-flex;align-items:center;justify-content:center;gap:4px;width:150px;height:76px;border-radius:10px;background:linear-gradient(135deg,#ffb3b3,#f07c7c);border:3px solid #d65c5c;color:#7a1f1f;font-size:32px;font-weight:bold;font-family:var(--zyfont)}
+.bill small{font-size:18px}
+.opts{display:grid;gap:16px;grid-template-columns:repeat(2,1fr)}
+.opts.n3{grid-template-columns:repeat(3,1fr)}
+.opt{background:#fff;border:4px solid #e9e2f5;border-radius:24px;min-height:96px;font-size:44px;padding:10px;box-shadow:0 5px 0 #ddd3ee;transition:transform .1s,background .2s}
+.opt .plainopt{font-size:60px}
+.zyopt{font-family:var(--zyfont)!important;font-size:48px;letter-spacing:.06em}
+.opt.right{background:#d7f5e3;border-color:var(--green);box-shadow:0 5px 0 #34a16f}
+.opt.wrong{background:#ffe7e6;border-color:#f3a6a4;box-shadow:0 5px 0 #e79391;opacity:.75}
+.opt.picked{background:#fff1d6;border-color:#ffb48a}
+.opt:disabled{cursor:default}
+.shake{animation:shake .4s}
+@keyframes shake{25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+.sentopts{display:flex;flex-wrap:wrap;justify-content:center;align-items:flex-end;gap:10px;background:#fff;border-radius:24px;padding:18px}
+.opt.ch{min-height:100px;min-width:104px;font-size:54px;padding:6px 4px}
+.punct{font-size:48px;align-self:center}
+.feedback{min-height:20px;margin-top:18px;font-size:32px;text-align:center;border-radius:20px;padding:0 10px}
+.feedback.good{background:#e3f8ec;padding:14px;color:#23784f}
+.feedback.soft{background:#fff1e0;padding:14px;color:#a35a1c}
+.explain{font-size:34px;margin-top:8px;color:var(--ink)}
+
+/* ---- 結果 / 錯題 / 設定 ---- */
+.results h1,.results h2{text-align:center}
+.results h2{font-size:30px}
+.scorecard{background:#fff;border-radius:30px;text-align:center;padding:24px;box-shadow:0 6px 0 rgba(0,0,0,.07)}
+.scorecard .big{font-size:80px}
+.score{font-size:96px;font-weight:bold;color:#e8505b;font-family:var(--zyfont)}
+.score small{font-size:36px;font-family:var(--kai)}
+.scorecard .sub{font-size:24px;font-family:var(--zyfont)}
+.scorecard .msg{font-size:36px;margin-top:8px}
+.wronglist{display:flex;flex-direction:column;gap:14px}
+.witem{background:#fff;border-radius:20px;padding:14px 18px;border-left:8px solid #f3a6a4}
+.wq{font-size:22px;color:#7a6f96}
+.tag{background:#ffe9d6;border-radius:8px;padding:2px 8px;font-size:16px;font-family:var(--zyfont);vertical-align:middle}
+.wbody{text-align:center;transform-origin:top center}
+.wbody .sent{font-size:34px}.wbody .vert,.wbody .bigexpr{font-size:40px}.wbody .clock{width:160px;height:160px}
+.wa{font-size:32px;text-align:center}
+.wa .mine{color:#c0504d}.wa .ok{color:#23784f;font-weight:bold}
+.wa .plainopt{font-size:40px}
+.note{font-family:var(--zyfont);font-size:16px;color:#7a6f96;line-height:1.6}
+.settings section{background:#fff;border-radius:20px;padding:16px 22px;margin:14px 0;font-family:var(--zyfont);font-size:18px}
+.settings h3{margin:8px 0}
+.radio,.chk{display:block;padding:6px 0}
+.chk{display:inline-block;margin-right:18px}
+.fontbox{margin:8px 0 0 26px}
+.fontbox.dim{opacity:.55}
+.fontbox input{font-size:18px;padding:6px 10px;border-radius:10px;border:2px solid #ddd;width:260px}
+.preview{font-size:40px;margin:10px 0;padding:10px;border:2px dashed #ddd;border-radius:12px}
+.okc{color:var(--green)}.badc{color:var(--red)}
+@media (max-width:640px){
+  .cards{grid-template-columns:1fr}.logo{font-size:40px}.sent{font-size:36px}.opt{font-size:36px;min-height:80px}
+  .opts.n3{grid-template-columns:repeat(3,1fr)}.opt.ch{min-width:70px;min-height:80px;font-size:38px}
+}
+/* ---- v2：新題型 ---- */
+.example{font-size:34px;color:#7a6f96;background:#f6f1ff;border-radius:16px;padding:6px 16px;margin:0 auto 10px;display:inline-block}
+.qbody .example{display:block;width:fit-content}
+.opts.list{grid-template-columns:1fr}
+.opts.list .opt{font-size:38px;text-align:left;padding:12px 20px;min-height:84px}
+.orderline{min-height:120px;background:#fff;border:4px dashed #ffd6a5;border-radius:24px;padding:12px;display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:center;font-size:40px}
+.orderline .ph{font-size:24px;color:#b3a9c9}
+.chunks{display:flex;flex-wrap:wrap;gap:14px;justify-content:center;margin-top:16px}
+.chunk{background:#fff;border:4px solid #e9e2f5;border-radius:20px;padding:8px 16px;font-size:40px;box-shadow:0 5px 0 #ddd3ee}
+.chunk.inline{background:#fff1d6;border-color:#ffb48a;box-shadow:0 4px 0 #f3c99a}
+.next:disabled{opacity:.45;cursor:default}
+#fixstep{margin-top:16px}
+/* ---- v4：考前複習・小考・列印 ---- */
+.exambox{background:linear-gradient(135deg,#fff6e0,#ffe9f0);border:4px solid #ffd6a5;border-radius:26px;padding:14px 16px;margin:10px 0 6px;text-align:center}
+.examtitle{font-size:34px;font-weight:bold;color:#e8505b}
+.examrange{font-family:var(--zyfont);font-size:18px;color:#7a6f96;margin:4px 0 10px}
+.exambtns{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.exbtn.review{grid-column:1/-1;flex-direction:row;justify-content:center;gap:8px;font-size:28px}
+.exbtn.print{grid-column:1/-1;flex-direction:row;justify-content:center;gap:8px;padding:6px}
+.exbtn{white-space:nowrap}
+.exbtn{background:#fff;border:3px solid #ffd6a5;border-radius:18px;padding:10px 6px;font-size:24px;display:flex;flex-direction:column;align-items:center;gap:2px;box-shadow:0 4px 0 #f3c99a}
+.exbtn small{font-family:var(--zyfont);font-size:14px;opacity:.75}
+.exbtn.review{background:#e3f8ec;border-color:#9fdcbc;box-shadow:0 4px 0 #7cc7a0}
+.exbtn.print{font-family:var(--zyfont);font-size:20px}
+.exbtn:active{transform:translateY(3px)}
+.examhist{font-family:var(--zyfont);font-size:15px;color:#7a6f96;margin-top:8px}
+.breakdown{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;font-family:var(--zyfont)}
+.bd{background:#fff;border-radius:16px;padding:8px 14px;display:flex;flex-direction:column;align-items:center;font-size:18px;border:3px solid #e9e2f5}
+.bd span{font-size:26px;font-weight:bold}
+.bd.full{border-color:var(--green)}.bd.low{border-color:#f3a6a4;background:#fff4f3}
+details.allans{margin:16px 0}
+details.allans summary{font-family:var(--zyfont);font-size:22px;cursor:pointer;background:#fff;border-radius:16px;padding:12px 16px;text-align:center}
+.witem.okitem{border-left-color:var(--green)}
+.review .rvcard{background:#fff;border-radius:24px;padding:14px 20px;margin:16px 0;box-shadow:0 5px 0 rgba(0,0,0,.06);border-top:10px solid var(--pri)}
+.review .rvcard.math{border-top-color:var(--blue)}
+.review h2{text-align:left;font-size:30px;margin:6px 0}
+.review h3{font-family:var(--zyfont);font-size:20px;color:#7a6f96;margin:14px 0 6px}
+.rvchars{display:flex;flex-wrap:wrap;gap:8px}
+.rvch{font-size:44px;background:#fff8ef;border:2px solid #ffd6a5;border-radius:12px;padding:2px 8px}
+.rvch.read{background:#f3f0fa;border-color:#e1d9f3}
+.rvwords{display:flex;flex-wrap:wrap;gap:8px}
+.rvw{font-size:32px;background:#f6f1ff;border-radius:12px;padding:2px 10px}
+.rvw.grp{font-family:var(--kai);font-size:30px}
+.rvlist{font-size:22px;line-height:1.8;margin:4px 0;padding-left:1.2em}
+.rvlist b{font-size:26px}
+.rvex{display:flex;flex-wrap:wrap;gap:14px;justify-content:center}
+.rvexq{background:#f4f8ff;border-radius:16px;padding:10px 16px;text-align:center;font-size:22px}
+.rvexq .vert,.rvexq .bigexpr{font-size:44px}.rvexq .sent{font-size:30px}
+.rvexq .ok{color:#23784f;font-family:var(--zyfont);font-size:18px;margin-top:6px}
+.printpage{background:#fff;border-radius:16px;padding:16px 22px}
+.ptitle{text-align:center;font-size:34px;margin:6px 0}
+.phead{text-align:center;font-family:var(--zyfont);font-size:18px;margin-bottom:12px}
+.pq{border-bottom:1px dashed #ccc;padding:10px 0;break-inside:avoid;page-break-inside:avoid}
+.pqt{font-size:22px}
+.pq .sent{font-size:30px}.pq .vert,.pq .bigexpr{font-size:36px}.pq .clock{width:150px;height:150px}.pq .example{font-size:22px}
+.pq .qbody{text-align:left}
+.popts{display:flex;flex-wrap:wrap;gap:6px 24px;font-size:26px;margin-top:4px}
+.popts.list{flex-direction:column}
+.popts .plainopt{font-size:30px}.popts .zyopt{font-size:26px}
+.pfill{font-family:var(--zyfont);font-size:20px;margin-top:6px}
+.pkey{break-before:page;page-break-before:always;margin-top:24px}
+.pkey h2{text-align:center}
+.pans{font-size:22px;line-height:1.9;list-style:none;padding:0;columns:2}
+@media print{ .noprint{display:none!important} body{background:#fff!important} .printpage{padding:0} }
+@media (max-width:640px){
+  .exambtns{gap:6px}.exbtn{font-size:15px;padding:8px 0}.exbtn.review{font-size:24px}.examtitle{font-size:28px}
+  .rvch{font-size:36px}.rvw{font-size:26px}.pans{columns:1}
+}
+.pans .zyopt{font-size:22px}.pans .plainopt{font-size:24px}
+
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+/* =====================================================================
+   題庫資料區（家長可以在這裡新增或修改題目）
+   ---------------------------------------------------------------------
+   【文字標記規則】
+   - 一般國字：程式會自動查下面的 ZY_CHAR（單字）與 ZY_WORD（詞語）字典加上注音。
+   - 多音字 / 輕聲：如果某個字在句子裡念法跟字典預設不同，用 {字|注音} 指定，
+       例如：請你【數】一{數|ㄕㄨˇ}有幾個蘋果。
+     或把整個詞加進 ZY_WORD（例如 "長大": "ㄓㄤˇ ㄉㄚˋ"，注音之間用空白隔開）。
+   - ＿ ：填空的位置。
+   - 【字】：多音字題目要考的字（會用紅色顯示、不標注音）。
+   - 輕聲符號「˙」放在注音前面，例如 ˙ㄉㄜ。聲調用 ˊ ˇ ˋ（一聲不標）。
+   - 打開網頁後，如果某個字查不到注音，瀏覽器 Console 會顯示警告。
+
+   【題型格式】
+   pick     看注音選國字：{type:'pick', text:'句子，用＿當空格', ans:'正確字', zy:'正確字的注音', opts:['正確字','干擾字',...]}
+   wrong    找錯字：     {type:'wrong', text:'有錯字的句子', bad:'錯字', fix:'正確字', zy:'該念的注音', word:'正確的詞'}
+   poly     多音字：     {type:'poly', text:'句子，用【字】標出要考的字', ans:'正確注音', opts:['注音1','注音2'], tip:'說明'}
+   measure  量詞：       {type:'measure', text:'一＿魚', ans:'條', opts:['條','隻','本','張']}
+   opposite 相反詞：     {type:'opposite', word:'大', ans:'小', opts:['小','多','長']}
+   ===================================================================== */
+
+// ---- 單字預設讀音（台灣教育部標準，一、不 標本調，和課本相同）----
+const ZY_CHAR = {
+  "我":"ㄨㄛˇ","你":"ㄋㄧˇ","他":"ㄊㄚ","她":"ㄊㄚ","們":"˙ㄇㄣ","的":"˙ㄉㄜ","了":"˙ㄌㄜ","得":"˙ㄉㄜ","著":"˙ㄓㄜ",
+  "是":"ㄕˋ","在":"ㄗㄞˋ","有":"ㄧㄡˇ","不":"ㄅㄨˋ","很":"ㄏㄣˇ","這":"ㄓㄜˋ","哪":"ㄋㄚˇ","什":"ㄕㄣˊ","麼":"˙ㄇㄜ","怎":"ㄗㄣˇ",
+  "一":"ㄧ","二":"ㄦˋ","三":"ㄙㄢ","四":"ㄙˋ","五":"ㄨˇ","六":"ㄌㄧㄡˋ","七":"ㄑㄧ","八":"ㄅㄚ","九":"ㄐㄧㄡˇ","十":"ㄕˊ",
+  "百":"ㄅㄞˇ","千":"ㄑㄧㄢ","兩":"ㄌㄧㄤˇ","個":"˙ㄍㄜ","幾":"ㄐㄧˇ","第":"ㄉㄧˋ","每":"ㄇㄟˇ","最":"ㄗㄨㄟˋ","又":"ㄧㄡˋ","再":"ㄗㄞˋ",
+  "好":"ㄏㄠˇ","大":"ㄉㄚˋ","小":"ㄒㄧㄠˇ","多":"ㄉㄨㄛ","少":"ㄕㄠˇ","上":"ㄕㄤˋ","下":"ㄒㄧㄚˋ","來":"ㄌㄞˊ","去":"ㄑㄩˋ",
+  "長":"ㄔㄤˊ","短":"ㄉㄨㄢˇ","高":"ㄍㄠ","矮":"ㄞˇ","胖":"ㄆㄤˋ","瘦":"ㄕㄡˋ","快":"ㄎㄨㄞˋ","慢":"ㄇㄢˋ","冷":"ㄌㄥˇ","熱":"ㄖㄜˋ",
+  "涼":"ㄌㄧㄤˊ","冰":"ㄅㄧㄥ","開":"ㄎㄞ","關":"ㄍㄨㄢ","打":"ㄉㄚˇ","門":"ㄇㄣˊ","黑":"ㄏㄟ","白":"ㄅㄞˊ","紅":"ㄏㄨㄥˊ","暗":"ㄢˋ",
+  "色":"ㄙㄜˋ","天":"ㄊㄧㄢ","今":"ㄐㄧㄣ","日":"ㄖˋ","早":"ㄗㄠˇ","晚":"ㄨㄢˇ","點":"ㄉㄧㄢˇ","分":"ㄈㄣ","時":"ㄕˊ","鐘":"ㄓㄨㄥ",
+  "整":"ㄓㄥˇ","現":"ㄒㄧㄢˋ","過":"ㄍㄨㄛˋ","已":"ㄧˇ","經":"ㄐㄧㄥ","氣":"ㄑㄧˋ","雨":"ㄩˇ","雲":"ㄩㄣˊ","空":"ㄎㄨㄥ","樹":"ㄕㄨˋ",
+  "草":"ㄘㄠˇ","地":"ㄉㄧˋ","花":"ㄏㄨㄚ","鳥":"ㄋㄧㄠˇ","狗":"ㄍㄡˇ","貓":"ㄇㄠ","魚":"ㄩˊ","牛":"ㄋㄧㄡˊ","馬":"ㄇㄚˇ","飛":"ㄈㄟ",
+  "愛":"ㄞˋ","吃":"ㄔ","喝":"ㄏㄜ","看":"ㄎㄢˋ","聽":"ㄊㄧㄥ","用":"ㄩㄥˋ","跑":"ㄆㄠˇ","走":"ㄗㄡˇ","坐":"ㄗㄨㄛˋ","住":"ㄓㄨˋ",
+  "睡":"ㄕㄨㄟˋ","覺":"ㄐㄩㄝˊ","唱":"ㄔㄤˋ","歌":"ㄍㄜ","玩":"ㄨㄢˊ","起":"ㄑㄧˇ","做":"ㄗㄨㄛˋ","寫":"ㄒㄧㄝˇ","刷":"ㄕㄨㄚ","帶":"ㄉㄞˋ",
+  "請":"ㄑㄧㄥˇ","要":"ㄧㄠˋ","當":"ㄉㄤ","會":"ㄏㄨㄟˋ","都":"ㄉㄡ","還":"ㄏㄞˊ","給":"ㄍㄟˇ","買":"ㄇㄞˇ","付":"ㄈㄨˋ","找":"ㄓㄠˇ",
+  "回":"ㄏㄨㄟˊ","借":"ㄐㄧㄝˋ","出":"ㄔㄨ","存":"ㄘㄨㄣˊ","剩":"ㄕㄥˋ","剪":"ㄐㄧㄢˇ","掉":"ㄉㄧㄠˋ","選":"ㄒㄩㄢˇ","讀":"ㄉㄨˊ","算":"ㄙㄨㄢˋ",
+  "想":"ㄒㄧㄤˇ","念":"ㄋㄧㄢˋ","祝":"ㄓㄨˋ","試":"ㄕˋ","加":"ㄐㄧㄚ","油":"ㄧㄡˊ","次":"ㄘˋ","更":"ㄍㄥˋ","真":"ㄓㄣ","太":"ㄊㄞˋ",
+  "眼":"ㄧㄢˇ","睛":"ㄐㄧㄥ","牙":"ㄧㄚˊ","心":"ㄒㄧㄣ","聲":"ㄕㄥ","音":"ㄧㄣ","樂":"ㄌㄜˋ","東":"ㄉㄨㄥ","西":"ㄒㄧ","生":"ㄕㄥ",
+  "人":"ㄖㄣˊ","家":"ㄐㄧㄚ","老":"ㄌㄠˇ","師":"ㄕ","學":"ㄒㄩㄝˊ","校":"ㄒㄧㄠˋ","教":"ㄐㄧㄠˋ","室":"ㄕˋ","課":"ㄎㄜˋ","書":"ㄕㄨ",
+  "字":"ㄗˋ","國":"ㄍㄨㄛˊ","語":"ㄩˇ","數":"ㄕㄨˋ","題":"ㄊㄧˊ","目":"ㄇㄨˋ","答":"ㄉㄚˊ","案":"ㄢˋ","對":"ㄉㄨㄟˋ","錯":"ㄘㄨㄛˋ",
+  "正":"ㄓㄥˋ","確":"ㄑㄩㄝˋ","句":"ㄐㄩˋ","子":"ㄗˇ","詞":"ㄘˊ","量":"ㄌㄧㄤˋ","相":"ㄒㄧㄤ","反":"ㄈㄢˇ","新":"ㄒㄧㄣ","重":"ㄓㄨㄥˋ",
+  "圖":"ㄊㄨˊ","館":"ㄍㄨㄢˇ","奇":"ㄑㄧˊ","銀":"ㄧㄣˊ","行":"ㄒㄧㄥˊ","錢":"ㄑㄧㄢˊ","路":"ㄌㄨˋ","窗":"ㄔㄨㄤ","外":"ㄨㄞˋ","裡":"ㄌㄧˇ",
+  "鉛":"ㄑㄧㄢ","筆":"ㄅㄧˇ","便":"ㄅㄧㄢˋ","宜":"ㄧˊ","旁":"ㄆㄤˊ","邊":"ㄅㄧㄢ","方":"ㄈㄤ","公":"ㄍㄨㄥ","園":"ㄩㄢˊ","傘":"ㄙㄢˇ",
+  "廚":"ㄔㄨˊ","房":"ㄈㄤˊ","飯":"ㄈㄢˋ","奶":"ㄋㄞˇ","汁":"ㄓ","果":"ㄍㄨㄛˇ","蘋":"ㄆㄧㄥˊ","糖":"ㄊㄤˊ","顆":"ㄎㄜ","盒":"ㄏㄜˊ",
+  "共":"ㄍㄨㄥˋ","元":"ㄩㄢˊ","具":"ㄐㄩˋ","年":"ㄋㄧㄢˊ","級":"ㄐㄧˊ","男":"ㄋㄢˊ","女":"ㄋㄩˇ","貼":"ㄊㄧㄝ","紙":"ㄓˇ","約":"ㄩㄝ",
+  "扇":"ㄕㄢˋ","桌":"ㄓㄨㄛ","橡":"ㄒㄧㄤˋ","皮":"ㄆㄧˊ","擦":"ㄘㄚ","棵":"ㄎㄜ","尺":"ㄔˇ","繩":"ㄕㄥˊ","本":"ㄅㄣˇ","條":"ㄊㄧㄠˊ",
+  "隻":"ㄓ","張":"ㄓㄤ","枝":"ㄓ","頭":"ㄊㄡˊ","朵":"ㄉㄨㄛˇ","件":"ㄐㄧㄢˋ","輛":"ㄌㄧㄤˋ","車":"ㄔㄜ","衣":"ㄧ","服":"ㄈㄨˊ",
+  "可":"ㄎㄜˇ","明":"ㄇㄧㄥˊ","美":"ㄇㄟˇ","華":"ㄏㄨㄚˊ","安":"ㄢ","強":"ㄑㄧㄤˊ","媽":"ㄇㄚ","爸":"ㄅㄚˋ","哥":"ㄍㄜ","弟":"ㄉㄧˋ",
+  "妹":"ㄇㄟˋ","爺":"ㄧㄝˊ","謝":"ㄒㄧㄝˋ","幫":"ㄅㄤ","忙":"ㄇㄤˊ","椅":"ㄧˇ","喜":"ㄒㄧˇ","歡":"ㄏㄨㄢ","棒":"ㄅㄤˋ","厲":"ㄌㄧˋ",
+  "害":"ㄏㄞˋ","聰":"ㄘㄨㄥ","完":"ㄨㄢˊ","全":"ㄑㄩㄢˊ","練":"ㄌㄧㄢˋ","習":"ㄒㄧˊ","模":"ㄇㄛˊ","擬":"ㄋㄧˇ","測":"ㄘㄜˋ","驗":"ㄧㄢˋ",
+  "合":"ㄏㄜˊ","首":"ㄕㄡˇ","頁":"ㄧㄝˋ","結":"ㄐㄧㄝˊ","束":"ㄕㄨˋ","樣":"ㄧㄤˋ","乘":"ㄔㄥˊ","法":"ㄈㄚˇ","減":"ㄐㄧㄢˇ",
+  "就":"ㄐㄧㄡˋ","始":"ㄕˇ","把":"ㄅㄚˇ","名":"ㄇㄧㄥˊ","複":"ㄈㄨˋ","康":"ㄎㄤ","軒":"ㄒㄩㄢ",
+  "功":"ㄍㄨㄥ","注":"ㄓㄨˋ","改":"ㄍㄞˇ","成":"ㄔㄥˊ","填":"ㄊㄧㄢˊ","單":"ㄉㄢ","位":"ㄨㄟˋ","綜":"ㄗㄨㄥˋ","部":"ㄅㄨˋ","考":"ㄎㄠˇ","前":"ㄑㄧㄢˊ","沒":"ㄇㄟˊ","跟":"ㄍㄣ",
+  "帥":"ㄕㄨㄞˋ","造":"ㄗㄠˋ","座":"ㄗㄨㄛˋ","保":"ㄅㄠˇ","姐":"ㄐㄧㄝˇ","浪":"ㄌㄤˋ","昨":"ㄗㄨㄛˊ","流":"ㄌㄧㄡˊ","熟":"ㄕㄨˊ","連":"ㄌㄧㄢˊ","市":"ㄕˋ","工":"ㄍㄨㄥ","離":"ㄌㄧˊ","別":"ㄅㄧㄝˊ","歲":"ㄙㄨㄟˋ","懂":"ㄉㄨㄥˇ","講":"ㄐㄧㄤˇ","理":"ㄌㄧˇ","或":"ㄏㄨㄛˋ","效":"ㄒㄧㄠˋ","常":"ㄔㄤˊ","爬":"ㄆㄚˊ","迷":"ㄇㄧˊ","悉":"ㄒㄧ","況":"ㄎㄨㄤˋ","能":"ㄋㄥˊ","專":"ㄓㄨㄢ","顏":"ㄧㄢˊ","處":"ㄔㄨˋ","尾":"ㄨㄟˇ","弄":"ㄋㄨㄥˋ","顛":"ㄉㄧㄢ","倒":"ㄉㄠˇ","肯":"ㄎㄣˇ","留":"ㄌㄧㄡˊ","盡":"ㄐㄧㄣˋ","寶":"ㄅㄠˇ","形":"ㄒㄧㄥˊ","非":"ㄈㄟ","貴":"ㄍㄨㄟˋ","鼻":"ㄅㄧˊ","餘":"ㄩˊ","而":"ㄦˊ","糟":"ㄗㄠ","助":"ㄓㄨˋ","救":"ㄐㄧㄡˋ","各":"ㄍㄜˋ","包":"ㄅㄠ","亂":"ㄌㄨㄢˋ","終":"ㄓㄨㄥ","贏":"ㄧㄥˊ","努":"ㄋㄨˇ","背":"ㄅㄟˋ","溼":"ㄕ","緊":"ㄐㄧㄣˇ","穩":"ㄨㄣˇ","決":"ㄐㄩㄝˊ","免":"ㄇㄧㄢˇ","麻":"ㄇㄚˊ","煩":"ㄈㄢˊ","病":"ㄅㄧㄥˋ","精":"ㄐㄧㄥ",
+  "拍":"ㄆㄞ","左":"ㄗㄨㄛˇ","右":"ㄧㄡˋ","誰":"ㄕㄟˊ","啊":"˙ㄚ","秋":"ㄑㄧㄡ","和":"ㄏㄜˊ","陪":"ㄆㄟˊ","山":"ㄕㄢ","蛙":"ㄨㄚ","主":"ㄓㄨˇ","向":"ㄒㄧㄤˋ","從":"ㄘㄨㄥˊ","那":"ㄋㄚˋ","靜":"ㄐㄧㄥˋ","蟲":"ㄔㄨㄥˊ","芽":"ㄧㄚˊ","聞":"ㄨㄣˊ","呢":"˙ㄋㄜ","陣":"ㄓㄣˋ","菜":"ㄘㄞˋ","脫":"ㄊㄨㄛ","靠":"ㄎㄠˋ","港":"ㄍㄤˇ","享":"ㄒㄧㄤˇ","受":"ㄕㄡˋ","溫":"ㄨㄣ","暖":"ㄋㄨㄢˇ","種":"ㄓㄨㄥˇ","問":"ㄨㄣˋ","它":"ㄊㄚ","才":"ㄘㄞˊ","需":"ㄒㄩ","於":"ㄩˊ","澆":"ㄐㄧㄠ","陽":"ㄧㄤˊ","光":"ㄍㄨㄤ","院":"ㄩㄢˋ","伴":"ㄅㄢˋ","班":"ㄅㄢ","床":"ㄔㄨㄤˊ","酒":"ㄐㄧㄡˇ","拿":"ㄋㄚˊ","卡":"ㄎㄚˇ","片":"ㄆㄧㄢˋ","您":"ㄋㄧㄣˊ","作":"ㄗㄨㄛˋ","夢":"ㄇㄥˋ","躺":"ㄊㄤˇ","棉":"ㄇㄧㄢˊ","鵝":"ㄜˊ","漂":"ㄆㄧㄠ","雙":"ㄕㄨㄤ","滴":"ㄉㄧ","戲":"ㄒㄧˋ","珍":"ㄓㄣ","珠":"ㄓㄨ","落":"ㄌㄨㄛˋ","缸":"ㄍㄤ","虹":"ㄏㄨㄥˊ","掃":"ㄙㄠˇ","除":"ㄔㄨˊ","淨":"ㄐㄧㄥˋ","低":"ㄉㄧ","葉":"ㄧㄝˋ","送":"ㄙㄨㄥˋ","化":"ㄏㄨㄚˋ","趣":"ㄑㄩˋ","線":"ㄒㄧㄢˋ","箏":"ㄓㄥ","升":"ㄕㄥ","神":"ㄕㄣˊ","情":"ㄑㄧㄥˊ","記":"ㄐㄧˋ","道":"ㄉㄠˋ","嗎":"˙ㄇㄚ","收":"ㄕㄡ","福":"ㄈㄨˊ","燈":"ㄉㄥ","半":"ㄅㄢˋ","清":"ㄑㄧㄥ","楚":"ㄔㄨˇ","停":"ㄊㄧㄥˊ","休":"ㄒㄧㄡ","息":"ㄒㄧˊ","兒":"ㄦˊ","吧":"˙ㄅㄚ","只":"ㄓˇ","輪":"ㄌㄨㄣˊ","夾":"ㄐㄧㄚˊ","捧":"ㄆㄥˇ","蝴":"ㄏㄨˊ","蝶":"ㄉㄧㄝˊ","牆":"ㄑㄧㄤˊ","飄":"ㄆㄧㄠ","舞":"ㄨˇ","哇":"ㄨㄚ","往":"ㄨㄤˇ","腳":"ㄐㄧㄠˇ","等":"ㄉㄥˇ","跨":"ㄎㄨㄚˋ","叫":"ㄐㄧㄠˋ","碗":"ㄨㄢˇ","轉":"ㄓㄨㄢˇ","親":"ㄑㄧㄣ","埔":"ㄆㄨˇ","針":"ㄓㄣ","簡":"ㄐㄧㄢˇ","臣":"ㄔㄣˊ","敢":"ㄍㄢˇ","直":"ㄓˊ","街":"ㄐㄧㄝ","裳":"ㄔㄤˊ","慌":"ㄏㄨㄤ","渴":"ㄎㄜˇ","烏":"ㄨ","瓶":"ㄆㄧㄥˊ","森":"ㄙㄣ","林":"ㄌㄧㄣˊ","物":"ㄨˋ","旅":"ㄌㄩˇ","午":"ㄨˇ","裝":"ㄓㄨㄤ","許":"ㄒㄩˇ","石":"ㄕˊ","難":"ㄋㄢˊ","忘":"ㄨㄤˋ","哈":"ㄏㄚ","但":"ㄉㄢˋ","熊":"ㄒㄩㄥˊ","鴉":"ㄧㄚ","象":"ㄒㄧㄤˋ","操":"ㄘㄠ","粗":"ㄘㄨ","腿":"ㄊㄨㄟˇ","柱":"ㄓㄨˋ","砍":"ㄎㄢˇ","搖":"ㄧㄠˊ","沖":"ㄔㄨㄥ","牽":"ㄑㄧㄢ","沉":"ㄔㄣˊ","沿":"ㄧㄢˊ","然":"ㄖㄢˊ","紀":"ㄐㄧˋ","竟":"ㄐㄧㄥˋ","曹":"ㄘㄠˊ","秤":"ㄔㄥˋ","雪":"ㄒㄩㄝˇ","梨":"ㄌㄧˊ","夜":"ㄧㄝˋ","卻":"ㄑㄩㄝˋ","冬":"ㄉㄨㄥ","季":"ㄐㄧˋ","煙":"ㄧㄢ","火":"ㄏㄨㄛˇ","待":"ㄉㄞˋ","雖":"ㄙㄨㄟ","春":"ㄔㄨㄣ","貨":"ㄏㄨㄛˋ","期":"ㄑㄧˊ","灣":"ㄨㄢ","綻":"ㄓㄢˋ","者":"ㄓㄜˇ","洋":"ㄧㄤˊ","寒":"ㄏㄢˊ","北":"ㄅㄟˇ","嘴":"ㄗㄨㄟˇ","伸":"ㄕㄣ","飽":"ㄅㄠˇ","沙":"ㄕㄚ","急":"ㄐㄧˊ","站":"ㄓㄢˋ","翅":"ㄔˋ","膀":"ㄅㄤˇ","充":"ㄔㄨㄥ","戴":"ㄉㄞˋ","扁":"ㄅㄧㄢˇ","灰":"ㄏㄨㄟ","牠":"ㄊㄚ","鼓":"ㄍㄨˇ","絡":"ㄌㄨㄛˋ","欣":"ㄒㄧㄣ","發":"ㄈㄚ","居":"ㄐㄩ","冒":"ㄇㄠˋ","圍":"ㄨㄟˊ","咪":"ㄇㄧ","幸":"ㄒㄧㄥˋ","團":"ㄊㄨㄢˊ","聚":"ㄐㄩˋ","愉":"ㄩˊ","鍋":"ㄍㄨㄛ","妙":"ㄇㄧㄠˋ","聊":"ㄌㄧㄠˊ","定":"ㄉㄧㄥˋ",
+  "到":"ㄉㄠˋ","希":"ㄒㄧ","先":"ㄒㄧㄢ","王":"ㄨㄤˊ","說":"ㄕㄨㄛ","故":"ㄍㄨˋ","自":"ㄗˋ","己":"ㄐㄧˇ","為":"ㄨㄟˊ","拉":"ㄌㄚ","見":"ㄐㄧㄢˋ","以":"ㄧˇ","後":"ㄏㄡˋ","進":"ㄐㄧㄣˋ","格":"ㄍㄜˊ","事":"ㄕˋ","望":"ㄨㄤˋ","放":"ㄈㄤˋ","力":"ㄌㄧˋ","穿":"ㄔㄨㄢ","身":"ㄕㄣ","排":"ㄆㄞˊ","通":"ㄊㄨㄥ","順":"ㄕㄨㄣˋ","照":"ㄓㄠˋ","例":"ㄌㄧˋ","淡":"ㄉㄢˋ","香":"ㄒㄧㄤ","意":"ㄧˋ","思":"ㄙ","也":"ㄧㄝˇ","煎":"ㄐㄧㄢ","餐":"ㄘㄢ","番":"ㄈㄢ","茄":"ㄑㄧㄝˊ","醬":"ㄐㄧㄤˋ","笑":"ㄒㄧㄠˋ","臉":"ㄌㄧㄢˇ","話":"ㄏㄨㄚˋ","吐":"ㄊㄨˇ","司":"ㄙ","像":"ㄒㄧㄤˋ","堡":"ㄅㄠˇ","中":"ㄓㄨㄥ","水":"ㄕㄨㄟˇ","切":"ㄑㄧㄝ","畫":"ㄏㄨㄚˋ","蛋":"ㄉㄢˋ","海":"ㄏㄞˇ","城":"ㄔㄥˊ","接":"ㄐㄧㄝ","洗":"ㄒㄧˇ","手":"ㄕㄡˇ","游":"ㄧㄡˊ","圓":"ㄩㄢˊ","叔":"ㄕㄨˊ","娘":"ㄋㄧㄤˊ","扮":"ㄅㄢˋ","彩":"ㄘㄞˇ","比":"ㄅㄧˇ","巷":"ㄒㄧㄤˋ","娶":"ㄑㄩˇ","麗":"ㄌㄧˋ","間":"ㄐㄧㄢ","面":"ㄇㄧㄢˋ","屋":"ㄨ","黃":"ㄏㄨㄤˊ","越":"ㄩㄝˋ","同":"ㄊㄨㄥˊ","拔":"ㄅㄚˊ","河":"ㄏㄜˊ","鞋":"ㄒㄧㄝˊ","跳":"ㄊㄧㄠˋ","運":"ㄩㄣˋ","動":"ㄉㄨㄥˋ","鬧":"ㄋㄠˋ","輕":"ㄑㄧㄥ","步":"ㄅㄨˋ","汗":"ㄏㄢˋ","容":"ㄖㄨㄥˊ","協":"ㄒㄧㄝˊ","賽":"ㄙㄞˋ","暑":"ㄕㄨˇ","候":"ㄏㄡˋ","南":"ㄋㄢˊ","竹":"ㄓㄨˊ","籃":"ㄌㄢˊ","船":"ㄔㄨㄢˊ","捕":"ㄅㄨˇ","認":"ㄖㄣˋ","朋":"ㄆㄥˊ","友":"ㄧㄡˇ","鄉":"ㄒㄧㄤ","假":"ㄐㄧㄚˇ","識":"ㄕˋ","知":"ㄓ","風":"ㄈㄥ","吹":"ㄔㄨㄟ","近":"ㄐㄧㄣˋ","划":"ㄏㄨㄚˊ","原":"ㄩㄢˊ","活":"ㄏㄨㄛˊ","鎮":"ㄓㄣˋ","柿":"ㄕˋ","餅":"ㄅㄧㄥˇ","節":"ㄐㄧㄝˊ","因":"ㄧㄣ","遊":"ㄧㄡˊ","客":"ㄎㄜˋ","變":"ㄅㄧㄢˋ","金":"ㄐㄧㄣ","干":"ㄍㄢ","青":"ㄑㄧㄥ","乾":"ㄍㄢ","遠":"ㄩㄢˇ","亮":"ㄌㄧㄤˋ","月":"ㄩㄝˋ","此":"ㄘˇ","如":"ㄖㄨˊ","甜":"ㄊㄧㄢˊ","適":"ㄕˋ","臺":"ㄊㄞˊ","滿":"ㄇㄢˇ","口":"ㄎㄡˇ","告":"ㄍㄠˋ","訴":"ㄙㄨˋ"
+};
+
+// ---- 詞語讀音（輕聲、多音字在詞語裡的念法）。注音用空白隔開，數量要和字數一樣 ----
+const ZY_WORD = {"老朋友":"ㄌㄠˇ ㄆㄥˊ ˙ㄧㄡ","沒空":"ㄇㄟˊ ㄎㄨㄥˋ","漂亮":"ㄆㄧㄠˋ ˙ㄌㄧㄤ","奶奶":"ㄋㄞˇ ˙ㄋㄞ","葉子":"ㄧㄝˋ ˙ㄗ","桌子":"ㄓㄨㄛ ˙ㄗ","巷子":"ㄒㄧㄤˋ ˙ㄗ","個子":"ㄍㄜˋ ˙ㄗ",
+  "顛倒":"ㄉㄧㄢ ㄉㄠˇ","麻煩":"ㄇㄚˊ ˙ㄈㄢ","姐姐":"ㄐㄧㄝˇ ˙ㄐㄧㄝ","免得":"ㄇㄧㄢˇ ˙ㄉㄜ","熟悉":"ㄕㄨˊ ㄒㄧ","鼻子":"ㄅㄧˊ ˙ㄗ","心思":"ㄒㄧㄣ ㄙ","到處":"ㄉㄠˋ ㄔㄨˋ",
+  "媽媽":"ㄇㄚ ˙ㄇㄚ","爸爸":"ㄅㄚˋ ˙ㄅㄚ","哥哥":"ㄍㄜ ˙ㄍㄜ","弟弟":"ㄉㄧˋ ˙ㄉㄧ","妹妹":"ㄇㄟˋ ˙ㄇㄟ","爺爺":"ㄧㄝˊ ˙ㄧㄝ",
+  "謝謝":"ㄒㄧㄝˋ ˙ㄒㄧㄝ","東西":"ㄉㄨㄥ ˙ㄒㄧ","衣服":"ㄧ ˙ㄈㄨ","喜歡":"ㄒㄧˇ ㄏㄨㄢ","椅子":"ㄧˇ ˙ㄗ","繩子":"ㄕㄥˊ ˙ㄗ",
+  "句子":"ㄐㄩˋ ˙ㄗ","什麼":"ㄕㄣˊ ˙ㄇㄜ","怎麼":"ㄗㄣˇ ˙ㄇㄜ","便宜":"ㄆㄧㄢˊ ˙ㄧ","覺得":"ㄐㄩㄝˊ ˙ㄉㄜ","睡覺":"ㄕㄨㄟˋ ㄐㄧㄠˋ",
+  "長大":"ㄓㄤˇ ㄉㄚˋ","長短":"ㄔㄤˊ ㄉㄨㄢˇ","長得":"ㄓㄤˇ ˙ㄉㄜ","快樂":"ㄎㄨㄞˋ ㄌㄜˋ","音樂":"ㄧㄣ ㄩㄝˋ",
+  "重要":"ㄓㄨㄥˋ ㄧㄠˋ","重新":"ㄔㄨㄥˊ ㄒㄧㄣ","還是":"ㄏㄞˊ ㄕˋ","還書":"ㄏㄨㄢˊ ㄕㄨ","好人":"ㄏㄠˇ ㄖㄣˊ","好奇":"ㄏㄠˋ ㄑㄧˊ",
+  "銀行":"ㄧㄣˊ ㄏㄤˊ","行人":"ㄒㄧㄥˊ ㄖㄣˊ","數學":"ㄕㄨˋ ㄒㄩㄝˊ","數一數":"ㄕㄨˇ ㄧ ㄕㄨˇ","睡著":"ㄕㄨㄟˋ ㄓㄠˊ","看著":"ㄎㄢˋ ˙ㄓㄜ",
+  "方便":"ㄈㄤ ㄅㄧㄢˋ","教室":"ㄐㄧㄠˋ ㄕˋ","跑得":"ㄆㄠˇ ˙ㄉㄜ","寫得":"ㄒㄧㄝˇ ˙ㄉㄜ","地上":"ㄉㄧˋ ˙ㄕㄤ","樹上":"ㄕㄨˋ ㄕㄤˋ","剩下":"ㄕㄥˋ ˙ㄒㄧㄚ",
+  "晚上":"ㄨㄢˇ ˙ㄕㄤ","早上":"ㄗㄠˇ ˙ㄕㄤ","題目":"ㄊㄧˊ ㄇㄨˋ","答案":"ㄉㄚˊ ㄢˋ","眼睛":"ㄧㄢˇ ㄐㄧㄥ",
+  "為了":"ㄨㄟˋ ˙ㄌㄜ","成為":"ㄔㄥˊ ㄨㄟˊ","看中":"ㄎㄢˋ ㄓㄨㄥˋ","暑假":"ㄕㄨˇ ㄐㄧㄚˋ","認識":"ㄖㄣˋ ˙ㄕ","知識":"ㄓ ㄕˋ","熱鬧":"ㄖㄜˋ ˙ㄋㄠ","力氣":"ㄌㄧˋ ˙ㄑㄧ","一切":"ㄧ ㄑㄧㄝˋ","朋友":"ㄆㄥˊ ㄧㄡˇ","時候":"ㄕˊ ㄏㄡˋ","模樣":"ㄇㄨˊ ㄧㄤˋ","意思":"ㄧˋ ˙ㄙ","例子":"ㄌㄧˋ ˙ㄗ","心裡":"ㄒㄧㄣ ˙ㄌㄧ","拉開":"ㄌㄚ ˙ㄎㄞ","過來":"ㄍㄨㄛˋ ˙ㄌㄞ","一下子":"ㄧ ㄒㄧㄚˋ ˙ㄗ","叔叔":"ㄕㄨˊ ˙ㄕㄨ","屋子":"ㄨ ˙ㄗ","柿子":"ㄕˋ ˙ㄗ","位子":"ㄨㄟˋ ˙ㄗ","輪子":"ㄌㄨㄣˊ ˙ㄗ"
+};
+
+// ---- 國語題庫 ----
+const BANK_CHINESE = [
+  // (1) 看注音選國字：選項故意放「形近字」或「同音字」
+  {type:'pick', text:'我愛吃蘋＿。', ans:'果', zy:'ㄍㄨㄛˇ', opts:['果','課','棵']},
+  {type:'pick', text:'今天＿氣很好。', ans:'天', zy:'ㄊㄧㄢ', opts:['天','夫','太']},
+  {type:'pick', text:'我們在教＿上課。', ans:'室', zy:'ㄕˋ', opts:['室','至','屋']},
+  {type:'pick', text:'小狗在草地上跑＿跑去。', ans:'來', zy:'ㄌㄞˊ', opts:['來','束','東']},
+  {type:'pick', text:'我用＿睛看東西。', ans:'眼', zy:'ㄧㄢˇ', opts:['眼','很','跟']},
+  {type:'pick', text:'下＿了，要帶傘。', ans:'雨', zy:'ㄩˇ', opts:['雨','兩','而']},
+  {type:'pick', text:'樹上有很多小＿。', ans:'鳥', zy:'ㄋㄧㄠˇ', opts:['鳥','烏','島']},
+  {type:'pick', text:'我每天早上都會刷＿。', ans:'牙', zy:'ㄧㄚˊ', opts:['牙','呀','芽']},
+  {type:'pick', text:'公＿裡有很多花。', ans:'園', zy:'ㄩㄢˊ', opts:['園','圓','遠']},
+  {type:'pick', text:'妹妹唱歌的＿音很好聽。', ans:'聲', zy:'ㄕㄥ', opts:['聲','身','生']},
+  {type:'pick', text:'老師請大家＿下來。', ans:'坐', zy:'ㄗㄨㄛˋ', opts:['坐','座','作']},
+  {type:'pick', text:'天＿上有白白的雲。', ans:'空', zy:'ㄎㄨㄥ', opts:['空','工','公']},
+  {type:'pick', text:'我＿天都要寫功課。', ans:'每', zy:'ㄇㄟˇ', opts:['每','海','美']},
+  {type:'pick', text:'哥哥＿得很快。', ans:'跑', zy:'ㄆㄠˇ', opts:['跑','抱','泡']},
+  {type:'pick', text:'我＿歡唱歌。', ans:'喜', zy:'ㄒㄧˇ', opts:['喜','洗','吉']},
+  {type:'pick', text:'這隻小＿很可愛。', ans:'狗', zy:'ㄍㄡˇ', opts:['狗','句','夠']},
+
+  // (2) 找錯字：zy 是「這個位置該念的音」
+  {type:'wrong', text:'我們一起去公圓玩。', bad:'圓', fix:'園', zy:'ㄩㄢˊ', word:'公園'},
+  {type:'wrong', text:'我每天都要刷呀。', bad:'呀', fix:'牙', zy:'ㄧㄚˊ', word:'刷牙'},
+  {type:'wrong', text:'下雨了，要帶雨散。', bad:'散', fix:'傘', zy:'ㄙㄢˇ', word:'雨傘'},
+  {type:'wrong', text:'老師在教是裡上課。', bad:'是', fix:'室', zy:'ㄕˋ', word:'教室'},
+  {type:'wrong', text:'今天的天汽很好。', bad:'汽', fix:'氣', zy:'ㄑㄧˋ', word:'天氣'},
+  {type:'wrong', text:'哥哥跑得很怏。', bad:'怏', fix:'快', zy:'ㄎㄨㄞˋ', word:'很快'},
+  {type:'wrong', text:'我喜歡吃平果。', bad:'平', fix:'蘋', zy:'ㄆㄧㄥˊ', word:'蘋果'},
+  {type:'wrong', text:'媽媽在廚房作飯。', bad:'作', fix:'做', zy:'ㄗㄨㄛˋ', word:'做飯'},
+  {type:'wrong', text:'爺爺座在椅子上看書。', bad:'座', fix:'坐', zy:'ㄗㄨㄛˋ', word:'坐在椅子上'},
+  {type:'wrong', text:'小鳥在樹上唱哥。', bad:'哥', fix:'歌', zy:'ㄍㄜ', word:'唱歌'},
+  {type:'wrong', text:'晚上要早點睡較。', bad:'較', fix:'覺', zy:'ㄐㄧㄠˋ', word:'睡覺'},
+  {type:'wrong', text:'謝謝你的幫芒。', bad:'芒', fix:'忙', zy:'ㄇㄤˊ', word:'幫忙'},
+
+  // (3) 多音字：【字】是要考的字
+  {type:'poly', text:'我【長】大要當老師。', ans:'ㄓㄤˇ', opts:['ㄓㄤˇ','ㄔㄤˊ'], tip:'長大（ㄓㄤˇ）／長短（ㄔㄤˊ）'},
+  {type:'poly', text:'這兩枝筆的【長】短不一樣。', ans:'ㄔㄤˊ', opts:['ㄓㄤˇ','ㄔㄤˊ'], tip:'長大（ㄓㄤˇ）／長短（ㄔㄤˊ）'},
+  {type:'poly', text:'祝你生日快【樂】！', ans:'ㄌㄜˋ', opts:['ㄌㄜˋ','ㄩㄝˋ'], tip:'快樂（ㄌㄜˋ）／音樂（ㄩㄝˋ）'},
+  {type:'poly', text:'我喜歡上音【樂】課。', ans:'ㄩㄝˋ', opts:['ㄌㄜˋ','ㄩㄝˋ'], tip:'快樂（ㄌㄜˋ）／音樂（ㄩㄝˋ）'},
+  {type:'poly', text:'晚上九點要睡【覺】。', ans:'ㄐㄧㄠˋ', opts:['ㄐㄧㄠˋ','ㄐㄩㄝˊ'], tip:'睡覺（ㄐㄧㄠˋ）／覺得（ㄐㄩㄝˊ）'},
+  {type:'poly', text:'我【覺】得今天很冷。', ans:'ㄐㄩㄝˊ', opts:['ㄐㄧㄠˋ','ㄐㄩㄝˊ'], tip:'睡覺（ㄐㄧㄠˋ）／覺得（ㄐㄩㄝˊ）'},
+  {type:'poly', text:'每天刷牙很【重】要。', ans:'ㄓㄨㄥˋ', opts:['ㄓㄨㄥˋ','ㄔㄨㄥˊ'], tip:'重要（ㄓㄨㄥˋ）／重新（ㄔㄨㄥˊ）'},
+  {type:'poly', text:'這個字寫錯了，要【重】新寫。', ans:'ㄔㄨㄥˊ', opts:['ㄓㄨㄥˋ','ㄔㄨㄥˊ'], tip:'重要（ㄓㄨㄥˋ）／重新（ㄔㄨㄥˊ）'},
+  {type:'poly', text:'你要喝牛奶【還】是果汁？', ans:'ㄏㄞˊ', opts:['ㄏㄞˊ','ㄏㄨㄢˊ'], tip:'還是（ㄏㄞˊ）／還書（ㄏㄨㄢˊ）'},
+  {type:'poly', text:'我要去圖書館【還】書。', ans:'ㄏㄨㄢˊ', opts:['ㄏㄞˊ','ㄏㄨㄢˊ'], tip:'還是（ㄏㄞˊ）／還書（ㄏㄨㄢˊ）'},
+  {type:'poly', text:'他是一個【好】人。', ans:'ㄏㄠˇ', opts:['ㄏㄠˇ','ㄏㄠˋ'], tip:'好人（ㄏㄠˇ）／好奇（ㄏㄠˋ）'},
+  {type:'poly', text:'小貓很【好】奇。', ans:'ㄏㄠˋ', opts:['ㄏㄠˇ','ㄏㄠˋ'], tip:'好人（ㄏㄠˇ）／好奇（ㄏㄠˋ）'},
+  {type:'poly', text:'媽媽去銀【行】存錢。', ans:'ㄏㄤˊ', opts:['ㄏㄤˊ','ㄒㄧㄥˊ'], tip:'銀行（ㄏㄤˊ）／行人（ㄒㄧㄥˊ）'},
+  {type:'poly', text:'過馬路的【行】人要小心。', ans:'ㄒㄧㄥˊ', opts:['ㄏㄤˊ','ㄒㄧㄥˊ'], tip:'銀行（ㄏㄤˊ）／行人（ㄒㄧㄥˊ）'},
+  {type:'poly', text:'我最喜歡上【數】學課。', ans:'ㄕㄨˋ', opts:['ㄕㄨˋ','ㄕㄨˇ'], tip:'數學（ㄕㄨˋ）／數一數（ㄕㄨˇ）'},
+  {type:'poly', text:'請你【數】一{數|ㄕㄨˇ}有幾個蘋果。', ans:'ㄕㄨˇ', opts:['ㄕㄨˋ','ㄕㄨˇ'], tip:'數學（ㄕㄨˋ）／數一數（ㄕㄨˇ）'},
+  {type:'poly', text:'弟弟已經睡【著】了。', ans:'ㄓㄠˊ', opts:['ㄓㄠˊ','˙ㄓㄜ'], tip:'睡著（ㄓㄠˊ）／看著（˙ㄓㄜ）'},
+  {type:'poly', text:'她看【著】窗外的小鳥。', ans:'˙ㄓㄜ', opts:['ㄓㄠˊ','˙ㄓㄜ'], tip:'睡著（ㄓㄠˊ）／看著（˙ㄓㄜ）'},
+  {type:'poly', text:'這枝鉛筆很【便】{宜|˙ㄧ}。', ans:'ㄆㄧㄢˊ', opts:['ㄆㄧㄢˊ','ㄅㄧㄢˋ'], tip:'便宜（ㄆㄧㄢˊ）／方便（ㄅㄧㄢˋ）'},
+  {type:'poly', text:'住在學校旁邊很方【便】。', ans:'ㄅㄧㄢˋ', opts:['ㄆㄧㄢˊ','ㄅㄧㄢˋ'], tip:'便宜（ㄆㄧㄢˊ）／方便（ㄅㄧㄢˋ）'},
+
+  // (4) 量詞
+  {type:'measure', text:'一＿魚', ans:'條', opts:['條','隻','本','張']},
+  {type:'measure', text:'一＿書', ans:'本', opts:['本','張','條','頭']},
+  {type:'measure', text:'一＿紙', ans:'張', opts:['張','本','枝','頭']},
+  {type:'measure', text:'一＿鉛筆', ans:'枝', opts:['枝','本','條','張']},
+  {type:'measure', text:'一＿牛', ans:'頭', opts:['頭','本','張','枝']},
+  {type:'measure', text:'一＿小狗', ans:'隻', opts:['隻','本','枝','張']},
+  {type:'measure', text:'一＿花', ans:'朵', opts:['朵','隻','本','條']},
+  {type:'measure', text:'一＿衣服', ans:'件', opts:['件','頭','朵','枝']},
+  {type:'measure', text:'一＿車', ans:'輛', opts:['輛','朵','張','本']},
+
+  // (5) 相反詞
+  {type:'opposite', word:'大', ans:'小', opts:['小','多','長']},
+  {type:'opposite', word:'高', ans:'矮', opts:['矮','胖','長']},
+  {type:'opposite', word:'快', ans:'慢', opts:['慢','好','大']},
+  {type:'opposite', word:'多', ans:'少', opts:['少','小','大']},
+  {type:'opposite', word:'冷', ans:'熱', opts:['熱','涼','冰']},
+  {type:'opposite', word:'開', ans:'關', opts:['關','打','門']},
+  {type:'opposite', word:'胖', ans:'瘦', opts:['瘦','矮','高']},
+  {type:'opposite', word:'黑', ans:'白', opts:['白','紅','暗']},
+  {type:'opposite', word:'長', ans:'短', opts:['短','小','矮']},
+];
+
+// ---- 數學應用題範本（{N}=名字、{P}=他/她、{a}{b}=數字）----
+const NAMES = [['小明','他'],['小美','她'],['小華','他'],['小安','她'],['小強','他']];
+const WORD_TEMPLATES = [
+  {op:'+', text:'{N}有 {a} 顆糖果，媽媽又給{P} {b} 顆。{P}現在有幾顆糖果？', a:[10,60], b:[5,39]},
+  {op:'+', text:'二年級有 {a} 個男生、{b} 個女生，一共有幾個人？', a:[20,99], b:[20,99]},
+  {op:'-', text:'樹上有 {a} 隻小鳥，飛走了 {b} 隻。樹上還剩下幾隻小鳥？', a:[20,80], b:[3,19]},
+  {op:'-', text:'{N}有 {a} 元，買了一個 {b} 元的玩具，還剩下幾元？', a:[100,500], b:[25,99]},
+  {op:'-', text:'圖書館有 {a} 本書，借出去 {b} 本，還剩下幾本？', a:[200,900], b:[30,199]},
+  {op:'*', text:'一盒有 {a} 枝鉛筆，{b} 盒一共有幾枝鉛筆？', a:[2,9], b:[2,9]},
+  {op:'*', text:'一枝鉛筆 {a} 元，買 {b} 枝要幾元？', a:[2,9], b:[2,9]},
+  {op:'*', text:'每個人有 {a} 張貼紙，{b} 個人一共有幾張貼紙？', a:[2,9], b:[2,9]},
+];
+/* ===================== 題庫資料區結束 ===================== */
+
+// ===== 康軒版 二上 國語（115學年度）：課程資料＋自動題 =====
+// 生字／認讀字／語詞來源：教育部 教育雲「生字詞彙表」康軒版二年級國語 115學年度上學期
+//   https://pedia.cloud.edu.tw/Bookmark/Textword?category=國語&degree=2&press=康軒版&year=115_1
+// 一年級學過的字（KX_G1）：同網站 康軒版一年級 114學年度上、下學期。讀音依教育部國語辭典（萌典）。
+// 自動題的干擾字只從「同一課 → 前面的課 → 一年級學過的字」挑選，不會用到後面的課。
+const KX_G1 = "拍手左右你他也上下這是誰的我分好了啊多個秋千和玩陪高山到大海朋友們起子小課兩人拉看找隻青蛙開心比門裡外有什麼不同早晚王主又路長白花紅走在向說朵從頭那要靜天空雲水蟲鳥草先完再去園聽沒正唱著輕快歌出新芽聞身香呢媽音樂會始來重短陣過後吃菜就桌真鞋回家把脫爸靠見像船港口享受溫暖種問怎做它才需於澆陽光放院公話伴奶跟班床弟她酒拿卡片給寫喜歡您都作夢躺自己變成棉糖黑鵝得更漂亮妹雨雙穿滴遊戲顆珍珠落面魚缸金游彩虹太國掃除洗淨馬低刷樹葉很認送地化趣線風箏升神奇跑跳笑每件事情生日今記時知道嗎學收張祝福第次謝想燈前點半清楚停休息兒吧幫加油慢一二三四五六七八九十";
+const KX2A_LESSONS = [{"lesson": 1, "title": "新學年新希望", "chars": "年希望坐位本淡書老師以為故用力只現還", "read": "聲矮", "words": [["學年", "ㄒㄩㄝˊ ㄋㄧㄢˊ"], ["希望", "ㄒㄧ ㄨㄤˋ"], ["位子", "ㄨㄟˋ ˙ㄗ"], ["課本", "ㄎㄜˋ ㄅㄣˇ"], ["淡淡", "ㄉㄢˋ ㄉㄢˋ"], ["書香", "ㄕㄨ ㄒㄧㄤ"], ["老師", "ㄌㄠˇ ㄕ"], ["以前", "ㄧˇ ㄑㄧㄢˊ"], ["大聲", "ㄉㄚˋ ㄕㄥ"], ["成為", "ㄔㄥˊ ㄨㄟˊ"], ["故事", "ㄍㄨˋ ㄕˋ"], ["用力", "ㄩㄥˋ ㄌㄧˋ"], ["現在", "ㄒㄧㄢˋ ㄗㄞˋ"]]}, {"lesson": 2, "title": "一起做早餐", "chars": "全蛋煎圓番茄切輪司夾吐中方城堡接畫臉", "read": "餐醬", "words": [["早餐", "ㄗㄠˇ ㄘㄢ"], ["全家", "ㄑㄩㄢˊ ㄐㄧㄚ"], ["番茄", "ㄈㄢ ㄑㄧㄝˊ"], ["輪子", "ㄌㄨㄣˊ ˙ㄗ"], ["起司", "ㄑㄧˇ ㄙ"], ["吐司", "ㄊㄨˇ ㄙ"], ["四四方方", "ㄙˋ ㄙˋ ㄈㄤ ㄈㄤ"], ["城堡", "ㄔㄥˊ ㄅㄠˇ"], ["接著", "ㄐㄧㄝ ˙ㄓㄜ"], ["番茄醬", "ㄈㄢ ㄑㄧㄝˊ ㄐㄧㄤˋ"], ["笑臉", "ㄒㄧㄠˋ ㄌㄧㄢˇ"]]}, {"lesson": 3, "title": "走過小巷", "chars": "巷叔貓屋捧蝴蝶忙娶娘黃筆打扮樣越美麗", "read": "牆模", "words": [["叔叔", "ㄕㄨˊ ˙ㄕㄨ"], ["捧花", "ㄆㄥˇ ㄏㄨㄚ"], ["蝴蝶", "ㄏㄨˊ ㄉㄧㄝˊ"], ["新娘", "ㄒㄧㄣ ㄋㄧㄤˊ"], ["彩筆", "ㄘㄞˇ ㄅㄧˇ"], ["打扮", "ㄉㄚˇ ㄅㄢˋ"], ["模樣", "ㄇㄨˊ ㄧㄤˋ"], ["美麗", "ㄇㄟˇ ㄌㄧˋ"]]}, {"lesson": 4, "title": "運動會", "chars": "運動飄熱鬧舞哇往容步汗腳協聲河氣最可", "read": "賽拔", "words": [["運動會", "ㄩㄣˋ ㄉㄨㄥˋ ㄏㄨㄟˋ"], ["熱鬧", "ㄖㄜˋ ˙ㄋㄠ"], ["大會舞", "ㄉㄚˋ ㄏㄨㄟˋ ㄨˇ"], ["笑容", "ㄒㄧㄠˋ ㄖㄨㄥˊ"], ["跑步", "ㄆㄠˇ ㄅㄨˋ"], ["比賽", "ㄅㄧˇ ㄙㄞˋ"], ["汗水", "ㄏㄢˋ ㄕㄨㄟˇ"], ["協力", "ㄒㄧㄝˊ ㄌㄧˋ"], ["拔河", "ㄅㄚˊ ㄏㄜˊ"], ["力氣", "ㄌㄧˋ ˙ㄑㄧ"], ["最後", "ㄗㄨㄟˋ ㄏㄡˋ"]]}, {"lesson": 5, "title": "坐竹籃船", "chars": "竹籃鄉南暑假帶等跨划吹邊叫原近捕活識", "read": "碗轉", "words": [["家鄉", "ㄐㄧㄚ ㄒㄧㄤ"], ["越南", "ㄩㄝˋ ㄋㄢˊ"], ["暑假", "ㄕㄨˇ ㄐㄧㄚˋ"], ["碗公", "ㄨㄢˇ ㄍㄨㄥ"], ["划船", "ㄏㄨㄚˊ ㄔㄨㄢˊ"], ["轉動", "ㄓㄨㄢˇ ㄉㄨㄥˋ"], ["一邊", "ㄧ ㄅㄧㄢ"], ["叫好", "ㄐㄧㄠˋ ㄏㄠˇ"], ["原本", "ㄩㄢˊ ㄅㄣˇ"], ["近海", "ㄐㄧㄣˋ ㄏㄞˇ"], ["捕魚", "ㄅㄨˇ ㄩˊ"], ["活動", "ㄏㄨㄛˊ ㄉㄨㄥˋ"], ["認識", "ㄖㄣˋ ˙ㄕ"]]}, {"lesson": 6, "title": "小鎮的柿餅節", "chars": "鎮餅節因此進排遠色愛月乾甜客買親如意", "read": "柿埔", "words": [["小鎮", "ㄒㄧㄠˇ ㄓㄣˋ"], ["因此", "ㄧㄣ ㄘˇ"], ["走進", "ㄗㄡˇ ㄐㄧㄣˋ"], ["金黃色", "ㄐㄧㄣ ㄏㄨㄤˊ ㄙㄜˋ"], ["可愛", "ㄎㄜˇ ㄞˋ"], ["風乾", "ㄈㄥ ㄍㄢ"], ["遊客", "ㄧㄡˊ ㄎㄜˋ"], ["親朋好友", "ㄑㄧㄣ ㄆㄥˊ ㄏㄠˇ ㄧㄡˇ"], ["如意", "ㄖㄨˊ ㄧˋ"]]}, {"lesson": 7, "title": "國王的新衣裳", "chars": "衣胖針簡單聰明臣敢東西直棒街滿眼哪思", "read": "裳慌", "words": [["衣裳", "ㄧ ˙ㄕㄤ"], ["簡單", "ㄐㄧㄢˇ ㄉㄢ"], ["聰明", "ㄘㄨㄥ ㄇㄧㄥˊ"], ["大臣", "ㄉㄚˋ ㄔㄣˊ"], ["不敢", "ㄅㄨˋ ㄍㄢˇ"], ["慌張", "ㄏㄨㄤ ㄓㄤ"], ["一直", "ㄧ ㄓˊ"], ["大街", "ㄉㄚˋ ㄐㄧㄝ"], ["滿街", "ㄇㄢˇ ㄐㄧㄝ"], ["左思右想", "ㄗㄨㄛˇ ㄙ ㄧㄡˋ ㄒㄧㄤˇ"]]}, {"lesson": 8, "title": "「聰明」的小熊", "chars": "渴烏喝瓶法森林物旅行午裝許石難忘哈但", "read": "熊鴉", "words": [["口渴", "ㄎㄡˇ ㄎㄜˇ"], ["烏鴉", "ㄨ ㄧㄚ"], ["瓶子", "ㄆㄧㄥˊ ˙ㄗ"], ["方法", "ㄈㄤ ㄈㄚˇ"], ["森林", "ㄙㄣ ㄌㄧㄣˊ"], ["動物", "ㄉㄨㄥˋ ㄨˋ"], ["旅行", "ㄌㄩˇ ㄒㄧㄥˊ"], ["中午", "ㄓㄨㄥ ㄨˇ"], ["許多", "ㄒㄩˇ ㄉㄨㄛ"], ["石頭", "ㄕˊ ˙ㄊㄡ"], ["難道", "ㄋㄢˊ ㄉㄠˋ"], ["但是", "ㄉㄢˋ ˙ㄕ"]]}, {"lesson": 9, "title": "大象有多重?", "chars": "象操粗腿柱砍幾部搖沖首牽沉少沿然紀竟", "read": "曹秤", "words": [["大象", "ㄉㄚˋ ㄒㄧㄤˋ"], ["曹操", "ㄘㄠˊ ㄘㄠ"], ["粗大", "ㄘㄨ ㄉㄚˋ"], ["柱子", "ㄓㄨˋ ˙ㄗ"], ["部分", "ㄅㄨˋ ㄈㄣˋ"], ["搖頭", "ㄧㄠˊ ㄊㄡˊ"], ["首先", "ㄕㄡˇ ㄒㄧㄢ"], ["下沉", "ㄒㄧㄚˋ ㄔㄣˊ"], ["多少", "ㄉㄨㄛ ㄕㄠˇ"], ["然後", "ㄖㄢˊ ㄏㄡˋ"], ["年紀", "ㄋㄧㄢˊ ㄐㄧˋ"], ["竟然", "ㄐㄧㄥˋ ㄖㄢˊ"]]}, {"lesson": 10, "title": "新年快樂", "chars": "雪梨夜卻冷冬臺季相反煙火待雖春貨期飯", "read": "灣綻", "words": [["雪梨", "ㄒㄩㄝˇ ㄌㄧˊ"], ["冬天", "ㄉㄨㄥ ㄊㄧㄢ"], ["臺灣", "ㄊㄞˊ ㄨㄢ"], ["季節", "ㄐㄧˋ ㄐㄧㄝˊ"], ["相反", "ㄒㄧㄤ ㄈㄢˇ"], ["煙火", "ㄧㄢ ㄏㄨㄛˇ"], ["等待", "ㄉㄥˇ ㄉㄞˋ"], ["綻放", "ㄓㄢˋ ㄈㄤˋ"], ["雖然", "ㄙㄨㄟ ㄖㄢˊ"], ["春節", "ㄔㄨㄣ ㄐㄧㄝˊ"], ["年貨", "ㄋㄧㄢˊ ㄏㄨㄛˋ"], ["期待", "ㄑㄧˊ ㄉㄞˋ"], ["年夜飯", "ㄋㄧㄢˊ ㄧㄝˋ ㄈㄢˋ"]]}, {"lesson": 11, "title": "遠方來的黑皮", "chars": "皮具飛者洋寒北嘴伸飽沙急服站翅膀充念", "read": "戴扁", "words": [["面具", "ㄇㄧㄢˋ ㄐㄩˋ"], ["舞者", "ㄨˇ ㄓㄜˇ"], ["海洋", "ㄏㄞˇ ㄧㄤˊ"], ["寒冷", "ㄏㄢˊ ㄌㄥˇ"], ["北方", "ㄅㄟˇ ㄈㄤ"], ["沙子", "ㄕㄚ ˙ㄗ"], ["著急", "ㄓㄠ ㄐㄧˊ"], ["衣服", "ㄧ ˙ㄈㄨ"], ["翅膀", "ㄔˋ ㄅㄤˇ"], ["充滿", "ㄔㄨㄥ ㄇㄢˇ"], ["思念", "ㄙ ㄋㄧㄢˋ"]]}, {"lesson": 12, "title": "我愛冬天", "chars": "灰涼牠鼓絡欣發居冒冰圍咪幸團聚愉鍋妙", "read": "聊", "words": [["牠們", "ㄊㄚ ˙ㄇㄣ"], ["圓鼓鼓", "ㄩㄢˊ ㄍㄨˇ ㄍㄨˇ"], ["熱絡", "ㄖㄜˋ ㄌㄨㄛˋ"], ["聊天", "ㄌㄧㄠˊ ㄊㄧㄢ"], ["欣喜", "ㄒㄧㄣ ㄒㄧˇ"], ["發現", "ㄈㄚ ㄒㄧㄢˋ"], ["居然", "ㄐㄩ ㄖㄢˊ"], ["冒煙", "ㄇㄠˋ ㄧㄢ"], ["笑咪咪", "ㄒㄧㄠˋ ㄇㄧ ㄇㄧ"], ["幸福", "ㄒㄧㄥˋ ㄈㄨˊ"], ["團聚", "ㄊㄨㄢˊ ㄐㄩˋ"], ["愉快", "ㄩˊ ㄎㄨㄞˋ"], ["火鍋", "ㄏㄨㄛˇ ㄍㄨㄛ"], ["美妙", "ㄇㄟˇ ㄇㄧㄠˋ"]]}];
+const BANK_KX2A_AUTO = [
+  {"type": "kxpick", "lesson": 1, "tg": "年", "text": "{學|ㄒㄩㄝˊ}＿", "ans": "年", "zy": "ㄋㄧㄢˊ", "opts": ["年", "聲", "本"]},
+  {"type": "kxread", "lesson": 1, "tg": "年", "text": "{學|ㄒㄩㄝˊ}【年】", "ans": "ㄋㄧㄢˊ", "opts": ["ㄋㄧㄢˊ", "ㄞˇ", "ㄩㄥˋ"], "tip": "{學|ㄒㄩㄝˊ}{年|ㄋㄧㄢˊ}（ㄋㄧㄢˊ）"},
+  {"type": "kxpick", "lesson": 1, "tg": "希", "text": "＿{望|ㄨㄤˋ}", "ans": "希", "zy": "ㄒㄧ", "opts": ["希", "淡", "戲"]},
+  {"type": "kxread", "lesson": 1, "tg": "希", "text": "【希】{望|ㄨㄤˋ}", "ans": "ㄒㄧ", "opts": ["ㄒㄧ", "ㄒㄧㄢˋ", "ㄓˇ"], "tip": "{希|ㄒㄧ}{望|ㄨㄤˋ}（ㄒㄧ）"},
+  {"type": "kxpick", "lesson": 1, "tg": "位", "text": "＿{子|˙ㄗ}", "ans": "位", "zy": "ㄨㄟˋ", "opts": ["位", "為", "坐"]},
+  {"type": "kxread", "lesson": 1, "tg": "位", "text": "【位】{子|˙ㄗ}", "ans": "ㄨㄟˋ", "opts": ["ㄨㄟˋ", "ㄨㄟˊ", "ㄓ"], "tip": "{位|ㄨㄟˋ}{子|˙ㄗ}（ㄨㄟˋ）"},
+  {"type": "kxpick", "lesson": 1, "tg": "本", "text": "{課|ㄎㄜˋ}＿", "ans": "本", "zy": "ㄅㄣˇ", "opts": ["本", "為", "現"]},
+  {"type": "kxread", "lesson": 1, "tg": "本", "text": "{課|ㄎㄜˋ}【本】", "ans": "ㄅㄣˇ", "opts": ["ㄅㄣˇ", "ㄩㄥˋ", "ㄨㄤˋ"], "tip": "{課|ㄎㄜˋ}{本|ㄅㄣˇ}（ㄅㄣˇ）"},
+  {"type": "kxpick", "lesson": 1, "tg": "淡", "text": "＿{淡|ㄉㄢˋ}", "ans": "淡", "zy": "ㄉㄢˋ", "opts": ["淡", "聲", "坐"]},
+  {"type": "kxread", "lesson": 1, "tg": "淡", "text": "【淡】{淡|ㄉㄢˋ}", "ans": "ㄉㄢˋ", "opts": ["ㄉㄢˋ", "ㄒㄩㄢˊ", "ㄒㄧ"], "tip": "{淡|ㄉㄢˋ}{淡|ㄉㄢˋ}（ㄉㄢˋ）"},
+  {"type": "kxpick", "lesson": 1, "tg": "書", "text": "＿{香|ㄒㄧㄤ}", "ans": "書", "zy": "ㄕㄨ", "opts": ["書", "力", "樹"]},
+  {"type": "kxread", "lesson": 1, "tg": "書", "text": "【書】{香|ㄒㄧㄤ}", "ans": "ㄕㄨ", "opts": ["ㄕㄨ", "ㄩㄥˋ", "ㄏㄞˊ"], "tip": "{書|ㄕㄨ}{香|ㄒㄧㄤ}（ㄕㄨ）"},
+  {"type": "kxpick", "lesson": 1, "tg": "師", "text": "{老|ㄌㄠˇ}＿", "ans": "師", "zy": "ㄕ", "opts": ["師", "只", "始"]},
+  {"type": "kxread", "lesson": 1, "tg": "師", "text": "{老|ㄌㄠˇ}【師】", "ans": "ㄕ", "opts": ["ㄕ", "ㄨㄤˋ", "ㄓˇ"], "tip": "{老|ㄌㄠˇ}{師|ㄕ}（ㄕ）"},
+  {"type": "kxpick", "lesson": 1, "tg": "以", "text": "＿{前|ㄑㄧㄢˊ}", "ans": "以", "zy": "ㄧˇ", "opts": ["以", "書", "師"]},
+  {"type": "kxread", "lesson": 1, "tg": "以", "text": "【以】{前|ㄑㄧㄢˊ}", "ans": "ㄧˇ", "opts": ["ㄧˇ", "ㄕㄥ", "ㄋㄧㄢˊ"], "tip": "{以|ㄧˇ}{前|ㄑㄧㄢˊ}（ㄧˇ）"},
+  {"type": "kxpick", "lesson": 1, "tg": "聲", "text": "{大|ㄉㄚˋ}＿", "ans": "聲", "zy": "ㄕㄥ", "opts": ["聲", "只", "生"]},
+  {"type": "kxread", "lesson": 1, "tg": "聲", "text": "{大|ㄉㄚˋ}【聲】", "ans": "ㄕㄥ", "opts": ["ㄕㄥ", "ㄏㄨㄢˊ", "ㄉㄢˋ"], "tip": "{大|ㄉㄚˋ}{聲|ㄕㄥ}（ㄕㄥ）"},
+  {"type": "kxpick", "lesson": 1, "tg": "為", "text": "{成|ㄔㄥˊ}＿", "ans": "為", "zy": "ㄨㄟˊ", "opts": ["為", "位", "坐"]},
+  {"type": "kxread", "lesson": 1, "tg": "為", "text": "{成|ㄔㄥˊ}【為】", "ans": "ㄨㄟˊ", "opts": ["ㄨㄟˊ", "ㄨㄟˋ", "ㄒㄩㄢˊ"], "tip": "{成|ㄔㄥˊ}{為|ㄨㄟˊ}（ㄨㄟˊ）"},
+  {"type": "kxpick", "lesson": 1, "tg": "故", "text": "＿{事|ㄕˋ}", "ans": "故", "zy": "ㄍㄨˋ", "opts": ["故", "為", "位"]},
+  {"type": "kxread", "lesson": 1, "tg": "故", "text": "【故】{事|ㄕˋ}", "ans": "ㄍㄨˋ", "opts": ["ㄍㄨˋ", "ㄨㄟˋ", "ㄗㄨㄛˋ"], "tip": "{故|ㄍㄨˋ}{事|ㄕˋ}（ㄍㄨˋ）"},
+  {"type": "kxpick", "lesson": 1, "tg": "用", "text": "＿{力|ㄌㄧˋ}", "ans": "用", "zy": "ㄩㄥˋ", "opts": ["用", "以", "望"]},
+  {"type": "kxread", "lesson": 1, "tg": "用", "text": "【用】{力|ㄌㄧˋ}", "ans": "ㄩㄥˋ", "opts": ["ㄩㄥˋ", "ㄒㄧ", "ㄏㄞˊ"], "tip": "{用|ㄩㄥˋ}{力|ㄌㄧˋ}（ㄩㄥˋ）"},
+  {"type": "kxpick", "lesson": 1, "tg": "現", "text": "＿{在|ㄗㄞˋ}", "ans": "現", "zy": "ㄒㄧㄢˋ", "opts": ["現", "位", "線"]},
+  {"type": "kxread", "lesson": 1, "tg": "現", "text": "【現】{在|ㄗㄞˋ}", "ans": "ㄒㄧㄢˋ", "opts": ["ㄒㄧㄢˋ", "ㄗㄨㄛˋ", "ㄨㄤˋ"], "tip": "{現|ㄒㄧㄢˋ}{在|ㄗㄞˋ}（ㄒㄧㄢˋ）"},
+  {"type": "kxpick", "lesson": 2, "tg": "餐", "text": "{早|ㄗㄠˇ}＿", "ans": "餐", "zy": "ㄘㄢ", "opts": ["餐", "司", "切"]},
+  {"type": "kxread", "lesson": 2, "tg": "餐", "text": "{早|ㄗㄠˇ}【餐】", "ans": "ㄘㄢ", "opts": ["ㄘㄢ", "ㄈㄢ", "ㄒㄧㄢˋ"], "tip": "{早|ㄗㄠˇ}{餐|ㄘㄢ}（ㄘㄢ）"},
+  {"type": "kxpick", "lesson": 2, "tg": "全", "text": "＿{家|ㄐㄧㄚ}", "ans": "全", "zy": "ㄑㄩㄢˊ", "opts": ["全", "吐", "番"]},
+  {"type": "kxread", "lesson": 2, "tg": "全", "text": "【全】{家|ㄐㄧㄚ}", "ans": "ㄑㄩㄢˊ", "opts": ["ㄑㄩㄢˊ", "ㄍㄨˋ", "ㄘㄢ"], "tip": "{全|ㄑㄩㄢˊ}{家|ㄐㄧㄚ}（ㄑㄩㄢˊ）"},
+  {"type": "kxpick", "lesson": 2, "tg": "番", "text": "＿{茄|ㄑㄧㄝˊ}", "ans": "番", "zy": "ㄈㄢ", "opts": ["番", "接", "煎"]},
+  {"type": "kxread", "lesson": 2, "tg": "番", "text": "【番】{茄|ㄑㄧㄝˊ}", "ans": "ㄈㄢ", "opts": ["ㄈㄢ", "ㄩㄢˊ", "ㄐㄧㄤˋ"], "tip": "{番|ㄈㄢ}{茄|ㄑㄧㄝˊ}（ㄈㄢ）"},
+  {"type": "kxpick", "lesson": 2, "tg": "輪", "text": "＿{子|˙ㄗ}", "ans": "輪", "zy": "ㄌㄨㄣˊ", "opts": ["輪", "吐", "餐"]},
+  {"type": "kxread", "lesson": 2, "tg": "輪", "text": "【輪】{子|˙ㄗ}", "ans": "ㄌㄨㄣˊ", "opts": ["ㄌㄨㄣˊ", "ㄉㄢˋ", "ㄆㄛˊ"], "tip": "{輪|ㄌㄨㄣˊ}{子|˙ㄗ}（ㄌㄨㄣˊ）"},
+  {"type": "kxpick", "lesson": 2, "tg": "司", "text": "{起|ㄑㄧˇ}＿", "ans": "司", "zy": "ㄙ", "opts": ["司", "餐", "切"]},
+  {"type": "kxread", "lesson": 2, "tg": "司", "text": "{起|ㄑㄧˇ}【司】", "ans": "ㄙ", "opts": ["ㄙ", "ㄓㄨㄥ", "ㄏㄨㄢˊ"], "tip": "{起|ㄑㄧˇ}{司|ㄙ}（ㄙ）"},
+  {"type": "kxpick", "lesson": 2, "tg": "吐", "text": "＿{司|ㄙ}", "ans": "吐", "zy": "ㄊㄨˇ", "opts": ["吐", "煎", "臉"]},
+  {"type": "kxread", "lesson": 2, "tg": "吐", "text": "【吐】{司|ㄙ}", "ans": "ㄊㄨˇ", "opts": ["ㄊㄨˇ", "ㄊㄨˋ", "ㄐㄧㄢ"], "tip": "{吐|ㄊㄨˇ}{司|ㄙ}（ㄊㄨˇ）"},
+  {"type": "kxpick", "lesson": 2, "tg": "方", "text": "{四|ㄙˋ}{四|ㄙˋ}{方|ㄈㄤ}＿", "ans": "方", "zy": "ㄈㄤ", "opts": ["方", "夾", "番"]},
+  {"type": "kxread", "lesson": 2, "tg": "方", "text": "{四|ㄙˋ}{四|ㄙˋ}{方|ㄈㄤ}【方】", "ans": "ㄈㄤ", "opts": ["ㄈㄤ", "ㄋㄧㄢˊ", "ㄕㄨ"], "tip": "{四|ㄙˋ}{四|ㄙˋ}{方|ㄈㄤ}{方|ㄈㄤ}（ㄈㄤ）"},
+  {"type": "kxpick", "lesson": 2, "tg": "堡", "text": "{城|ㄔㄥˊ}＿", "ans": "堡", "zy": "ㄅㄠˇ", "opts": ["堡", "司", "煎"]},
+  {"type": "kxread", "lesson": 2, "tg": "堡", "text": "{城|ㄔㄥˊ}【堡】", "ans": "ㄅㄠˇ", "opts": ["ㄅㄠˇ", "ㄑㄩㄢˊ", "ㄊㄨˇ"], "tip": "{城|ㄔㄥˊ}{堡|ㄅㄠˇ}（ㄅㄠˇ）"},
+  {"type": "kxpick", "lesson": 2, "tg": "接", "text": "＿{著|˙ㄓㄜ}", "ans": "接", "zy": "ㄐㄧㄝ", "opts": ["接", "蛋", "中"]},
+  {"type": "kxread", "lesson": 2, "tg": "接", "text": "【接】{著|˙ㄓㄜ}", "ans": "ㄐㄧㄝ", "opts": ["ㄐㄧㄝ", "ㄆㄛˊ", "ㄨㄟˋ"], "tip": "{接|ㄐㄧㄝ}{著|˙ㄓㄜ}（ㄐㄧㄝ）"},
+  {"type": "kxpick", "lesson": 2, "tg": "茄", "text": "{番|ㄈㄢ}＿{醬|ㄐㄧㄤˋ}", "ans": "茄", "zy": "ㄑㄧㄝˊ", "opts": ["茄", "切", "夾"]},
+  {"type": "kxread", "lesson": 2, "tg": "茄", "text": "{番|ㄈㄢ}【茄】{醬|ㄐㄧㄤˋ}", "ans": "ㄑㄧㄝˊ", "opts": ["ㄑㄧㄝˊ", "ㄑㄧㄝˋ", "ㄅㄠˇ"], "tip": "{番|ㄈㄢ}{茄|ㄑㄧㄝˊ}{醬|ㄐㄧㄤˋ}（ㄑㄧㄝˊ）"},
+  {"type": "kxpick", "lesson": 2, "tg": "臉", "text": "{笑|ㄒㄧㄠˋ}＿", "ans": "臉", "zy": "ㄌㄧㄢˇ", "opts": ["臉", "蛋", "堡"]},
+  {"type": "kxread", "lesson": 2, "tg": "臉", "text": "{笑|ㄒㄧㄠˋ}【臉】", "ans": "ㄌㄧㄢˇ", "opts": ["ㄌㄧㄢˇ", "ㄏㄞˊ", "ㄕㄥ"], "tip": "{笑|ㄒㄧㄠˋ}{臉|ㄌㄧㄢˇ}（ㄌㄧㄢˇ）"},
+  {"type": "kxpick", "lesson": 3, "tg": "叔", "text": "{叔|ㄕㄨˊ}＿", "ans": "叔", "zy": "˙ㄕㄨ", "opts": ["叔", "越", "模"]},
+  {"type": "kxread", "lesson": 3, "tg": "叔", "text": "{叔|ㄕㄨˊ}【叔】", "ans": "˙ㄕㄨ", "opts": ["˙ㄕㄨ", "ㄕㄨˊ", "ㄅㄠˇ"], "tip": "{叔|ㄕㄨˊ}{叔|˙ㄕㄨ}（˙ㄕㄨ）"},
+  {"type": "kxpick", "lesson": 3, "tg": "捧", "text": "＿{花|ㄏㄨㄚ}", "ans": "捧", "zy": "ㄆㄥˇ", "opts": ["捧", "娘", "樣"]},
+  {"type": "kxread", "lesson": 3, "tg": "捧", "text": "【捧】{花|ㄏㄨㄚ}", "ans": "ㄆㄥˇ", "opts": ["ㄆㄥˇ", "ㄕ", "ㄏㄨˊ"], "tip": "{捧|ㄆㄥˇ}{花|ㄏㄨㄚ}（ㄆㄥˇ）"},
+  {"type": "kxpick", "lesson": 3, "tg": "蝴", "text": "＿{蝶|ㄉㄧㄝˊ}", "ans": "蝴", "zy": "ㄏㄨˊ", "opts": ["蝴", "麗", "扮"]},
+  {"type": "kxread", "lesson": 3, "tg": "蝴", "text": "【蝴】{蝶|ㄉㄧㄝˊ}", "ans": "ㄏㄨˊ", "opts": ["ㄏㄨˊ", "ㄉㄚˇ", "ㄧㄤˋ"], "tip": "{蝴|ㄏㄨˊ}{蝶|ㄉㄧㄝˊ}（ㄏㄨˊ）"},
+  {"type": "kxpick", "lesson": 3, "tg": "娘", "text": "{新|ㄒㄧㄣ}＿", "ans": "娘", "zy": "ㄋㄧㄤˊ", "opts": ["娘", "蝴", "巷"]},
+  {"type": "kxread", "lesson": 3, "tg": "娘", "text": "{新|ㄒㄧㄣ}【娘】", "ans": "ㄋㄧㄤˊ", "opts": ["ㄋㄧㄤˊ", "ㄕㄨˊ", "ㄑㄧㄝˋ"], "tip": "{新|ㄒㄧㄣ}{娘|ㄋㄧㄤˊ}（ㄋㄧㄤˊ）"},
+  {"type": "kxpick", "lesson": 3, "tg": "筆", "text": "{彩|ㄘㄞˇ}＿", "ans": "筆", "zy": "ㄅㄧˇ", "opts": ["筆", "屋", "忙"]},
+  {"type": "kxread", "lesson": 3, "tg": "筆", "text": "{彩|ㄘㄞˇ}【筆】", "ans": "ㄅㄧˇ", "opts": ["ㄅㄧˇ", "ㄌㄧˊ", "ㄨㄟˋ"], "tip": "{彩|ㄘㄞˇ}{筆|ㄅㄧˇ}（ㄅㄧˇ）"},
+  {"type": "kxpick", "lesson": 3, "tg": "打", "text": "＿{扮|ㄅㄢˋ}", "ans": "打", "zy": "ㄉㄚˇ", "opts": ["打", "娶", "筆"]},
+  {"type": "kxread", "lesson": 3, "tg": "打", "text": "【打】{扮|ㄅㄢˋ}", "ans": "ㄉㄚˇ", "opts": ["ㄉㄚˇ", "ㄉㄚˊ", "ㄩㄢˊ"], "tip": "{打|ㄉㄚˇ}{扮|ㄅㄢˋ}（ㄉㄚˇ）"},
+  {"type": "kxpick", "lesson": 3, "tg": "樣", "text": "{模|ㄇㄨˊ}＿", "ans": "樣", "zy": "ㄧㄤˋ", "opts": ["樣", "黃", "忙"]},
+  {"type": "kxread", "lesson": 3, "tg": "樣", "text": "{模|ㄇㄨˊ}【樣】", "ans": "ㄧㄤˋ", "opts": ["ㄧㄤˋ", "ㄇㄟˇ", "ㄇㄠ"], "tip": "{模|ㄇㄨˊ}{樣|ㄧㄤˋ}（ㄧㄤˋ）"},
+  {"type": "kxpick", "lesson": 3, "tg": "美", "text": "＿{麗|ㄌㄧˋ}", "ans": "美", "zy": "ㄇㄟˇ", "opts": ["美", "巷", "蝴"]},
+  {"type": "kxread", "lesson": 3, "tg": "美", "text": "【美】{麗|ㄌㄧˋ}", "ans": "ㄇㄟˇ", "opts": ["ㄇㄟˇ", "ㄆㄥˇ", "ㄑㄧㄝ"], "tip": "{美|ㄇㄟˇ}{麗|ㄌㄧˋ}（ㄇㄟˇ）"},
+  {"type": "kxpick", "lesson": 4, "tg": "運", "text": "＿{動|ㄉㄨㄥˋ}{會|ㄏㄨㄟˋ}", "ans": "運", "zy": "ㄩㄣˋ", "opts": ["運", "最", "步"]},
+  {"type": "kxread", "lesson": 4, "tg": "運", "text": "【運】{動|ㄉㄨㄥˋ}{會|ㄏㄨㄟˋ}", "ans": "ㄩㄣˋ", "opts": ["ㄩㄣˋ", "ㄆㄨˋ", "ㄐㄧㄚ"], "tip": "{運|ㄩㄣˋ}{動|ㄉㄨㄥˋ}{會|ㄏㄨㄟˋ}（ㄩㄣˋ）"},
+  {"type": "kxpick", "lesson": 4, "tg": "熱", "text": "＿{鬧|˙ㄋㄠ}", "ans": "熱", "zy": "ㄖㄜˋ", "opts": ["熱", "協", "腳"]},
+  {"type": "kxread", "lesson": 4, "tg": "熱", "text": "【熱】{鬧|˙ㄋㄠ}", "ans": "ㄖㄜˋ", "opts": ["ㄖㄜˋ", "ㄕㄨˊ", "ㄐㄧㄠˇ"], "tip": "{熱|ㄖㄜˋ}{鬧|˙ㄋㄠ}（ㄖㄜˋ）"},
+  {"type": "kxpick", "lesson": 4, "tg": "舞", "text": "{大|ㄉㄚˋ}{會|ㄏㄨㄟˋ}＿", "ans": "舞", "zy": "ㄨˇ", "opts": ["舞", "可", "屋"]},
+  {"type": "kxread", "lesson": 4, "tg": "舞", "text": "{大|ㄉㄚˋ}{會|ㄏㄨㄟˋ}【舞】", "ans": "ㄨˇ", "opts": ["ㄨˇ", "ㄨ", "ㄉㄨㄥˋ"], "tip": "{大|ㄉㄚˋ}{會|ㄏㄨㄟˋ}{舞|ㄨˇ}（ㄨˇ）"},
+  {"type": "kxpick", "lesson": 4, "tg": "容", "text": "{笑|ㄒㄧㄠˋ}＿", "ans": "容", "zy": "ㄖㄨㄥˊ", "opts": ["容", "運", "飄"]},
+  {"type": "kxread", "lesson": 4, "tg": "容", "text": "{笑|ㄒㄧㄠˋ}【容】", "ans": "ㄖㄨㄥˊ", "opts": ["ㄖㄨㄥˊ", "ㄗㄨㄛˋ", "ㄎㄜˋ"], "tip": "{笑|ㄒㄧㄠˋ}{容|ㄖㄨㄥˊ}（ㄖㄨㄥˊ）"},
+  {"type": "kxpick", "lesson": 4, "tg": "步", "text": "{跑|ㄆㄠˇ}＿", "ans": "步", "zy": "ㄅㄨˋ", "opts": ["步", "河", "賽"]},
+  {"type": "kxread", "lesson": 4, "tg": "步", "text": "{跑|ㄆㄠˇ}【步】", "ans": "ㄅㄨˋ", "opts": ["ㄅㄨˋ", "ㄍㄨˋ", "ㄧㄤˋ"], "tip": "{跑|ㄆㄠˇ}{步|ㄅㄨˋ}（ㄅㄨˋ）"},
+  {"type": "kxpick", "lesson": 4, "tg": "賽", "text": "{比|ㄅㄧˇ}＿", "ans": "賽", "zy": "ㄙㄞˋ", "opts": ["賽", "汗", "往"]},
+  {"type": "kxread", "lesson": 4, "tg": "賽", "text": "{比|ㄅㄧˇ}【賽】", "ans": "ㄙㄞˋ", "opts": ["ㄙㄞˋ", "ㄑㄩˋ", "ㄨㄤˇ"], "tip": "{比|ㄅㄧˇ}{賽|ㄙㄞˋ}（ㄙㄞˋ）"},
+  {"type": "kxpick", "lesson": 4, "tg": "汗", "text": "＿{水|ㄕㄨㄟˇ}", "ans": "汗", "zy": "ㄏㄢˋ", "opts": ["汗", "氣", "腳"]},
+  {"type": "kxread", "lesson": 4, "tg": "汗", "text": "【汗】{水|ㄕㄨㄟˇ}", "ans": "ㄏㄢˋ", "opts": ["ㄏㄢˋ", "ㄏㄢˊ", "ㄐㄧㄚˋ"], "tip": "{汗|ㄏㄢˋ}{水|ㄕㄨㄟˇ}（ㄏㄢˋ）"},
+  {"type": "kxpick", "lesson": 4, "tg": "協", "text": "＿{力|ㄌㄧˋ}", "ans": "協", "zy": "ㄒㄧㄝˊ", "opts": ["協", "可", "聲"]},
+  {"type": "kxread", "lesson": 4, "tg": "協", "text": "【協】{力|ㄌㄧˋ}", "ans": "ㄒㄧㄝˊ", "opts": ["ㄒㄧㄝˊ", "ㄌㄧㄢˇ", "ㄅㄧˇ"], "tip": "{協|ㄒㄧㄝˊ}{力|ㄌㄧˋ}（ㄒㄧㄝˊ）"},
+  {"type": "kxpick", "lesson": 4, "tg": "河", "text": "{拔|ㄅㄚˊ}＿", "ans": "河", "zy": "ㄏㄜˊ", "opts": ["河", "運", "腳"]},
+  {"type": "kxread", "lesson": 4, "tg": "河", "text": "{拔|ㄅㄚˊ}【河】", "ans": "ㄏㄜˊ", "opts": ["ㄏㄜˊ", "ㄅㄣˇ", "ㄐㄧㄢ"], "tip": "{拔|ㄅㄚˊ}{河|ㄏㄜˊ}（ㄏㄜˊ）"},
+  {"type": "kxpick", "lesson": 4, "tg": "氣", "text": "{力|ㄌㄧˋ}＿", "ans": "氣", "zy": "˙ㄑㄧ", "opts": ["氣", "哇", "飄"]},
+  {"type": "kxread", "lesson": 4, "tg": "氣", "text": "{力|ㄌㄧˋ}【氣】", "ans": "˙ㄑㄧ", "opts": ["˙ㄑㄧ", "ㄑㄧˋ", "ㄇㄨˊ"], "tip": "{力|ㄌㄧˋ}{氣|˙ㄑㄧ}（˙ㄑㄧ）"},
+  {"type": "kxpick", "lesson": 4, "tg": "最", "text": "＿{後|ㄏㄡˋ}", "ans": "最", "zy": "ㄗㄨㄟˋ", "opts": ["最", "動", "哇"]},
+  {"type": "kxread", "lesson": 4, "tg": "最", "text": "【最】{後|ㄏㄡˋ}", "ans": "ㄗㄨㄟˋ", "opts": ["ㄗㄨㄟˋ", "ㄞˇ", "ㄏㄢˊ"], "tip": "{最|ㄗㄨㄟˋ}{後|ㄏㄡˋ}（ㄗㄨㄟˋ）"},
+  {"type": "kxpick", "lesson": 5, "tg": "鄉", "text": "{家|ㄐㄧㄚ}＿", "ans": "鄉", "zy": "ㄒㄧㄤ", "opts": ["鄉", "碗", "籃"]},
+  {"type": "kxread", "lesson": 5, "tg": "鄉", "text": "{家|ㄐㄧㄚ}【鄉】", "ans": "ㄒㄧㄤ", "opts": ["ㄒㄧㄤ", "ㄒㄧㄤˋ", "ㄨ"], "tip": "{家|ㄐㄧㄚ}{鄉|ㄒㄧㄤ}（ㄒㄧㄤ）"},
+  {"type": "kxpick", "lesson": 5, "tg": "南", "text": "{越|ㄩㄝˋ}＿", "ans": "南", "zy": "ㄋㄢˊ", "opts": ["南", "暑", "邊"]},
+  {"type": "kxread", "lesson": 5, "tg": "南", "text": "{越|ㄩㄝˋ}【南】", "ans": "ㄋㄢˊ", "opts": ["ㄋㄢˊ", "ㄓㄨㄥˋ", "ㄌㄧㄢˇ"], "tip": "{越|ㄩㄝˋ}{南|ㄋㄢˊ}（ㄋㄢˊ）"},
+  {"type": "kxpick", "lesson": 5, "tg": "假", "text": "{暑|ㄕㄨˇ}＿", "ans": "假", "zy": "ㄐㄧㄚˋ", "opts": ["假", "划", "竹"]},
+  {"type": "kxread", "lesson": 5, "tg": "假", "text": "{暑|ㄕㄨˇ}【假】", "ans": "ㄐㄧㄚˋ", "opts": ["ㄐㄧㄚˋ", "ㄐㄧㄚˇ", "ㄉㄚˊ"], "tip": "{暑|ㄕㄨˇ}{假|ㄐㄧㄚˋ}（ㄐㄧㄚˋ）"},
+  {"type": "kxpick", "lesson": 5, "tg": "碗", "text": "＿{公|ㄍㄨㄥ}", "ans": "碗", "zy": "ㄨㄢˇ", "opts": ["碗", "邊", "等"]},
+  {"type": "kxread", "lesson": 5, "tg": "碗", "text": "【碗】{公|ㄍㄨㄥ}", "ans": "ㄨㄢˇ", "opts": ["ㄨㄢˇ", "ㄏㄢˋ", "ㄏㄨㄛˊ"], "tip": "{碗|ㄨㄢˇ}{公|ㄍㄨㄥ}（ㄨㄢˇ）"},
+  {"type": "kxpick", "lesson": 5, "tg": "划", "text": "＿{船|ㄔㄨㄢˊ}", "ans": "划", "zy": "ㄏㄨㄚˊ", "opts": ["划", "碗", "暑"]},
+  {"type": "kxread", "lesson": 5, "tg": "划", "text": "【划】{船|ㄔㄨㄢˊ}", "ans": "ㄏㄨㄚˊ", "opts": ["ㄏㄨㄚˊ", "ㄏㄨㄚˋ", "ㄐㄧㄚˇ"], "tip": "{划|ㄏㄨㄚˊ}{船|ㄔㄨㄢˊ}（ㄏㄨㄚˊ）"},
+  {"type": "kxpick", "lesson": 5, "tg": "轉", "text": "＿{動|ㄉㄨㄥˋ}", "ans": "轉", "zy": "ㄓㄨㄢˇ", "opts": ["轉", "邊", "原"]},
+  {"type": "kxread", "lesson": 5, "tg": "轉", "text": "【轉】{動|ㄉㄨㄥˋ}", "ans": "ㄓㄨㄢˇ", "opts": ["ㄓㄨㄢˇ", "ㄓㄨㄢˋ", "ㄞˇ"], "tip": "{轉|ㄓㄨㄢˇ}{動|ㄉㄨㄥˋ}（ㄓㄨㄢˇ）"},
+  {"type": "kxpick", "lesson": 5, "tg": "邊", "text": "{一|ㄧ}＿", "ans": "邊", "zy": "ㄅㄧㄢ", "opts": ["邊", "假", "轉"]},
+  {"type": "kxread", "lesson": 5, "tg": "邊", "text": "{一|ㄧ}【邊】", "ans": "ㄅㄧㄢ", "opts": ["ㄅㄧㄢ", "ㄘㄢ", "ㄕ"], "tip": "{一|ㄧ}{邊|ㄅㄧㄢ}（ㄅㄧㄢ）"},
+  {"type": "kxpick", "lesson": 5, "tg": "叫", "text": "＿{好|ㄏㄠˇ}", "ans": "叫", "zy": "ㄐㄧㄠˋ", "opts": ["叫", "原", "腳"]},
+  {"type": "kxread", "lesson": 5, "tg": "叫", "text": "【叫】{好|ㄏㄠˇ}", "ans": "ㄐㄧㄠˋ", "opts": ["ㄐㄧㄠˋ", "ㄐㄧㄠˇ", "ㄨ"], "tip": "{叫|ㄐㄧㄠˋ}{好|ㄏㄠˇ}（ㄐㄧㄠˋ）"},
+  {"type": "kxpick", "lesson": 5, "tg": "原", "text": "＿{本|ㄅㄣˇ}", "ans": "原", "zy": "ㄩㄢˊ", "opts": ["原", "識", "鄉"]},
+  {"type": "kxread", "lesson": 5, "tg": "原", "text": "【原】{本|ㄅㄣˇ}", "ans": "ㄩㄢˊ", "opts": ["ㄩㄢˊ", "ㄩㄢˋ", "ㄐㄧㄚ"], "tip": "{原|ㄩㄢˊ}{本|ㄅㄣˇ}（ㄩㄢˊ）"},
+  {"type": "kxpick", "lesson": 5, "tg": "近", "text": "＿{海|ㄏㄞˇ}", "ans": "近", "zy": "ㄐㄧㄣˋ", "opts": ["近", "活", "鄉"]},
+  {"type": "kxread", "lesson": 5, "tg": "近", "text": "【近】{海|ㄏㄞˇ}", "ans": "ㄐㄧㄣˋ", "opts": ["ㄐㄧㄣˋ", "ㄏㄞˊ", "ㄊㄨˋ"], "tip": "{近|ㄐㄧㄣˋ}{海|ㄏㄞˇ}（ㄐㄧㄣˋ）"},
+  {"type": "kxpick", "lesson": 5, "tg": "捕", "text": "＿{魚|ㄩˊ}", "ans": "捕", "zy": "ㄅㄨˇ", "opts": ["捕", "跨", "步"]},
+  {"type": "kxread", "lesson": 5, "tg": "捕", "text": "【捕】{魚|ㄩˊ}", "ans": "ㄅㄨˇ", "opts": ["ㄅㄨˇ", "ㄅㄨˋ", "ㄍㄨˋ"], "tip": "{捕|ㄅㄨˇ}{魚|ㄩˊ}（ㄅㄨˇ）"},
+  {"type": "kxpick", "lesson": 5, "tg": "活", "text": "＿{動|ㄉㄨㄥˋ}", "ans": "活", "zy": "ㄏㄨㄛˊ", "opts": ["活", "籃", "近"]},
+  {"type": "kxread", "lesson": 5, "tg": "活", "text": "【活】{動|ㄉㄨㄥˋ}", "ans": "ㄏㄨㄛˊ", "opts": ["ㄏㄨㄛˊ", "ㄕㄥ", "ㄏㄨㄢˊ"], "tip": "{活|ㄏㄨㄛˊ}{動|ㄉㄨㄥˋ}（ㄏㄨㄛˊ）"},
+  {"type": "kxpick", "lesson": 5, "tg": "識", "text": "{認|ㄖㄣˋ}＿", "ans": "識", "zy": "˙ㄕ", "opts": ["識", "轉", "活"]},
+  {"type": "kxread", "lesson": 5, "tg": "識", "text": "{認|ㄖㄣˋ}【識】", "ans": "˙ㄕ", "opts": ["˙ㄕ", "ㄕˋ", "ㄨㄤˋ"], "tip": "{認|ㄖㄣˋ}{識|˙ㄕ}（˙ㄕ）"},
+  {"type": "kxpick", "lesson": 6, "tg": "鎮", "text": "{小|ㄒㄧㄠˇ}＿", "ans": "鎮", "zy": "ㄓㄣˋ", "opts": ["鎮", "如", "客"]},
+  {"type": "kxread", "lesson": 6, "tg": "鎮", "text": "{小|ㄒㄧㄠˇ}【鎮】", "ans": "ㄓㄣˋ", "opts": ["ㄓㄣˋ", "ㄐㄧㄤˋ", "ㄉㄥˇ"], "tip": "{小|ㄒㄧㄠˇ}{鎮|ㄓㄣˋ}（ㄓㄣˋ）"},
+  {"type": "kxpick", "lesson": 6, "tg": "因", "text": "＿{此|ㄘˇ}", "ans": "因", "zy": "ㄧㄣ", "opts": ["因", "親", "客"]},
+  {"type": "kxread", "lesson": 6, "tg": "因", "text": "【因】{此|ㄘˇ}", "ans": "ㄧㄣ", "opts": ["ㄧㄣ", "ㄘㄢ", "ㄒㄧㄤˋ"], "tip": "{因|ㄧㄣ}{此|ㄘˇ}（ㄧㄣ）"},
+  {"type": "kxpick", "lesson": 6, "tg": "進", "text": "{走|ㄗㄡˇ}＿", "ans": "進", "zy": "ㄐㄧㄣˋ", "opts": ["進", "買", "排"]},
+  {"type": "kxread", "lesson": 6, "tg": "進", "text": "{走|ㄗㄡˇ}【進】", "ans": "ㄐㄧㄣˋ", "opts": ["ㄐㄧㄣˋ", "ㄒㄩㄢˊ", "ㄕㄞˇ"], "tip": "{走|ㄗㄡˇ}{進|ㄐㄧㄣˋ}（ㄐㄧㄣˋ）"},
+  {"type": "kxpick", "lesson": 6, "tg": "色", "text": "{金|ㄐㄧㄣ}{黃|ㄏㄨㄤˊ}＿", "ans": "色", "zy": "ㄙㄜˋ", "opts": ["色", "因", "買"]},
+  {"type": "kxread", "lesson": 6, "tg": "色", "text": "{金|ㄐㄧㄣ}{黃|ㄏㄨㄤˊ}【色】", "ans": "ㄙㄜˋ", "opts": ["ㄙㄜˋ", "ㄑㄧㄣ", "ㄅㄧㄥˇ"], "tip": "{金|ㄐㄧㄣ}{黃|ㄏㄨㄤˊ}{色|ㄙㄜˋ}（ㄙㄜˋ）"},
+  {"type": "kxpick", "lesson": 6, "tg": "愛", "text": "{可|ㄎㄜˇ}＿", "ans": "愛", "zy": "ㄞˋ", "opts": ["愛", "排", "節"]},
+  {"type": "kxread", "lesson": 6, "tg": "愛", "text": "{可|ㄎㄜˇ}【愛】", "ans": "ㄞˋ", "opts": ["ㄞˋ", "ㄞˇ", "ㄌㄨㄣˊ"], "tip": "{可|ㄎㄜˇ}{愛|ㄞˋ}（ㄞˋ）"},
+  {"type": "kxpick", "lesson": 6, "tg": "乾", "text": "{風|ㄈㄥ}＿", "ans": "乾", "zy": "ㄍㄢ", "opts": ["乾", "進", "排"]},
+  {"type": "kxread", "lesson": 6, "tg": "乾", "text": "{風|ㄈㄥ}【乾】", "ans": "ㄍㄢ", "opts": ["ㄍㄢ", "ㄓㄨㄥˋ", "ㄨㄚ"], "tip": "{風|ㄈㄥ}{乾|ㄍㄢ}（ㄍㄢ）"},
+  {"type": "kxpick", "lesson": 6, "tg": "客", "text": "{遊|ㄧㄡˊ}＿", "ans": "客", "zy": "ㄎㄜˋ", "opts": ["客", "買", "進"]},
+  {"type": "kxread", "lesson": 6, "tg": "客", "text": "{遊|ㄧㄡˊ}【客】", "ans": "ㄎㄜˋ", "opts": ["ㄎㄜˋ", "ㄎㄜˇ", "ㄖㄜˋ"], "tip": "{遊|ㄧㄡˊ}{客|ㄎㄜˋ}（ㄎㄜˋ）"},
+  {"type": "kxpick", "lesson": 6, "tg": "親", "text": "＿{朋|ㄆㄥˊ}{好|ㄏㄠˇ}{友|ㄧㄡˇ}", "ans": "親", "zy": "ㄑㄧㄣ", "opts": ["親", "鎮", "遠"]},
+  {"type": "kxread", "lesson": 6, "tg": "親", "text": "【親】{朋|ㄆㄥˊ}{好|ㄏㄠˇ}{友|ㄧㄡˇ}", "ans": "ㄑㄧㄣ", "opts": ["ㄑㄧㄣ", "ㄨ", "ㄅㄠˇ"], "tip": "{親|ㄑㄧㄣ}{朋|ㄆㄥˊ}{好|ㄏㄠˇ}{友|ㄧㄡˇ}（ㄑㄧㄣ）"},
+  {"type": "kxpick", "lesson": 6, "tg": "如", "text": "＿{意|ㄧˋ}", "ans": "如", "zy": "ㄖㄨˊ", "opts": ["如", "柿", "甜"]},
+  {"type": "kxread", "lesson": 6, "tg": "如", "text": "【如】{意|ㄧˋ}", "ans": "ㄖㄨˊ", "opts": ["ㄖㄨˊ", "ㄕㄨˇ", "ㄊㄧㄢˊ"], "tip": "{如|ㄖㄨˊ}{意|ㄧˋ}（ㄖㄨˊ）"},
+  {"type": "kxpick", "lesson": 7, "tg": "衣", "text": "＿{裳|˙ㄕㄤ}", "ans": "衣", "zy": "ㄧ", "opts": ["衣", "西", "意"]},
+  {"type": "kxread", "lesson": 7, "tg": "衣", "text": "【衣】{裳|˙ㄕㄤ}", "ans": "ㄧ", "opts": ["ㄧ", "ㄧˋ", "ㄎㄜˋ"], "tip": "{衣|ㄧ}{裳|˙ㄕㄤ}（ㄧ）"},
+  {"type": "kxpick", "lesson": 7, "tg": "簡", "text": "＿{單|ㄉㄢ}", "ans": "簡", "zy": "ㄐㄧㄢˇ", "opts": ["簡", "街", "東"]},
+  {"type": "kxread", "lesson": 7, "tg": "簡", "text": "【簡】{單|ㄉㄢ}", "ans": "ㄐㄧㄢˇ", "opts": ["ㄐㄧㄢˇ", "ㄐㄧㄢ", "ㄉㄧㄝˊ"], "tip": "{簡|ㄐㄧㄢˇ}{單|ㄉㄢ}（ㄐㄧㄢˇ）"},
+  {"type": "kxpick", "lesson": 7, "tg": "明", "text": "{聰|ㄘㄨㄥ}＿", "ans": "明", "zy": "ㄇㄧㄥˊ", "opts": ["明", "東", "臣"]},
+  {"type": "kxread", "lesson": 7, "tg": "明", "text": "{聰|ㄘㄨㄥ}【明】", "ans": "ㄇㄧㄥˊ", "opts": ["ㄇㄧㄥˊ", "ㄉㄢ", "ㄧˇ"], "tip": "{聰|ㄘㄨㄥ}{明|ㄇㄧㄥˊ}（ㄇㄧㄥˊ）"},
+  {"type": "kxpick", "lesson": 7, "tg": "臣", "text": "{大|ㄉㄚˋ}＿", "ans": "臣", "zy": "ㄔㄣˊ", "opts": ["臣", "針", "直"]},
+  {"type": "kxread", "lesson": 7, "tg": "臣", "text": "{大|ㄉㄚˋ}【臣】", "ans": "ㄔㄣˊ", "opts": ["ㄔㄣˊ", "ㄐㄧㄠˋ", "ㄌㄢˊ"], "tip": "{大|ㄉㄚˋ}{臣|ㄔㄣˊ}（ㄔㄣˊ）"},
+  {"type": "kxpick", "lesson": 7, "tg": "敢", "text": "{不|ㄅㄨˋ}＿", "ans": "敢", "zy": "ㄍㄢˇ", "opts": ["敢", "簡", "乾"]},
+  {"type": "kxread", "lesson": 7, "tg": "敢", "text": "{不|ㄅㄨˋ}【敢】", "ans": "ㄍㄢˇ", "opts": ["ㄍㄢˇ", "ㄍㄢ", "ㄅㄢˋ"], "tip": "{不|ㄅㄨˋ}{敢|ㄍㄢˇ}（ㄍㄢˇ）"},
+  {"type": "kxpick", "lesson": 7, "tg": "慌", "text": "＿{張|ㄓㄤ}", "ans": "慌", "zy": "ㄏㄨㄤ", "opts": ["慌", "思", "衣"]},
+  {"type": "kxread", "lesson": 7, "tg": "慌", "text": "【慌】{張|ㄓㄤ}", "ans": "ㄏㄨㄤ", "opts": ["ㄏㄨㄤ", "˙ㄏㄨㄤ", "ㄆㄢ"], "tip": "{慌|ㄏㄨㄤ}{張|ㄓㄤ}（ㄏㄨㄤ）"},
+  {"type": "kxpick", "lesson": 7, "tg": "直", "text": "{一|ㄧ}＿", "ans": "直", "zy": "ㄓˊ", "opts": ["直", "棒", "衣"]},
+  {"type": "kxread", "lesson": 7, "tg": "直", "text": "{一|ㄧ}【直】", "ans": "ㄓˊ", "opts": ["ㄓˊ", "ㄓˋ", "ㄎㄜˇ"], "tip": "{一|ㄧ}{直|ㄓˊ}（ㄓˊ）"},
+  {"type": "kxpick", "lesson": 7, "tg": "街", "text": "{大|ㄉㄚˋ}＿", "ans": "街", "zy": "ㄐㄧㄝ", "opts": ["街", "慌", "敢"]},
+  {"type": "kxread", "lesson": 7, "tg": "街", "text": "{大|ㄉㄚˋ}【街】", "ans": "ㄐㄧㄝ", "opts": ["ㄐㄧㄝ", "ㄐㄧㄝˊ", "ㄏㄨㄢˊ"], "tip": "{大|ㄉㄚˋ}{街|ㄐㄧㄝ}（ㄐㄧㄝ）"},
+  {"type": "kxpick", "lesson": 7, "tg": "滿", "text": "＿{街|ㄐㄧㄝ}", "ans": "滿", "zy": "ㄇㄢˇ", "opts": ["滿", "明", "慌"]},
+  {"type": "kxread", "lesson": 7, "tg": "滿", "text": "【滿】{街|ㄐㄧㄝ}", "ans": "ㄇㄢˇ", "opts": ["ㄇㄢˇ", "ㄕ", "ㄙㄜˋ"], "tip": "{滿|ㄇㄢˇ}{街|ㄐㄧㄝ}（ㄇㄢˇ）"},
+  {"type": "kxpick", "lesson": 7, "tg": "思", "text": "{左|ㄗㄨㄛˇ}＿{右|ㄧㄡˋ}{想|ㄒㄧㄤˇ}", "ans": "思", "zy": "ㄙ", "opts": ["思", "聰", "西"]},
+  {"type": "kxread", "lesson": 7, "tg": "思", "text": "{左|ㄗㄨㄛˇ}【思】{右|ㄧㄡˋ}{想|ㄒㄧㄤˇ}", "ans": "ㄙ", "opts": ["ㄙ", "ㄙˋ", "ㄔㄨㄟˋ"], "tip": "{左|ㄗㄨㄛˇ}{思|ㄙ}{右|ㄧㄡˋ}{想|ㄒㄧㄤˇ}（ㄙ）"},
+  {"type": "kxpick", "lesson": 8, "tg": "渴", "text": "{口|ㄎㄡˇ}＿", "ans": "渴", "zy": "ㄎㄜˇ", "opts": ["渴", "烏", "午"]},
+  {"type": "kxread", "lesson": 8, "tg": "渴", "text": "{口|ㄎㄡˇ}【渴】", "ans": "ㄎㄜˇ", "opts": ["ㄎㄜˇ", "ㄎㄜˋ", "ㄒㄧㄝˊ"], "tip": "{口|ㄎㄡˇ}{渴|ㄎㄜˇ}（ㄎㄜˇ）"},
+  {"type": "kxpick", "lesson": 8, "tg": "烏", "text": "＿{鴉|ㄧㄚ}", "ans": "烏", "zy": "ㄨ", "opts": ["烏", "物", "午"]},
+  {"type": "kxread", "lesson": 8, "tg": "烏", "text": "【烏】{鴉|ㄧㄚ}", "ans": "ㄨ", "opts": ["ㄨ", "ㄨˋ", "ㄋㄚˇ"], "tip": "{烏|ㄨ}{鴉|ㄧㄚ}（ㄨ）"},
+  {"type": "kxpick", "lesson": 8, "tg": "瓶", "text": "＿{子|˙ㄗ}", "ans": "瓶", "zy": "ㄆㄧㄥˊ", "opts": ["瓶", "喝", "熊"]},
+  {"type": "kxread", "lesson": 8, "tg": "瓶", "text": "【瓶】{子|˙ㄗ}", "ans": "ㄆㄧㄥˊ", "opts": ["ㄆㄧㄥˊ", "ㄐㄧㄝ", "ㄆㄞˊ"], "tip": "{瓶|ㄆㄧㄥˊ}{子|˙ㄗ}（ㄆㄧㄥˊ）"},
+  {"type": "kxpick", "lesson": 8, "tg": "法", "text": "{方|ㄈㄤ}＿", "ans": "法", "zy": "ㄈㄚˇ", "opts": ["法", "渴", "石"]},
+  {"type": "kxread", "lesson": 8, "tg": "法", "text": "{方|ㄈㄤ}【法】", "ans": "ㄈㄚˇ", "opts": ["ㄈㄚˇ", "ㄈㄚˊ", "ㄒㄧㄝˊ"], "tip": "{方|ㄈㄤ}{法|ㄈㄚˇ}（ㄈㄚˇ）"},
+  {"type": "kxpick", "lesson": 8, "tg": "森", "text": "＿{林|ㄌㄧㄣˊ}", "ans": "森", "zy": "ㄙㄣ", "opts": ["森", "行", "熊"]},
+  {"type": "kxread", "lesson": 8, "tg": "森", "text": "【森】{林|ㄌㄧㄣˊ}", "ans": "ㄙㄣ", "opts": ["ㄙㄣ", "ㄏㄚˇ", "ㄒㄩㄢˊ"], "tip": "{森|ㄙㄣ}{林|ㄌㄧㄣˊ}（ㄙㄣ）"},
+  {"type": "kxpick", "lesson": 8, "tg": "物", "text": "{動|ㄉㄨㄥˋ}＿", "ans": "物", "zy": "ㄨˋ", "opts": ["物", "烏", "午"]},
+  {"type": "kxread", "lesson": 8, "tg": "物", "text": "{動|ㄉㄨㄥˋ}【物】", "ans": "ㄨˋ", "opts": ["ㄨˋ", "ㄨ", "ㄒㄧㄤˋ"], "tip": "{動|ㄉㄨㄥˋ}{物|ㄨˋ}（ㄨˋ）"},
+  {"type": "kxpick", "lesson": 8, "tg": "行", "text": "{旅|ㄌㄩˇ}＿", "ans": "行", "zy": "ㄒㄧㄥˊ", "opts": ["行", "林", "許"]},
+  {"type": "kxread", "lesson": 8, "tg": "行", "text": "{旅|ㄌㄩˇ}【行】", "ans": "ㄒㄧㄥˊ", "opts": ["ㄒㄧㄥˊ", "ㄒㄧㄥˋ", "ㄓˇ"], "tip": "{旅|ㄌㄩˇ}{行|ㄒㄧㄥˊ}（ㄒㄧㄥˊ）"},
+  {"type": "kxpick", "lesson": 8, "tg": "午", "text": "{中|ㄓㄨㄥ}＿", "ans": "午", "zy": "ㄨˇ", "opts": ["午", "物", "烏"]},
+  {"type": "kxread", "lesson": 8, "tg": "午", "text": "{中|ㄓㄨㄥ}【午】", "ans": "ㄨˇ", "opts": ["ㄨˇ", "ㄨ", "ㄓˊ"], "tip": "{中|ㄓㄨㄥ}{午|ㄨˇ}（ㄨˇ）"},
+  {"type": "kxpick", "lesson": 8, "tg": "許", "text": "＿{多|ㄉㄨㄛ}", "ans": "許", "zy": "ㄒㄩˇ", "opts": ["許", "法", "林"]},
+  {"type": "kxread", "lesson": 8, "tg": "許", "text": "【許】{多|ㄉㄨㄛ}", "ans": "ㄒㄩˇ", "opts": ["ㄒㄩˇ", "ㄉㄥˇ", "ㄔㄣˊ"], "tip": "{許|ㄒㄩˇ}{多|ㄉㄨㄛ}（ㄒㄩˇ）"},
+  {"type": "kxpick", "lesson": 8, "tg": "石", "text": "＿{頭|˙ㄊㄡ}", "ans": "石", "zy": "ㄕˊ", "opts": ["石", "旅", "林"]},
+  {"type": "kxread", "lesson": 8, "tg": "石", "text": "【石】{頭|˙ㄊㄡ}", "ans": "ㄕˊ", "opts": ["ㄕˊ", "ㄕˋ", "ㄌㄧˋ"], "tip": "{石|ㄕˊ}{頭|˙ㄊㄡ}（ㄕˊ）"},
+  {"type": "kxpick", "lesson": 8, "tg": "難", "text": "＿{道|ㄉㄠˋ}", "ans": "難", "zy": "ㄋㄢˊ", "opts": ["難", "鴉", "森"]},
+  {"type": "kxread", "lesson": 8, "tg": "難", "text": "【難】{道|ㄉㄠˋ}", "ans": "ㄋㄢˊ", "opts": ["ㄋㄢˊ", "ㄋㄢˋ", "ㄐㄧㄝˊ"], "tip": "{難|ㄋㄢˊ}{道|ㄉㄠˋ}（ㄋㄢˊ）"},
+  {"type": "kxpick", "lesson": 8, "tg": "但", "text": "＿{是|˙ㄕ}", "ans": "但", "zy": "ㄉㄢˋ", "opts": ["但", "石", "單"]},
+  {"type": "kxread", "lesson": 8, "tg": "但", "text": "【但】{是|˙ㄕ}", "ans": "ㄉㄢˋ", "opts": ["ㄉㄢˋ", "ㄉㄢ", "ㄖㄨˊ"], "tip": "{但|ㄉㄢˋ}{是|˙ㄕ}（ㄉㄢˋ）"},
+  {"type": "kxpick", "lesson": 9, "tg": "象", "text": "{大|ㄉㄚˋ}＿", "ans": "象", "zy": "ㄒㄧㄤˋ", "opts": ["象", "少", "牽"]},
+  {"type": "kxread", "lesson": 9, "tg": "象", "text": "{大|ㄉㄚˋ}【象】", "ans": "ㄒㄧㄤˋ", "opts": ["ㄒㄧㄤˋ", "ㄒㄧㄤ", "ㄅㄨˋ"], "tip": "{大|ㄉㄚˋ}{象|ㄒㄧㄤˋ}（ㄒㄧㄤˋ）"},
+  {"type": "kxpick", "lesson": 9, "tg": "操", "text": "{曹|ㄘㄠˊ}＿", "ans": "操", "zy": "ㄘㄠ", "opts": ["操", "然", "部"]},
+  {"type": "kxread", "lesson": 9, "tg": "操", "text": "{曹|ㄘㄠˊ}【操】", "ans": "ㄘㄠ", "opts": ["ㄘㄠ", "ㄘㄠˋ", "ㄅㄣˇ"], "tip": "{曹|ㄘㄠˊ}{操|ㄘㄠ}（ㄘㄠ）"},
+  {"type": "kxpick", "lesson": 9, "tg": "粗", "text": "＿{大|ㄉㄚˋ}", "ans": "粗", "zy": "ㄘㄨ", "opts": ["粗", "然", "竟"]},
+  {"type": "kxread", "lesson": 9, "tg": "粗", "text": "【粗】{大|ㄉㄚˋ}", "ans": "ㄘㄨ", "opts": ["ㄘㄨ", "ㄑㄧㄝ", "ㄉㄧㄝˊ"], "tip": "{粗|ㄘㄨ}{大|ㄉㄚˋ}（ㄘㄨ）"},
+  {"type": "kxpick", "lesson": 9, "tg": "柱", "text": "＿{子|˙ㄗ}", "ans": "柱", "zy": "ㄓㄨˋ", "opts": ["柱", "部", "象"]},
+  {"type": "kxread", "lesson": 9, "tg": "柱", "text": "【柱】{子|˙ㄗ}", "ans": "ㄓㄨˋ", "opts": ["ㄓㄨˋ", "ㄓㄨˊ", "ㄌㄨㄣˊ"], "tip": "{柱|ㄓㄨˋ}{子|˙ㄗ}（ㄓㄨˋ）"},
+  {"type": "kxpick", "lesson": 9, "tg": "部", "text": "＿{分|ㄈㄣˋ}", "ans": "部", "zy": "ㄅㄨˋ", "opts": ["部", "象", "紀"]},
+  {"type": "kxread", "lesson": 9, "tg": "部", "text": "【部】{分|ㄈㄣˋ}", "ans": "ㄅㄨˋ", "opts": ["ㄅㄨˋ", "ㄅㄨˇ", "ㄉㄞˋ"], "tip": "{部|ㄅㄨˋ}{分|ㄈㄣˋ}（ㄅㄨˋ）"},
+  {"type": "kxpick", "lesson": 9, "tg": "搖", "text": "＿{頭|ㄊㄡˊ}", "ans": "搖", "zy": "ㄧㄠˊ", "opts": ["搖", "操", "秤"]},
+  {"type": "kxread", "lesson": 9, "tg": "搖", "text": "【搖】{頭|ㄊㄡˊ}", "ans": "ㄧㄠˊ", "opts": ["ㄧㄠˊ", "ㄑㄧㄥˋ", "ㄒㄧ"], "tip": "{搖|ㄧㄠˊ}{頭|ㄊㄡˊ}（ㄧㄠˊ）"},
+  {"type": "kxpick", "lesson": 9, "tg": "首", "text": "＿{先|ㄒㄧㄢ}", "ans": "首", "zy": "ㄕㄡˇ", "opts": ["首", "腿", "沉"]},
+  {"type": "kxread", "lesson": 9, "tg": "首", "text": "【首】{先|ㄒㄧㄢ}", "ans": "ㄕㄡˇ", "opts": ["ㄕㄡˇ", "ㄏㄨㄛˊ", "ㄐㄧ"], "tip": "{首|ㄕㄡˇ}{先|ㄒㄧㄢ}（ㄕㄡˇ）"},
+  {"type": "kxpick", "lesson": 9, "tg": "沉", "text": "{下|ㄒㄧㄚˋ}＿", "ans": "沉", "zy": "ㄔㄣˊ", "opts": ["沉", "砍", "曹"]},
+  {"type": "kxread", "lesson": 9, "tg": "沉", "text": "{下|ㄒㄧㄚˋ}【沉】", "ans": "ㄔㄣˊ", "opts": ["ㄔㄣˊ", "ㄧㄤˋ", "ㄆㄨˋ"], "tip": "{下|ㄒㄧㄚˋ}{沉|ㄔㄣˊ}（ㄔㄣˊ）"},
+  {"type": "kxpick", "lesson": 9, "tg": "少", "text": "{多|ㄉㄨㄛ}＿", "ans": "少", "zy": "ㄕㄠˇ", "opts": ["少", "搖", "象"]},
+  {"type": "kxread", "lesson": 9, "tg": "少", "text": "{多|ㄉㄨㄛ}【少】", "ans": "ㄕㄠˇ", "opts": ["ㄕㄠˇ", "ㄕㄠˋ", "ㄒㄧㄝˊ"], "tip": "{多|ㄉㄨㄛ}{少|ㄕㄠˇ}（ㄕㄠˇ）"},
+  {"type": "kxpick", "lesson": 9, "tg": "然", "text": "＿{後|ㄏㄡˋ}", "ans": "然", "zy": "ㄖㄢˊ", "opts": ["然", "秤", "象"]},
+  {"type": "kxread", "lesson": 9, "tg": "然", "text": "【然】{後|ㄏㄡˋ}", "ans": "ㄖㄢˊ", "opts": ["ㄖㄢˊ", "ㄌㄧˋ", "ㄅㄤˋ"], "tip": "{然|ㄖㄢˊ}{後|ㄏㄡˋ}（ㄖㄢˊ）"},
+  {"type": "kxpick", "lesson": 9, "tg": "紀", "text": "{年|ㄋㄧㄢˊ}＿", "ans": "紀", "zy": "ㄐㄧˋ", "opts": ["紀", "秤", "然"]},
+  {"type": "kxread", "lesson": 9, "tg": "紀", "text": "{年|ㄋㄧㄢˊ}【紀】", "ans": "ㄐㄧˋ", "opts": ["ㄐㄧˋ", "ㄐㄧˇ", "ㄒㄧㄤˋ"], "tip": "{年|ㄋㄧㄢˊ}{紀|ㄐㄧˋ}（ㄐㄧˋ）"},
+  {"type": "kxpick", "lesson": 9, "tg": "竟", "text": "＿{然|ㄖㄢˊ}", "ans": "竟", "zy": "ㄐㄧㄥˋ", "opts": ["竟", "搖", "少"]},
+  {"type": "kxread", "lesson": 9, "tg": "竟", "text": "【竟】{然|ㄖㄢˊ}", "ans": "ㄐㄧㄥˋ", "opts": ["ㄐㄧㄥˋ", "ㄇㄟˇ", "ㄘㄠ"], "tip": "{竟|ㄐㄧㄥˋ}{然|ㄖㄢˊ}（ㄐㄧㄥˋ）"},
+  {"type": "kxpick", "lesson": 10, "tg": "雪", "text": "＿{梨|ㄌㄧˊ}", "ans": "雪", "zy": "ㄒㄩㄝˇ", "opts": ["雪", "相", "春"]},
+  {"type": "kxread", "lesson": 10, "tg": "雪", "text": "【雪】{梨|ㄌㄧˊ}", "ans": "ㄒㄩㄝˇ", "opts": ["ㄒㄩㄝˇ", "ㄒㄩㄝˋ", "ㄓˇ"], "tip": "{雪|ㄒㄩㄝˇ}{梨|ㄌㄧˊ}（ㄒㄩㄝˇ）"},
+  {"type": "kxpick", "lesson": 10, "tg": "冬", "text": "＿{天|ㄊㄧㄢ}", "ans": "冬", "zy": "ㄉㄨㄥ", "opts": ["冬", "灣", "臺"]},
+  {"type": "kxread", "lesson": 10, "tg": "冬", "text": "【冬】{天|ㄊㄧㄢ}", "ans": "ㄉㄨㄥ", "opts": ["ㄉㄨㄥ", "ㄉㄨㄥˋ", "ㄐㄧㄢˇ"], "tip": "{冬|ㄉㄨㄥ}{天|ㄊㄧㄢ}（ㄉㄨㄥ）"},
+  {"type": "kxpick", "lesson": 10, "tg": "臺", "text": "＿{灣|ㄨㄢ}", "ans": "臺", "zy": "ㄊㄞˊ", "opts": ["臺", "相", "春"]},
+  {"type": "kxread", "lesson": 10, "tg": "臺", "text": "【臺】{灣|ㄨㄢ}", "ans": "ㄊㄞˊ", "opts": ["ㄊㄞˊ", "ㄧㄢˊ", "ㄌㄠˇ"], "tip": "{臺|ㄊㄞˊ}{灣|ㄨㄢ}（ㄊㄞˊ）"},
+  {"type": "kxpick", "lesson": 10, "tg": "季", "text": "＿{節|ㄐㄧㄝˊ}", "ans": "季", "zy": "ㄐㄧˋ", "opts": ["季", "期", "紀"]},
+  {"type": "kxread", "lesson": 10, "tg": "季", "text": "【季】{節|ㄐㄧㄝˊ}", "ans": "ㄐㄧˋ", "opts": ["ㄐㄧˋ", "ㄐㄧ", "ㄞˇ"], "tip": "{季|ㄐㄧˋ}{節|ㄐㄧㄝˊ}（ㄐㄧˋ）"},
+  {"type": "kxpick", "lesson": 10, "tg": "反", "text": "{相|ㄒㄧㄤ}＿", "ans": "反", "zy": "ㄈㄢˇ", "opts": ["反", "飯", "梨"]},
+  {"type": "kxread", "lesson": 10, "tg": "反", "text": "{相|ㄒㄧㄤ}【反】", "ans": "ㄈㄢˇ", "opts": ["ㄈㄢˇ", "ㄈㄢ", "ㄐㄧㄠˇ"], "tip": "{相|ㄒㄧㄤ}{反|ㄈㄢˇ}（ㄈㄢˇ）"},
+  {"type": "kxpick", "lesson": 10, "tg": "火", "text": "{煙|ㄧㄢ}＿", "ans": "火", "zy": "ㄏㄨㄛˇ", "opts": ["火", "貨", "飯"]},
+  {"type": "kxread", "lesson": 10, "tg": "火", "text": "{煙|ㄧㄢ}【火】", "ans": "ㄏㄨㄛˇ", "opts": ["ㄏㄨㄛˇ", "ㄏㄨㄛˋ", "ㄓㄨˋ"], "tip": "{煙|ㄧㄢ}{火|ㄏㄨㄛˇ}（ㄏㄨㄛˇ）"},
+  {"type": "kxpick", "lesson": 10, "tg": "待", "text": "{等|ㄉㄥˇ}＿", "ans": "待", "zy": "ㄉㄞˋ", "opts": ["待", "反", "雖"]},
+  {"type": "kxread", "lesson": 10, "tg": "待", "text": "{等|ㄉㄥˇ}【待】", "ans": "ㄉㄞˋ", "opts": ["ㄉㄞˋ", "ㄉㄞ", "ㄑㄧˋ"], "tip": "{等|ㄉㄥˇ}{待|ㄉㄞˋ}（ㄉㄞˋ）"},
+  {"type": "kxpick", "lesson": 10, "tg": "綻", "text": "＿{放|ㄈㄤˋ}", "ans": "綻", "zy": "ㄓㄢˋ", "opts": ["綻", "春", "卻"]},
+  {"type": "kxread", "lesson": 10, "tg": "綻", "text": "【綻】{放|ㄈㄤˋ}", "ans": "ㄓㄢˋ", "opts": ["ㄓㄢˋ", "ㄙㄜˋ", "ㄏㄨㄚˊ"], "tip": "{綻|ㄓㄢˋ}{放|ㄈㄤˋ}（ㄓㄢˋ）"},
+  {"type": "kxpick", "lesson": 10, "tg": "雖", "text": "＿{然|ㄖㄢˊ}", "ans": "雖", "zy": "ㄙㄨㄟ", "opts": ["雖", "春", "夜"]},
+  {"type": "kxread", "lesson": 10, "tg": "雖", "text": "【雖】{然|ㄖㄢˊ}", "ans": "ㄙㄨㄟ", "opts": ["ㄙㄨㄟ", "ㄙㄨㄟˊ", "ㄋㄨㄛˊ"], "tip": "{雖|ㄙㄨㄟ}{然|ㄖㄢˊ}（ㄙㄨㄟ）"},
+  {"type": "kxpick", "lesson": 10, "tg": "春", "text": "＿{節|ㄐㄧㄝˊ}", "ans": "春", "zy": "ㄔㄨㄣ", "opts": ["春", "雖", "反"]},
+  {"type": "kxread", "lesson": 10, "tg": "春", "text": "【春】{節|ㄐㄧㄝˊ}", "ans": "ㄔㄨㄣ", "opts": ["ㄔㄨㄣ", "ㄓㄨㄥˋ", "ㄆㄨˋ"], "tip": "{春|ㄔㄨㄣ}{節|ㄐㄧㄝˊ}（ㄔㄨㄣ）"},
+  {"type": "kxpick", "lesson": 10, "tg": "貨", "text": "{年|ㄋㄧㄢˊ}＿", "ans": "貨", "zy": "ㄏㄨㄛˋ", "opts": ["貨", "火", "春"]},
+  {"type": "kxread", "lesson": 10, "tg": "貨", "text": "{年|ㄋㄧㄢˊ}【貨】", "ans": "ㄏㄨㄛˋ", "opts": ["ㄏㄨㄛˋ", "ㄏㄨㄛˇ", "ㄏㄤˊ"], "tip": "{年|ㄋㄧㄢˊ}{貨|ㄏㄨㄛˋ}（ㄏㄨㄛˋ）"},
+  {"type": "kxpick", "lesson": 10, "tg": "期", "text": "＿{待|ㄉㄞˋ}", "ans": "期", "zy": "ㄑㄧˊ", "opts": ["期", "梨", "雪"]},
+  {"type": "kxread", "lesson": 10, "tg": "期", "text": "【期】{待|ㄉㄞˋ}", "ans": "ㄑㄧˊ", "opts": ["ㄑㄧˊ", "ㄑㄧ", "ㄩㄣˋ"], "tip": "{期|ㄑㄧˊ}{待|ㄉㄞˋ}（ㄑㄧˊ）"},
+  {"type": "kxpick", "lesson": 10, "tg": "飯", "text": "{年|ㄋㄧㄢˊ}{夜|ㄧㄝˋ}＿", "ans": "飯", "zy": "ㄈㄢˋ", "opts": ["飯", "反", "煙"]},
+  {"type": "kxread", "lesson": 10, "tg": "飯", "text": "{年|ㄋㄧㄢˊ}{夜|ㄧㄝˋ}【飯】", "ans": "ㄈㄢˋ", "opts": ["ㄈㄢˋ", "ㄈㄢˇ", "ㄕㄞˇ"], "tip": "{年|ㄋㄧㄢˊ}{夜|ㄧㄝˋ}{飯|ㄈㄢˋ}（ㄈㄢˋ）"},
+  {"type": "kxpick", "lesson": 11, "tg": "具", "text": "{面|ㄇㄧㄢˋ}＿", "ans": "具", "zy": "ㄐㄩˋ", "opts": ["具", "洋", "充"]},
+  {"type": "kxread", "lesson": 11, "tg": "具", "text": "{面|ㄇㄧㄢˋ}【具】", "ans": "ㄐㄩˋ", "opts": ["ㄐㄩˋ", "ㄅㄧㄢˇ", "ㄈㄚˇ"], "tip": "{面|ㄇㄧㄢˋ}{具|ㄐㄩˋ}（ㄐㄩˋ）"},
+  {"type": "kxpick", "lesson": 11, "tg": "者", "text": "{舞|ㄨˇ}＿", "ans": "者", "zy": "ㄓㄜˇ", "opts": ["者", "膀", "站"]},
+  {"type": "kxread", "lesson": 11, "tg": "者", "text": "{舞|ㄨˇ}【者】", "ans": "ㄓㄜˇ", "opts": ["ㄓㄜˇ", "ㄑㄧˊ", "ㄅㄧㄥˇ"], "tip": "{舞|ㄨˇ}{者|ㄓㄜˇ}（ㄓㄜˇ）"},
+  {"type": "kxpick", "lesson": 11, "tg": "洋", "text": "{海|ㄏㄞˇ}＿", "ans": "洋", "zy": "ㄧㄤˊ", "opts": ["洋", "伸", "念"]},
+  {"type": "kxread", "lesson": 11, "tg": "洋", "text": "{海|ㄏㄞˇ}【洋】", "ans": "ㄧㄤˊ", "opts": ["ㄧㄤˊ", "ㄧㄤˋ", "ㄌㄧˋ"], "tip": "{海|ㄏㄞˇ}{洋|ㄧㄤˊ}（ㄧㄤˊ）"},
+  {"type": "kxpick", "lesson": 11, "tg": "寒", "text": "＿{冷|ㄌㄥˇ}", "ans": "寒", "zy": "ㄏㄢˊ", "opts": ["寒", "服", "者"]},
+  {"type": "kxread", "lesson": 11, "tg": "寒", "text": "【寒】{冷|ㄌㄥˇ}", "ans": "ㄏㄢˊ", "opts": ["ㄏㄢˊ", "ㄏㄢˋ", "ㄧㄤˊ"], "tip": "{寒|ㄏㄢˊ}{冷|ㄌㄥˇ}（ㄏㄢˊ）"},
+  {"type": "kxpick", "lesson": 11, "tg": "北", "text": "＿{方|ㄈㄤ}", "ans": "北", "zy": "ㄅㄟˇ", "opts": ["北", "飛", "皮"]},
+  {"type": "kxread", "lesson": 11, "tg": "北", "text": "【北】{方|ㄈㄤ}", "ans": "ㄅㄟˇ", "opts": ["ㄅㄟˇ", "ㄅㄟˋ", "ㄋㄧㄢˋ"], "tip": "{北|ㄅㄟˇ}{方|ㄈㄤ}（ㄅㄟˇ）"},
+  {"type": "kxpick", "lesson": 11, "tg": "沙", "text": "＿{子|˙ㄗ}", "ans": "沙", "zy": "ㄕㄚ", "opts": ["沙", "站", "具"]},
+  {"type": "kxread", "lesson": 11, "tg": "沙", "text": "【沙】{子|˙ㄗ}", "ans": "ㄕㄚ", "opts": ["ㄕㄚ", "ㄩㄢˋ", "ㄔㄨㄥ"], "tip": "{沙|ㄕㄚ}{子|˙ㄗ}（ㄕㄚ）"},
+  {"type": "kxpick", "lesson": 11, "tg": "急", "text": "{著|ㄓㄠ}＿", "ans": "急", "zy": "ㄐㄧˊ", "opts": ["急", "伸", "期"]},
+  {"type": "kxread", "lesson": 11, "tg": "急", "text": "{著|ㄓㄠ}【急】", "ans": "ㄐㄧˊ", "opts": ["ㄐㄧˊ", "ㄐㄧˋ", "ㄕㄚ"], "tip": "{著|ㄓㄠ}{急|ㄐㄧˊ}（ㄐㄧˊ）"},
+  {"type": "kxpick", "lesson": 11, "tg": "服", "text": "{衣|ㄧ}＿", "ans": "服", "zy": "˙ㄈㄨ", "opts": ["服", "飽", "北"]},
+  {"type": "kxread", "lesson": 11, "tg": "服", "text": "{衣|ㄧ}【服】", "ans": "˙ㄈㄨ", "opts": ["˙ㄈㄨ", "ㄈㄨˊ", "ㄉㄥˇ"], "tip": "{衣|ㄧ}{服|˙ㄈㄨ}（˙ㄈㄨ）"},
+  {"type": "kxpick", "lesson": 11, "tg": "膀", "text": "{翅|ㄔˋ}＿", "ans": "膀", "zy": "ㄅㄤˇ", "opts": ["膀", "皮", "飛"]},
+  {"type": "kxread", "lesson": 11, "tg": "膀", "text": "{翅|ㄔˋ}【膀】", "ans": "ㄅㄤˇ", "opts": ["ㄅㄤˇ", "ㄅㄤˋ", "ㄧㄤˊ"], "tip": "{翅|ㄔˋ}{膀|ㄅㄤˇ}（ㄅㄤˇ）"},
+  {"type": "kxpick", "lesson": 11, "tg": "充", "text": "＿{滿|ㄇㄢˇ}", "ans": "充", "zy": "ㄔㄨㄥ", "opts": ["充", "洋", "伸"]},
+  {"type": "kxread", "lesson": 11, "tg": "充", "text": "【充】{滿|ㄇㄢˇ}", "ans": "ㄔㄨㄥ", "opts": ["ㄔㄨㄥ", "ㄅㄛˋ", "ㄋㄧㄢˊ"], "tip": "{充|ㄔㄨㄥ}{滿|ㄇㄢˇ}（ㄔㄨㄥ）"},
+  {"type": "kxpick", "lesson": 11, "tg": "念", "text": "{思|ㄙ}＿", "ans": "念", "zy": "ㄋㄧㄢˋ", "opts": ["念", "具", "充"]},
+  {"type": "kxread", "lesson": 11, "tg": "念", "text": "{思|ㄙ}【念】", "ans": "ㄋㄧㄢˋ", "opts": ["ㄋㄧㄢˋ", "ㄋㄧㄢˊ", "ㄔㄤˊ"], "tip": "{思|ㄙ}{念|ㄋㄧㄢˋ}（ㄋㄧㄢˋ）"},
+  {"type": "kxpick", "lesson": 12, "tg": "牠", "text": "＿{們|˙ㄇㄣ}", "ans": "牠", "zy": "ㄊㄚ", "opts": ["牠", "愉", "聚"]},
+  {"type": "kxread", "lesson": 12, "tg": "牠", "text": "【牠】{們|˙ㄇㄣ}", "ans": "ㄊㄚ", "opts": ["ㄊㄚ", "ㄅㄧㄢ", "ㄊㄨˇ"], "tip": "{牠|ㄊㄚ}{們|˙ㄇㄣ}（ㄊㄚ）"},
+  {"type": "kxpick", "lesson": 12, "tg": "鼓", "text": "{圓|ㄩㄢˊ}{鼓|ㄍㄨˇ}＿", "ans": "鼓", "zy": "ㄍㄨˇ", "opts": ["鼓", "團", "欣"]},
+  {"type": "kxread", "lesson": 12, "tg": "鼓", "text": "{圓|ㄩㄢˊ}{鼓|ㄍㄨˇ}【鼓】", "ans": "ㄍㄨˇ", "opts": ["ㄍㄨˇ", "ㄍㄨˋ", "ㄓㄨㄥ"], "tip": "{圓|ㄩㄢˊ}{鼓|ㄍㄨˇ}{鼓|ㄍㄨˇ}（ㄍㄨˇ）"},
+  {"type": "kxpick", "lesson": 12, "tg": "絡", "text": "{熱|ㄖㄜˋ}＿", "ans": "絡", "zy": "ㄌㄨㄛˋ", "opts": ["絡", "鍋", "涼"]},
+  {"type": "kxread", "lesson": 12, "tg": "絡", "text": "{熱|ㄖㄜˋ}【絡】", "ans": "ㄌㄨㄛˋ", "opts": ["ㄌㄨㄛˋ", "ㄉㄨㄥˋ", "ㄐㄧㄣˋ"], "tip": "{熱|ㄖㄜˋ}{絡|ㄌㄨㄛˋ}（ㄌㄨㄛˋ）"},
+  {"type": "kxpick", "lesson": 12, "tg": "聊", "text": "＿{天|ㄊㄧㄢ}", "ans": "聊", "zy": "ㄌㄧㄠˊ", "opts": ["聊", "聚", "鼓"]},
+  {"type": "kxread", "lesson": 12, "tg": "聊", "text": "【聊】{天|ㄊㄧㄢ}", "ans": "ㄌㄧㄠˊ", "opts": ["ㄌㄧㄠˊ", "ㄋㄚˇ", "ㄅㄢˋ"], "tip": "{聊|ㄌㄧㄠˊ}{天|ㄊㄧㄢ}（ㄌㄧㄠˊ）"},
+  {"type": "kxpick", "lesson": 12, "tg": "欣", "text": "＿{喜|ㄒㄧˇ}", "ans": "欣", "zy": "ㄒㄧㄣ", "opts": ["欣", "鍋", "冒"]},
+  {"type": "kxread", "lesson": 12, "tg": "欣", "text": "【欣】{喜|ㄒㄧˇ}", "ans": "ㄒㄧㄣ", "opts": ["ㄒㄧㄣ", "ㄏㄨㄚˋ", "ㄆㄛˊ"], "tip": "{欣|ㄒㄧㄣ}{喜|ㄒㄧˇ}（ㄒㄧㄣ）"},
+  {"type": "kxpick", "lesson": 12, "tg": "發", "text": "＿{現|ㄒㄧㄢˋ}", "ans": "發", "zy": "ㄈㄚ", "opts": ["發", "絡", "涼"]},
+  {"type": "kxread", "lesson": 12, "tg": "發", "text": "【發】{現|ㄒㄧㄢˋ}", "ans": "ㄈㄚ", "opts": ["ㄈㄚ", "ㄈㄚˇ", "ㄑㄩˋ"], "tip": "{發|ㄈㄚ}{現|ㄒㄧㄢˋ}（ㄈㄚ）"},
+  {"type": "kxpick", "lesson": 12, "tg": "居", "text": "＿{然|ㄖㄢˊ}", "ans": "居", "zy": "ㄐㄩ", "opts": ["居", "聚", "團"]},
+  {"type": "kxread", "lesson": 12, "tg": "居", "text": "【居】{然|ㄖㄢˊ}", "ans": "ㄐㄩ", "opts": ["ㄐㄩ", "ㄐㄩˋ", "ㄒㄧㄣ"], "tip": "{居|ㄐㄩ}{然|ㄖㄢˊ}（ㄐㄩ）"},
+  {"type": "kxpick", "lesson": 12, "tg": "冒", "text": "＿{煙|ㄧㄢ}", "ans": "冒", "zy": "ㄇㄠˋ", "opts": ["冒", "聚", "發"]},
+  {"type": "kxread", "lesson": 12, "tg": "冒", "text": "【冒】{煙|ㄧㄢ}", "ans": "ㄇㄠˋ", "opts": ["ㄇㄠˋ", "ㄇㄠ", "ㄊㄧㄢˊ"], "tip": "{冒|ㄇㄠˋ}{煙|ㄧㄢ}（ㄇㄠˋ）"},
+  {"type": "kxpick", "lesson": 12, "tg": "咪", "text": "{笑|ㄒㄧㄠˋ}＿{咪|ㄇㄧ}", "ans": "咪", "zy": "ㄇㄧ", "opts": ["咪", "幸", "欣"]},
+  {"type": "kxread", "lesson": 12, "tg": "咪", "text": "{笑|ㄒㄧㄠˋ}【咪】{咪|ㄇㄧ}", "ans": "ㄇㄧ", "opts": ["ㄇㄧ", "ㄕㄨˇ", "ㄘˇ"], "tip": "{笑|ㄒㄧㄠˋ}{咪|ㄇㄧ}{咪|ㄇㄧ}（ㄇㄧ）"},
+  {"type": "kxpick", "lesson": 12, "tg": "幸", "text": "＿{福|ㄈㄨˊ}", "ans": "幸", "zy": "ㄒㄧㄥˋ", "opts": ["幸", "灰", "牠"]},
+  {"type": "kxread", "lesson": 12, "tg": "幸", "text": "【幸】{福|ㄈㄨˊ}", "ans": "ㄒㄧㄥˋ", "opts": ["ㄒㄧㄥˋ", "ㄒㄧㄥˊ", "ㄕㄜˋ"], "tip": "{幸|ㄒㄧㄥˋ}{福|ㄈㄨˊ}（ㄒㄧㄥˋ）"},
+  {"type": "kxpick", "lesson": 12, "tg": "聚", "text": "{團|ㄊㄨㄢˊ}＿", "ans": "聚", "zy": "ㄐㄩˋ", "opts": ["聚", "居", "具"]},
+  {"type": "kxread", "lesson": 12, "tg": "聚", "text": "{團|ㄊㄨㄢˊ}【聚】", "ans": "ㄐㄩˋ", "opts": ["ㄐㄩˋ", "ㄐㄩ", "ㄆㄢˊ"], "tip": "{團|ㄊㄨㄢˊ}{聚|ㄐㄩˋ}（ㄐㄩˋ）"},
+  {"type": "kxpick", "lesson": 12, "tg": "愉", "text": "＿{快|ㄎㄨㄞˋ}", "ans": "愉", "zy": "ㄩˊ", "opts": ["愉", "聊", "冒"]},
+  {"type": "kxread", "lesson": 12, "tg": "愉", "text": "【愉】{快|ㄎㄨㄞˋ}", "ans": "ㄩˊ", "opts": ["ㄩˊ", "ㄔㄤˊ", "ㄊㄨㄛ"], "tip": "{愉|ㄩˊ}{快|ㄎㄨㄞˋ}（ㄩˊ）"},
+  {"type": "kxpick", "lesson": 12, "tg": "鍋", "text": "{火|ㄏㄨㄛˇ}＿", "ans": "鍋", "zy": "ㄍㄨㄛ", "opts": ["鍋", "聊", "居"]},
+  {"type": "kxread", "lesson": 12, "tg": "鍋", "text": "{火|ㄏㄨㄛˇ}【鍋】", "ans": "ㄍㄨㄛ", "opts": ["ㄍㄨㄛ", "ㄉㄢ", "ㄋㄟˇ"], "tip": "{火|ㄏㄨㄛˇ}{鍋|ㄍㄨㄛ}（ㄍㄨㄛ）"},
+  {"type": "kxpick", "lesson": 12, "tg": "妙", "text": "{美|ㄇㄟˇ}＿", "ans": "妙", "zy": "ㄇㄧㄠˋ", "opts": ["妙", "冰", "鍋"]},
+  {"type": "kxread", "lesson": 12, "tg": "妙", "text": "{美|ㄇㄟˇ}【妙】", "ans": "ㄇㄧㄠˋ", "opts": ["ㄇㄧㄠˋ", "ㄏㄤˊ", "ㄨㄟˊ"], "tip": "{美|ㄇㄟˇ}{妙|ㄇㄧㄠˋ}（ㄇㄧㄠˋ）"}
+];
+
+/* =====================================================================
+   康軒二上：手寫題（句子都是自己編的原創句，不是課本原文）
+   每題標 lesson（第幾課）；用字只用「一年級學過的字＋二上該課與前面各課的字」（自動檢查）。
+   tg = 這題要考的字或課本語詞（用來確認只出現在選到的課）。
+   題型格式：
+   fix     改錯字：  {lesson, type:'fix', text:'含錯字的句子', bad:'錯字', fix:'正確字', zy:'該念的注音', opts:['正確字','其他選項',...]}
+   poly    多音字：  {lesson, type:'poly', text:'句子用【字】標出', ans:'正確注音', opts:[...], tip:'說明'}
+   similar 相似字：  {lesson, type:'similar', text:'句子用＿當空格', ans:'正確字', opts:['正確字','形近字',...]}（空格和選項不標注音）
+   usage   造句選擇：{lesson, type:'usage', word:'語詞', opts:['正確句','錯誤句','錯誤句']}（第一句一定是正確的，程式會打亂順序）
+   order   重組句子：{lesson, type:'order', chunks:['照正確順序的詞塊',...], alts:['其他也正確的整句']}
+   pattern 照樣造短語：{lesson, type:'pattern', example:'例子', text:'題目（可用＿）', ans:'答案', opts:[...]}
+   ===================================================================== */
+const KX2A_MANUAL = [
+  // ---------- 第一課 新學年新希望 ----------
+  {lesson:1, type:'fix', text:'新學年到了，我有一個新希王。', bad:'王', fix:'望', zy:'ㄨㄤˋ', opts:['望','完']},
+  {lesson:1, type:'fix', text:'老師說了一個好聽的故是。', tg:'故事', bad:'是', fix:'事', zy:'ㄕˋ', opts:['事','時']},
+  {lesson:1, type:'fix', text:'上課時，我坐在自己的為子上。', bad:'為', fix:'位', zy:'ㄨㄟˋ', opts:['位','外']},
+  {lesson:1, type:'fix', text:'他用裡把門拉開。', bad:'裡', fix:'力', zy:'ㄌㄧˋ', opts:['力','加']},
+  {lesson:1, type:'fix', text:'見在是早上八點。', bad:'見', fix:'現', zy:'ㄒㄧㄢˋ', opts:['現','線']},
+  {lesson:1, type:'poly', text:'長大以後，我想成【為】一位好老師。', ans:'ㄨㄟˊ', opts:['ㄨㄟˊ','ㄨㄟˋ'], tip:'成為（ㄨㄟˊ）／為了（ㄨㄟˋ）'},
+  {lesson:1, type:'poly', text:'【為】了看日出，我們很早就起來了。', ans:'ㄨㄟˋ', opts:['ㄨㄟˊ','ㄨㄟˋ'], tip:'成為（ㄨㄟˊ）／為了（ㄨㄟˋ）'},
+  {lesson:1, type:'poly', text:'我看完書，要去【還】書。', ans:'ㄏㄨㄢˊ', opts:['ㄏㄞˊ','ㄏㄨㄢˊ'], tip:'還書（ㄏㄨㄢˊ）／還早（ㄏㄞˊ）'},
+  {lesson:1, type:'poly', text:'現在【還】早，我們再玩一下。', ans:'ㄏㄞˊ', opts:['ㄏㄞˊ','ㄏㄨㄢˊ'], tip:'還書（ㄏㄨㄢˊ）／還早（ㄏㄞˊ）'},
+  {lesson:1, type:'similar', text:'老＿說了一個故事。', ans:'師', opts:['師','帥']},
+  {lesson:1, type:'similar', text:'上課時要＿好。', ans:'坐', opts:['坐','座']},
+  {lesson:1, type:'similar', text:'新學年，我有新的希＿。', ans:'望', opts:['望','忘','王']},
+  {lesson:1, type:'similar', text:'＿在是早上八點。', ans:'現', opts:['現','見']},
+  {lesson:1, type:'similar', text:'這是我的＿子。', ans:'位', opts:['位','拉']},
+  {lesson:1, type:'similar', text:'我把書＿放在桌上。', ans:'本', opts:['本','木','末']},
+  {lesson:1, type:'usage', word:'希望', opts:['我希望長大以後成為老師。','我希望了一本書在桌上。','這朵花很希望。']},
+  {lesson:1, type:'usage', word:'以前', opts:['以前我很矮，現在長高了。','我的以前很好吃。','以前我會長大成為老師。']},
+  {lesson:1, type:'usage', word:'用力', opts:['我用力把門拉開。','這本書很用力。','他用力地很好聽。']},
+  {lesson:1, type:'usage', word:'故事', opts:['老師說了一個好聽的故事。','我吃了一個故事。','我把故事穿在身上。']},
+  {lesson:1, type:'order', tg:'故事', chunks:['老師','在花園裡','說','故事'], alts:['在花園裡老師說故事']},
+  {lesson:1, type:'order', tg:'用力', chunks:['我','用力','把門','拉開'], alts:['我把門用力拉開']},
+  {lesson:1, type:'order', tg:'以前', chunks:['以前','我很矮，','現在','長高了']},
+  {lesson:1, type:'order', tg:'希望', chunks:['我','希望','長大以後','成為老師'], alts:['長大以後我希望成為老師']},
+  {lesson:1, type:'pattern', tg:'淡淡', example:'淡淡的花香', text:'選出跟例子寫法一樣的短語。', ans:'高高的樹', opts:['高高的樹','很高的樹','高的樹']},
+  {lesson:1, type:'pattern', tg:'本', example:'一（位）老師', text:'一（＿）書', ans:'本', opts:['本','位','朵']},
+  {lesson:1, type:'pattern', tg:'矮', example:'又高又大', text:'選出跟例子寫法一樣、意思也通順的短語。', ans:'又矮又小', opts:['又矮又小','又高又矮','又大又高大']},
+
+  // ---------- 第二課 一起做早餐 ----------
+  {lesson:2, type:'fix', text:'媽媽在煎淡。', bad:'淡', fix:'蛋', zy:'ㄉㄢˋ', opts:['蛋','旦']},
+  {lesson:2, type:'fix', text:'我們全加一起吃早餐。', tg:'全家', bad:'加', fix:'家', zy:'ㄐㄧㄚ', opts:['家','夾']},
+  {lesson:2, type:'fix', text:'我用番茄醬話了一個笑臉。', bad:'話', fix:'畫', zy:'ㄏㄨㄚˋ', opts:['畫','化','花']},
+  {lesson:2, type:'fix', text:'這個吐司四四方方的，像一個成堡。', bad:'成', fix:'城', zy:'ㄔㄥˊ', opts:['城','誠']},
+  {lesson:2, type:'fix', text:'吐四上有起司，還有番茄。', bad:'四', fix:'司', zy:'ㄙ', opts:['司','絲']},
+  {lesson:2, type:'poly', text:'我在花園裡看【中】了一朵紅花。', ans:'ㄓㄨㄥˋ', opts:['ㄓㄨㄥ','ㄓㄨㄥˋ'], tip:'看中（ㄓㄨㄥˋ）／水中（ㄓㄨㄥ）'},
+  {lesson:2, type:'poly', text:'水【中】有很多魚。', ans:'ㄓㄨㄥ', opts:['ㄓㄨㄥ','ㄓㄨㄥˋ'], tip:'看中（ㄓㄨㄥˋ）／水中（ㄓㄨㄥ）'},
+  {lesson:2, type:'poly', text:'媽媽把番茄【切】開。', ans:'ㄑㄧㄝ', opts:['ㄑㄧㄝ','ㄑㄧㄝˋ'], tip:'切開（ㄑㄧㄝ）／一切（ㄑㄧㄝˋ）'},
+  {lesson:2, type:'poly', text:'祝你一【切】都好！', ans:'ㄑㄧㄝˋ', opts:['ㄑㄧㄝ','ㄑㄧㄝˋ'], tip:'切開（ㄑㄧㄝ）／一切（ㄑㄧㄝˋ）'},
+  {lesson:2, type:'similar', text:'我＿了一個大大的笑臉。', ans:'畫', opts:['畫','書']},
+  {lesson:2, type:'similar', text:'媽媽在＿蛋。', ans:'煎', opts:['煎','前']},
+  {lesson:2, type:'similar', text:'我在吐司上放了番＿醬。', ans:'茄', opts:['茄','加']},
+  {lesson:2, type:'similar', text:'我們＿班一起去公園玩。', ans:'全', opts:['全','金']},
+  {lesson:2, type:'similar', text:'他笑得很開心，＿上紅紅的。', ans:'臉', opts:['臉','檢']},
+  {lesson:2, type:'similar', text:'這個吐司像一個城＿。', ans:'堡', opts:['堡','保']},
+  {lesson:2, type:'usage', word:'接著', opts:['我先洗手，接著吃早餐。','這個吐司很接著。','我的接著很好吃。']},
+  {lesson:2, type:'usage', word:'全家', opts:['我們全家一起去公園玩。','這個番茄很全家。','我把全家放在吐司上。']},
+  {lesson:2, type:'usage', word:'四四方方', opts:['這個吐司四四方方的。','這顆蛋四四方方的。','他四四方方地跑過來。']},
+  {lesson:2, type:'usage', word:'早餐', opts:['我們全家一起吃早餐。','晚上八點，我在吃早餐。','早餐在海裡游來游去。']},
+  {lesson:2, type:'order', tg:'全家', chunks:['我們','全家','一起','吃早餐']},
+  {lesson:2, type:'order', tg:'接著', chunks:['我先洗手，','接著','吃','番茄吐司']},
+  {lesson:2, type:'order', tg:'笑臉', chunks:['妹妹','用番茄醬','畫了','一個笑臉']},
+  {lesson:2, type:'order', tg:'城堡', chunks:['這個吐司','四四方方的，','像','城堡']},
+  {lesson:2, type:'pattern', tg:'四四方方', example:'四四方方', text:'選出跟例子寫法一樣的短語。', ans:'開開心心', opts:['開開心心','開心開心','很開心']},
+  {lesson:2, type:'pattern', tg:'番茄', example:'一（顆）（圓圓的）蛋', text:'一（＿）（紅紅的）番茄', ans:'顆', opts:['顆','位','本']},
+  {lesson:2, type:'pattern', tg:'吐司', example:'吐司又香又好吃', text:'選出跟例子寫法一樣、意思也通順的句子。', ans:'番茄又紅又圓', opts:['番茄又紅又圓','番茄又紅又不','又番茄又紅']},
+
+  // ---------- 第三課 走過小巷 ----------
+  {lesson:3, type:'fix', text:'叔叔要去新娘了。', bad:'去', fix:'娶', zy:'ㄑㄩˇ', opts:['娶','取','趣']},
+  {lesson:3, type:'fix', text:'新娘打扮得很美力。', bad:'力', fix:'麗', zy:'ㄌㄧˋ', opts:['麗','裡']},
+  {lesson:3, type:'fix', text:'我用彩比畫了一隻貓。', bad:'比', fix:'筆', zy:'ㄅㄧˇ', opts:['筆','必']},
+  {lesson:3, type:'similar', text:'小＿裡有一隻貓。', ans:'巷', opts:['巷','港']},
+  {lesson:3, type:'similar', text:'叔叔要＿新娘了。', ans:'娶', opts:['娶','取']},
+  {lesson:3, type:'similar', text:'新娘打＿得很美麗。', ans:'扮', opts:['扮','分']},
+  {lesson:3, type:'similar', text:'叔叔很＿，沒空跟我玩。', ans:'忙', opts:['忙','忘','芒']},
+  {lesson:3, type:'similar', text:'＿子外面有很多花。', ans:'屋', opts:['屋','握']},
+  {lesson:3, type:'usage', word:'打扮', opts:['新娘打扮得很美麗。','小貓打扮在屋子外面。','我打扮了一個蛋。']},
+  {lesson:3, type:'usage', word:'美麗', opts:['花園裡的花很美麗。','我美麗了一本書。','他美麗地吃早餐。']},
+  {lesson:3, type:'usage', word:'模樣', opts:['新娘的模樣很美麗。','我模樣了一個笑臉。','模樣在小巷裡跑。']},
+  {lesson:3, type:'order', tg:'打扮', chunks:['小巷裡的','新娘','打扮得','很美麗']},
+  {lesson:3, type:'order', tg:'巷', chunks:['一隻黃貓','在小巷裡','跑來','跑去'], alts:['在小巷裡一隻黃貓跑來跑去']},
+  {lesson:3, type:'pattern', tg:'越', example:'越走越快', text:'選出跟例子寫法一樣的短語。', ans:'越跑越快', opts:['越跑越快','越快越跑','越來快']},
+  {lesson:3, type:'pattern', tg:'新娘', example:'一（隻）（小小的）貓', text:'一（＿）（美麗的）新娘', ans:'位', opts:['位','隻','本']},
+
+  // ---------- 第四課 運動會 ----------
+  {lesson:4, type:'fix', text:'大家同心鞋力去拔河。', bad:'鞋', fix:'協', zy:'ㄒㄧㄝˊ', opts:['協','寫']},
+  {lesson:4, type:'fix', text:'拔河要用很大的力起。', bad:'起', fix:'氣', zy:'˙ㄑㄧ', opts:['氣','汽']},
+  {lesson:4, type:'fix', text:'他王前跑，跑得很快。', bad:'王', fix:'往', zy:'ㄨㄤˇ', opts:['往','望']},
+  {lesson:4, type:'fix', text:'大家都在跳大會五。', bad:'五', fix:'舞', zy:'ㄨˇ', opts:['舞','無']},
+  {lesson:4, type:'poly', text:'運動會好熱【鬧】！', ans:'˙ㄋㄠ', opts:['˙ㄋㄠ','ㄋㄠˋ'], tip:'熱鬧（˙ㄋㄠ，輕聲）／不要鬧（ㄋㄠˋ）'},
+  {lesson:4, type:'poly', text:'妹妹在【鬧】，不想吃早餐。', ans:'ㄋㄠˋ', opts:['˙ㄋㄠ','ㄋㄠˋ'], tip:'熱鬧（˙ㄋㄠ，輕聲）／不要鬧（ㄋㄠˋ）'},
+  {lesson:4, type:'poly', text:'拔河要用很大的力【氣】。', ans:'˙ㄑㄧ', opts:['˙ㄑㄧ','ㄑㄧˋ'], tip:'力氣（˙ㄑㄧ，輕聲）／天氣（ㄑㄧˋ）'},
+  {lesson:4, type:'poly', text:'今天的天【氣】很好。', ans:'ㄑㄧˋ', opts:['˙ㄑㄧ','ㄑㄧˋ'], tip:'力氣（˙ㄑㄧ，輕聲）／天氣（ㄑㄧˋ）'},
+  {lesson:4, type:'similar', text:'大家一起去拔＿。', ans:'河', opts:['河','可','何']},
+  {lesson:4, type:'similar', text:'跑完步，他的臉上都是＿水。', ans:'汗', opts:['汗','汁']},
+  {lesson:4, type:'similar', text:'她的笑＿很美麗。', ans:'容', opts:['容','客']},
+  {lesson:4, type:'similar', text:'＿動會到了。', ans:'運', opts:['運','連']},
+  {lesson:4, type:'usage', word:'熱鬧', opts:['運動會好熱鬧！','我熱鬧了一本書。','這顆蛋很熱鬧。']},
+  {lesson:4, type:'usage', word:'協力', opts:['大家同心協力去拔河。','他一個人協力去拔河。','這朵花很協力。']},
+  {lesson:4, type:'usage', word:'最後', opts:['他跑在最後，還是很開心。','這個最後很好吃。','我最後了一個吐司。']},
+  {lesson:4, type:'usage', word:'比賽', opts:['運動會有很多比賽。','我比賽了一個吐司。','比賽在河裡游來游去。']},
+  {lesson:4, type:'order', tg:'協力', chunks:['大家','同心協力','去','拔河']},
+  {lesson:4, type:'order', tg:'汗水', chunks:['他','跑得很快，','臉上','都是汗水']},
+  {lesson:4, type:'order', tg:'熱鬧', chunks:['今天的','運動會','真','熱鬧']},
+  {lesson:4, type:'pattern', tg:'熱鬧', example:'又熱鬧又好玩', text:'選出跟例子寫法一樣、意思也通順的短語。', ans:'又高又大', opts:['又高又大','又大又小','又跑步']},
+  {lesson:4, type:'pattern', tg:'熱鬧', example:'熱熱鬧鬧', text:'選出跟例子寫法一樣的短語。', ans:'快快樂樂', opts:['快快樂樂','快樂快樂','很快樂']},
+
+  // ---------- 第五課 坐竹籃船 ----------
+  {lesson:5, type:'fix', text:'放暑家了，我們回到越南。', bad:'家', fix:'假', zy:'ㄐㄧㄚˋ', opts:['假','架']},
+  {lesson:5, type:'fix', text:'我們坐竹籃船，在進海捕魚。', bad:'進', fix:'近', zy:'ㄐㄧㄣˋ', opts:['近','今']},
+  {lesson:5, type:'fix', text:'大家一邊看，一邊大聲教好。', bad:'教', fix:'叫', zy:'ㄐㄧㄠˋ', opts:['叫','較']},
+  {lesson:5, type:'fix', text:'我在船上認事了新朋友。', bad:'事', fix:'識', zy:'˙ㄕ', opts:['識','試']},
+  {lesson:5, type:'poly', text:'暑【假】到了，我們要回家鄉。', ans:'ㄐㄧㄚˋ', opts:['ㄐㄧㄚˋ','ㄐㄧㄚˇ'], tip:'暑假（ㄐㄧㄚˋ）／假的（ㄐㄧㄚˇ）'},
+  {lesson:5, type:'poly', text:'這朵花是【假】的，不是真的。', ans:'ㄐㄧㄚˇ', opts:['ㄐㄧㄚˋ','ㄐㄧㄚˇ'], tip:'暑假（ㄐㄧㄚˋ）／假的（ㄐㄧㄚˇ）'},
+  {lesson:5, type:'poly', text:'我在船上認【識】了新朋友。', ans:'˙ㄕ', opts:['˙ㄕ','ㄕˋ'], tip:'認識（˙ㄕ，輕聲）／知識（ㄕˋ）'},
+  {lesson:5, type:'poly', text:'看書可以學到很多知【識】。', ans:'ㄕˋ', opts:['˙ㄕ','ㄕˋ'], tip:'認識（˙ㄕ，輕聲）／知識（ㄕˋ）'},
+  {lesson:5, type:'similar', text:'風一＿，船就動了。', ans:'吹', opts:['吹','次']},
+  {lesson:5, type:'similar', text:'船在近海＿魚。', ans:'捕', opts:['捕','補']},
+  {lesson:5, type:'similar', text:'＿本我不會划船，現在會了。', ans:'原', opts:['原','源']},
+  {lesson:5, type:'similar', text:'我們坐在竹＿裡划船。', ans:'籃', opts:['籃','藍']},
+  {lesson:5, type:'usage', word:'一邊', opts:['我一邊划船，一邊唱歌。','我一邊划船。','我一邊吃早餐，一邊。']},
+  {lesson:5, type:'usage', word:'原本', opts:['原本我不會划船，現在會了。','這個吐司很原本。','我原本了一本書。']},
+  {lesson:5, type:'usage', word:'認識', opts:['我在越南認識了新朋友。','我認識了一個吐司。','他很認識地跑步。']},
+  {lesson:5, type:'usage', word:'活動', opts:['暑假有很多好玩的活動。','這顆蛋很活動。','我活動了一本書。']},
+  {lesson:5, type:'order', tg:'一邊', chunks:['我','一邊划船，','一邊','唱歌'], alts:['一邊划船，我一邊唱歌']},
+  {lesson:5, type:'order', tg:'家鄉', chunks:['放暑假了，','我們','回到','家鄉']},
+  {lesson:5, type:'order', tg:'捕魚', chunks:['船上的人','一起','在近海','捕魚'], alts:['船上的人在近海一起捕魚']},
+  {lesson:5, type:'pattern', tg:'一邊', example:'一邊划船，一邊唱歌', text:'選出跟例子寫法一樣的句子。', ans:'一邊吃早餐，一邊看書', opts:['一邊吃早餐，一邊看書','一邊吃早餐，一邊吃早餐','一邊看書']},
+  {lesson:5, type:'pattern', tg:'原本', example:'原本不會划船，現在會了', text:'選出跟例子寫法一樣、意思也通順的句子。', ans:'原本很矮，現在長高了', opts:['原本很矮，現在長高了','原本很矮，現在很矮了','原本很高，原本很矮']},
+
+  // ---------- 第六課 小鎮的柿餅節 ----------
+  {lesson:6, type:'fix', text:'小鎮有柿餅節，因次來了很多遊客。', bad:'次', fix:'此', zy:'ㄘˇ', opts:['此','刺']},
+  {lesson:6, type:'fix', text:'柿子風干以後，變成金黃色的柿餅。', bad:'干', fix:'乾', zy:'ㄍㄢ', opts:['乾','甘']},
+  {lesson:6, type:'fix', text:'柿餅很天，大家都很愛吃。', bad:'天', fix:'甜', zy:'ㄊㄧㄢˊ', opts:['甜','田']},
+  {lesson:6, type:'fix', text:'青朋好友都來了，大家都很開心。', bad:'青', fix:'親', zy:'ㄑㄧㄣ', opts:['親','清']},
+  {lesson:6, type:'similar', text:'小＿上有很多遊客。', ans:'鎮', opts:['鎮','真']},
+  {lesson:6, type:'similar', text:'柿子風乾以後變成柿＿。', ans:'餅', opts:['餅','拼']},
+  {lesson:6, type:'similar', text:'小鎮來了很多遊＿。', ans:'客', opts:['客','容']},
+  {lesson:6, type:'similar', text:'＿方的客人來了。', ans:'遠', opts:['遠','園']},
+  {lesson:6, type:'similar', text:'今天的＿亮又大又圓。', ans:'月', opts:['月','用']},
+  {lesson:6, type:'usage', word:'因此', opts:['今天下雨，因此我們沒有出去玩。','今天天氣很好，因此我們沒有出去玩。','因此是一本書。']},
+  {lesson:6, type:'usage', word:'可愛', opts:['小貓很可愛。','我可愛了一個柿餅。','可愛在河裡游來游去。']},
+  {lesson:6, type:'usage', word:'遊客', opts:['小鎮來了很多遊客。','我遊客了一本書。','柿餅很遊客。']},
+  {lesson:6, type:'usage', word:'如意', opts:['祝你事事如意！','我如意了一個蛋。','這個柿餅很如意地跑。']},
+  {lesson:6, type:'order', tg:'遊客', chunks:['小鎮的','柿餅節','來了','很多遊客']},
+  {lesson:6, type:'order', tg:'風乾', chunks:['柿子','風乾以後，','變成了','金黃色的柿餅']},
+  {lesson:6, type:'order', tg:'因此', chunks:['今天下雨，','因此','我們','沒有出去玩']},
+  {lesson:6, type:'pattern', tg:'可愛', example:'一（顆）（金黃色的）柿子', text:'一（＿）（可愛的）小貓', ans:'隻', opts:['隻','本','位']},
+  {lesson:6, type:'pattern', tg:'因此', example:'今天下雨，因此我們沒有出去玩', text:'選出跟例子寫法一樣、意思也通順的句子。', ans:'柿餅很甜，因此遊客都很愛買', opts:['柿餅很甜，因此遊客都很愛買','柿餅很甜，因此遊客都不愛買','因此柿餅很甜遊客']},
+
+  // ===== v3：參考「國語重點複習」字音字形辨析組別與照樣造句句型（句子為自編）=====
+  {lesson:1, type:'similar', wb:1, text:'這本＿很好看。', ans:'書', opts:['書','畫']},
+  {lesson:1, type:'similar', wb:1, text:'＿師說了一個故事。', ans:'老', opts:['老','考']},
+  {lesson:1, type:'similar', wb:1, text:'他用＿把門拉開。', ans:'力', opts:['力','刀']},
+  {lesson:1, type:'fix', wb:1, text:'我的老帥說故事很好聽。', tg:'老師', bad:'帥', fix:'師', zy:'ㄕ', opts:['師','時']},
+  {lesson:1, type:'fix', wb:1, text:'考師說了一個好聽的故事。', tg:'老師', bad:'考', fix:'老', zy:'ㄌㄠˇ', opts:['老','好']},
+  {lesson:1, type:'sentpat', tg:'心裡', pat:'心裡好……', example:'老師說我做得很好，我心裡好開心。', ans:'媽媽送我一本新書，我心裡好快樂。', opts:['媽媽送我一本新書，我心裡好快樂。','媽媽送我一本新書，我心裡好桌子。','心裡好，媽媽送我一本新書。']},
+  {lesson:1, type:'sentpat', tg:'本來', pat:'本來……，現在……', example:'弟弟本來很矮，現在長高了。', ans:'妹妹本來很小，現在長大了。', opts:['妹妹本來很小，現在長大了。','妹妹現在很小，本來長大了。','妹妹本來很小，現在。']},
+  {lesson:1, type:'pattern', tg:'淡淡', example:'聽著輕輕的歌聲', text:'選出跟例子寫法一樣的短語。', ans:'聞著香香的花', opts:['聞著香香的花','聞著香的花香花','香香的聞著花']},
+  {lesson:1, type:'pattern', tg:'只', example:'靜靜的看書', text:'選出跟例子寫法一樣的短語。', ans:'慢慢的走路', opts:['慢慢的走路','慢的慢走路','走路的慢慢']},
+
+  {lesson:2, type:'similar', wb:1, text:'這個蛋煎得好＿。', ans:'圓', opts:['圓','園']},
+  {lesson:2, type:'similar', wb:1, text:'我喜歡吃起＿。', ans:'司', opts:['司','可']},
+  {lesson:2, type:'similar', wb:1, text:'我們用吐司做了一個小＿堡。', ans:'城', opts:['城','成']},
+  {lesson:2, type:'fix', wb:1, text:'我們在園桌上吃早餐。', tg:'圓', bad:'園', fix:'圓', zy:'ㄩㄢˊ', opts:['圓','完']},
+  {lesson:2, type:'fix', wb:1, text:'我喜歡吃吐可。', tg:'吐司', bad:'可', fix:'司', zy:'ㄙ', opts:['司','四']},
+  {lesson:2, type:'fix', wb:1, text:'我們用吐司做了一個小城保。', tg:'城堡', bad:'保', fix:'堡', zy:'ㄅㄠˇ', opts:['堡','跑']},
+  {lesson:2, type:'sentpat', tg:'接', pat:'先……，接著……', example:'我先洗手，接著吃早餐。', ans:'我先把蛋煎好，接著把蛋夾在吐司中。', opts:['我先把蛋煎好，接著把蛋夾在吐司中。','我先把蛋煎好，接著把蛋煎好。','接著我先，把蛋煎好吐司。']},
+  {lesson:2, type:'sentpat', tg:'切', pat:'把……切成……', example:'媽媽把蛋煎成圓圓的太陽。', ans:'爸爸把吐司切成四四方方的小城堡。', opts:['爸爸把吐司切成四四方方的小城堡。','爸爸把四四方方的切成吐司。','爸爸切成吐司把小小的。']},
+  {lesson:2, type:'pattern', tg:'畫', example:'在吐司上畫出笑臉', text:'選出跟例子寫法一樣的短語。', ans:'在桌子上放好早餐', opts:['在桌子上放好早餐','在放好桌子上早餐','在桌子早餐上']},
+  {lesson:2, type:'pattern', tg:'方', example:'四四方方', text:'選出跟例子寫法一樣的語詞。', ans:'開開心心', opts:['開開心心','開心開心','開開心']},
+
+  {lesson:3, type:'similar', wb:1, text:'我家在小＿子裡。', ans:'巷', opts:['巷','卷']},
+  {lesson:3, type:'similar', wb:1, text:'＿叔送我一本書。', ans:'叔', opts:['叔','淑']},
+  {lesson:3, type:'similar', wb:1, text:'新娘手上＿著花。', ans:'捧', opts:['捧','棒']},
+  {lesson:3, type:'similar', wb:1, text:'花園裡有很多蝴＿。', ans:'蝶', opts:['蝶','葉']},
+  {lesson:3, type:'similar', wb:1, text:'新＿笑得很美麗。', ans:'娘', opts:['娘','浪']},
+  {lesson:3, type:'similar', wb:1, text:'妹妹打＿成小公主。', ans:'扮', opts:['扮','粉','紛']},
+  {lesson:3, type:'similar', wb:1, text:'新娘好美＿。', ans:'麗', opts:['麗','厲']},
+  {lesson:3, type:'fix', wb:1, text:'新浪今天好美麗。', tg:'新娘', bad:'浪', fix:'娘', zy:'ㄋㄧㄤˊ', opts:['娘','年']},
+  {lesson:3, type:'fix', wb:1, text:'花園裡有一隻蝴葉。', tg:'蝴蝶', bad:'葉', fix:'蝶', zy:'ㄉㄧㄝˊ', opts:['蝶','點']},
+  {lesson:3, type:'fix', wb:1, text:'新娘手上棒著花。', tg:'捧', bad:'棒', fix:'捧', zy:'ㄆㄥˇ', opts:['捧','朋']},
+  {lesson:3, type:'sentpat', tg:'忙', pat:'忙著……', example:'媽媽忙著做早餐。', ans:'小蝴蝶在花園裡忙著找花。', opts:['小蝴蝶在花園裡忙著找花。','小蝴蝶忙著花園。','忙著小蝴蝶在花園裡。']},
+  {lesson:3, type:'sentpat', tg:'越', pat:'越來越……', example:'我越來越喜歡這個小巷。', ans:'妹妹越來越會畫畫了。', opts:['妹妹越來越會畫畫了。','妹妹越來越畫畫。','越來越妹妹會畫畫了。']},
+  {lesson:3, type:'sentpat', tg:'打', pat:'正在……', example:'奶奶正在花園裡澆花。', ans:'叔叔正在小巷裡打掃。', opts:['叔叔正在小巷裡打掃。','叔叔正在小巷。','正在叔叔小巷打掃裡。']},
+  {lesson:3, type:'pattern', tg:'蝴蝶', example:'跑上跑下', text:'選出跟例子寫法一樣的語詞。', ans:'跳上跳下', opts:['跳上跳下','上跳下跳','跳跳上下']},
+
+  {lesson:4, type:'similar', wb:1, text:'今天好＿，我的臉上都是汗。', ans:'熱', opts:['熱','熟']},
+  {lesson:4, type:'similar', wb:1, text:'大家都＿前跑。', ans:'往', opts:['往','住']},
+  {lesson:4, type:'similar', wb:1, text:'他跑得＿快，大家都跑不過他。', ans:'最', opts:['最','是']},
+  {lesson:4, type:'similar', wb:1, text:'＿！你跑得好快！', ans:'哇', opts:['哇','娃']},
+  {lesson:4, type:'similar', wb:1, text:'天上的白雲＿過來了。', ans:'飄', opts:['飄','漂']},
+  {lesson:4, type:'similar', wb:1, text:'我們一起去運＿。', ans:'動', opts:['動','種']},
+  {lesson:4, type:'similar', wb:1, text:'跑完步，他用光了力＿。', ans:'氣', opts:['氣','汽']},
+  {lesson:4, type:'fix', wb:1, text:'運動會好熟鬧。', tg:'熱鬧', bad:'熟', fix:'熱', zy:'ㄖㄜˋ', opts:['熱','認']},
+  {lesson:4, type:'fix', wb:1, text:'大家都連動得很開心。', tg:'運動', bad:'連', fix:'運', zy:'ㄩㄣˋ', opts:['運','雲']},
+  {lesson:4, type:'sentpat', tg:'可', pat:'……，不過……', example:'我的力氣小，不過我的聲音很大。', ans:'弟弟的個子不高，不過他跑得很快。', opts:['弟弟的個子不高，不過他跑得很快。','弟弟的個子不高，不過他也不高。','不過弟弟個子，他跑快。']},
+  {lesson:4, type:'pattern', tg:'步', example:'跑不快', text:'選出跟例子寫法一樣的語詞。', ans:'吃不完', opts:['吃不完','不吃完','吃完不']},
+
+  {lesson:6, type:'similar', wb:1, text:'＿子風乾以後變成柿餅。', ans:'柿', opts:['柿','市']},
+  {lesson:6, type:'similar', wb:1, text:'我很＿吃柿餅。', ans:'愛', opts:['愛','受']},
+  {lesson:6, type:'similar', wb:1, text:'媽媽＿了很多柿餅帶回家。', ans:'買', opts:['買','賣']},
+  {lesson:6, type:'similar', wb:1, text:'＿朋好友都來了。', ans:'親', opts:['親','新']},
+  {lesson:6, type:'similar', wb:1, text:'新＿是一個小鎮。', ans:'埔', opts:['埔','捕']},
+  {lesson:6, type:'fix', wb:1, text:'遊容都愛吃柿餅。', tg:'遊客', bad:'容', fix:'客', zy:'ㄎㄜˋ', opts:['客','可']},
+  {lesson:6, type:'fix', wb:1, text:'小鎮的市餅好甜。', tg:'柿', bad:'市', fix:'柿', zy:'ㄕˋ', opts:['柿','事']},
+  {lesson:6, type:'fix', wb:1, text:'我很受吃柿餅。', tg:'愛', bad:'受', fix:'愛', zy:'ㄞˋ', opts:['愛','矮']},
+  {lesson:6, type:'sentpat', tg:'除', pat:'除了……，也……', example:'我除了喜歡畫畫，也喜歡唱歌。', ans:'小鎮除了有柿餅，也有很多好吃的甜點。', opts:['小鎮除了有柿餅，也有很多好吃的甜點。','小鎮除了有柿餅，也有柿餅。','除了小鎮，也柿餅有。']},
+  {lesson:6, type:'pattern', tg:'甜', example:'又高又大的樹', text:'選出跟例子寫法一樣的短語。', ans:'又香又甜的柿餅', opts:['又香又甜的柿餅','又香甜的又柿餅','又柿餅又甜的']},
+  {lesson:6, type:'pattern', tg:'柿', example:'一籃一籃的柿子', text:'選出跟例子寫法一樣的短語。', ans:'一朵一朵的花', opts:['一朵一朵的花','一朵花一朵的','一本一朵的花']},
+];
+
+/* ---- 成語：依 113 學年度「國語重點複習」第 1～4、6 課所列成語（字形、讀音、意思已對照教育部國語辭典／萌典）----
+   格式：{idiom, zy, mean:'意思（自己改寫的淺白說法）', sentence:'用＿表示成語位置的句子（自編）', avoid:[意思太接近、不能當干擾選項的成語]}
+   113 學年第 5 課（水上木偶戲）不在 115 學年課本中，那一課的成語放到「課外成語」。115 第 5、7～12 課沒有可查證的清單，先留空。 */
+const KX2A_IDIOMS = {
+  1:[
+    {idiom:'本末倒置', zy:'ㄅㄣˇ ㄇㄛˋ ㄉㄠˋ ㄓˋ', mean:'把重要的事跟不重要的事弄顛倒了。', sentence:'快要上學了，他只想著把鞋子洗得很漂亮，書一本也沒有看，真是＿。'},
+    {idiom:'自以為是', zy:'ㄗˋ ㄧˇ ㄨㄟˊ ㄕˋ', mean:'認為自己都是對的，不肯聽別人的意見。', sentence:'他覺得自己做的都是對的，大家說的話都不聽，真是＿。'},
+    {idiom:'不遺餘力', zy:'ㄅㄨˋ ㄧˊ ㄩˊ ㄌㄧˋ', mean:'用盡全部的力氣，一點也不保留。', sentence:'比賽的時候，他＿的往前跑，一點力氣也不留。', avoid:['千方百計','同心協力','腳踏實地']},
+  ],
+  2:[
+    {idiom:'價值連城', zy:'ㄐㄧㄚˋ ㄓˊ ㄌㄧㄢˊ ㄔㄥˊ', mean:'形容東西非常珍貴。', sentence:'這顆珍珠又大又亮，是＿的寶物。'},
+    {idiom:'畫蛇添足', zy:'ㄏㄨㄚˋ ㄕㄜˊ ㄊㄧㄢ ㄗㄨˊ', mean:'做了多餘的事，反而把事情弄糟。', sentence:'笑臉已經畫好了，他又在臉上多畫了兩個鼻子，真是＿。', avoid:['節外生枝']},
+    {idiom:'雪中送炭', zy:'ㄒㄩㄝˇ ㄓㄨㄥ ㄙㄨㄥˋ ㄊㄢˋ', mean:'在別人最需要的時候，給他幫助。', sentence:'下大雨了，我沒有帶傘，好朋友把傘借給我，真是＿。'},
+    {idiom:'千方百計', zy:'ㄑㄧㄢ ㄈㄤ ㄅㄞˇ ㄐㄧˋ', mean:'想盡各種方法。', sentence:'小貓卡在樹上下不來，叔叔＿，想把牠救下來。', avoid:['不遺餘力']},
+  ],
+  3:[
+    {idiom:'手忙腳亂', zy:'ㄕㄡˇ ㄇㄤˊ ㄐㄧㄠˇ ㄌㄨㄢˋ', mean:'做事很慌張，亂成一團。', sentence:'時間快到了，哥哥才＿的找書包。'},
+  ],
+  4:[
+    {idiom:'同心協力', zy:'ㄊㄨㄥˊ ㄒㄧㄣ ㄒㄧㄝˊ ㄌㄧˋ', mean:'大家一條心，一起努力。', sentence:'拔河比賽時，我們全班＿，終於贏了。', avoid:['不遺餘力']},
+    {idiom:'汗流浹背', zy:'ㄏㄢˋ ㄌㄧㄡˊ ㄐㄧㄚˊ ㄅㄟˋ', mean:'流了很多汗，背都溼了。', sentence:'大熱天跑完步，大家都＿。'},
+    {idiom:'從容不迫', zy:'ㄘㄨㄥ ㄖㄨㄥˊ ㄅㄨˋ ㄆㄛˋ', mean:'不急也不慌張，很鎮定。', sentence:'上臺說故事時，她一點也不緊張，說得＿。'},
+    {idiom:'腳踏實地', zy:'ㄐㄧㄠˇ ㄊㄚˋ ㄕˊ ㄉㄧˋ', mean:'做事認真，穩穩的一步一步來。', sentence:'學寫字要＿，一筆一畫慢慢寫。', avoid:['不遺餘力']},
+  ],
+  5:[],
+  6:[
+    {idiom:'節外生枝', zy:'ㄐㄧㄝˊ ㄨㄞˋ ㄕㄥ ㄓ', mean:'在原來的事情以外，又生出新的麻煩。', sentence:'大家已經決定好了，你不要再改來改去，免得＿。', avoid:['畫蛇添足']},
+    {idiom:'生龍活虎', zy:'ㄕㄥ ㄌㄨㄥˊ ㄏㄨㄛˊ ㄏㄨˇ', mean:'很有活力，精神很好。', sentence:'弟弟的病好了，又像以前一樣＿的跑來跑去。'},
+    {idiom:'一見如故', zy:'ㄧ ㄐㄧㄢˋ ㄖㄨˊ ㄍㄨˋ', mean:'第一次見面就像老朋友一樣。', sentence:'我跟新同學第一次見面就聊個不停，真是＿。'},
+    {idiom:'回心轉意', zy:'ㄏㄨㄟˊ ㄒㄧㄣ ㄓㄨㄢˇ ㄧˋ', mean:'改變原來的想法。', sentence:'妹妹本來不想去，聽了媽媽的話，才＿，跟我們一起去。'},
+  ],
+  7:[], 8:[], 9:[], 10:[], 11:[], 12:[]};
+
+/* ---- 課外成語（不是 115 課本範圍，預設關閉，可在家長設定打開）----
+   前 4 個來自 113 學年第 5 課（水上木偶戲），115 學年已換課。 */
+const IDIOMS_EXTRA = [
+  {idiom:'離鄉背井', zy:'ㄌㄧˊ ㄒㄧㄤ ㄅㄟˋ ㄐㄧㄥˇ', mean:'離開家鄉，到別的地方生活。', sentence:'叔叔＿，到很遠的地方工作，過年才回家。', src:'113第5課'},
+  {idiom:'對牛彈琴', zy:'ㄉㄨㄟˋ ㄋㄧㄡˊ ㄊㄢˊ ㄑㄧㄣˊ', mean:'對聽不懂的人講道理或說話。', sentence:'跟三歲的小弟弟說很難的數學，簡直是＿。', src:'113第5課'},
+  {idiom:'立竿見影', zy:'ㄌㄧˋ ㄍㄢ ㄐㄧㄢˋ ㄧㄥˇ', mean:'很快就看到效果。', sentence:'這個方法真好，一用就有效，真是＿。', src:'113第5課'},
+  {idiom:'老馬識途', zy:'ㄌㄠˇ ㄇㄚˇ ㄕˋ ㄊㄨˊ', mean:'有經驗的人熟悉情況，能把事情做好。', sentence:'爺爺常常爬這座山，有他帶路，就像＿，一定不會迷路。', src:'113第5課'},
+  {idiom:'一心一意', zy:'ㄧ ㄒㄧㄣ ㄧ ㄧˋ', mean:'心思只放在一件事上。', sentence:'弟弟＿的畫畫，一點也不想出去玩。', avoid:['三心二意']},
+  {idiom:'七上八下', zy:'ㄑㄧ ㄕㄤˋ ㄅㄚ ㄒㄧㄚˋ', mean:'心裡很不安，靜不下來。', sentence:'要上臺說故事了，我的心裡＿的。'},
+  {idiom:'三心二意', zy:'ㄙㄢ ㄒㄧㄣ ㄦˋ ㄧˋ', mean:'想法一直變，不能專心。', sentence:'做事不可以＿，要一件一件做完。', avoid:['一心一意']},
+  {idiom:'五顏六色', zy:'ㄨˇ ㄧㄢˊ ㄌㄧㄡˋ ㄙㄜˋ', mean:'顏色很多。', sentence:'花園裡開滿了＿的花。'},
+  {idiom:'東張西望', zy:'ㄉㄨㄥ ㄓㄤ ㄒㄧ ㄨㄤˋ', mean:'到處看來看去。', sentence:'小貓在門口＿，好像在找東西。'},
+  {idiom:'自言自語', zy:'ㄗˋ ㄧㄢˊ ㄗˋ ㄩˇ', mean:'自己跟自己說話。', sentence:'妹妹一邊玩，一邊＿。'},
+  {idiom:'一五一十', zy:'ㄧ ㄨˇ ㄧ ㄕˊ', mean:'從頭到尾，一點也不少的說出來。', sentence:'他把看到的事＿的告訴老師。'},
+];
+/* 「國語重點複習」字音字形辨析組別（同組的字可當干擾選項）*/
+const KX2A_WB_GROUPS = {1:['座坐','木未末','書畫','考老','師帥','刀力'], 2:['金全','前煎','園圓','加茄','可司','成城','保堡'], 3:['巷卷','淑叔','捧棒','蝶葉','忙芒','娘浪','扮粉紛','麗厲'], 4:['運連','動種','漂飄','熟熱','住往','客容','河何','汽氣','是最','哇娃'], 6:['埔捕','柿市','藍籃','受愛','客容','賣買','親新']};
+
+/* =====================================================================
+   考試範圍（每週由小幫手依進度更新）＋重點複習資料
+   ===================================================================== */
+// 預設考試範圍：國語＝康軒二上第幾課；數學＝南一二上第幾單元。家長設定裡也可以改（存在這台裝置）。
+const EXAM_DEFAULT = {kx:[1,2,3,4], math:[1,2], updated:'2026-10-04'};
+
+// 南一版 二上 數學（115學年度）單元名稱與重點
+// 來源：嘉義縣新美國小「115學年度第一學期二年級數學領域課程計畫」（教材版本：南一版第三冊）、
+//       臺北市立農國小二年級數學課程計畫、均一教育平台「類南一版」二上單元列表。
+// 題目是程式依照單元重點自動產生（不是課本或習作原題），答案由程式計算。
+const NANI_UNITS = [
+  {unit:1, title:'數到 300', subs:['1-1 認識 300 以內的數','1-2 認識百位','1-3 兩數的大小比較'],
+   points:['一個一個數（累加、累減 1）、十個十個數（累加、累減 10），數到 300。',
+           '100 個一 = 1 個百；10 個十 = 1 個百（例：13 個十 = 130）。',
+           '從右邊數：個位、十位、百位（例：247 → 2 個百、4 個十、7 個一）。',
+           '比大小：先比百位，百位一樣再比十位，再比個位；用「＞」「＜」表示。']},
+  {unit:2, title:'二位數的加減', subs:['2-1 加法的直式計算','2-2 減法的直式計算','2-3 加、減法的應用'],
+   points:['直式要個位對個位、十位對十位，從個位開始算。',
+           '加法：個位加起來滿 10，要進 1 到十位（不進位、一次進位、連續進位）。',
+           '減法：個位不夠減，要從十位借 1 個十（= 10 個一）來減（不退位、退位）。',
+           '應用題：「一共、合起來、又多了」常用加法；「還剩下、拿走、多幾個」常用減法。']},
+];
+const NANI_SRC = '南一版二上數學單元名稱依：115學年度學校課程計畫（教材版本：南一版第三冊）與均一教育平台「類南一版」。';
+
+// 國語重點複習：句型（依 113學年度康軒「國語重點複習」（教用）第 1～4 課所列；115學年課本可能略有不同）
+const KX2A_REVIEW_PATTERNS = {
+  1:[{pat:'心裡好＋（心情）', ex:'我看到同學，心裡好歡喜。'},
+     {pat:'本來……，現在……', ex:'本來早上是晴天，下午卻下起大雨。'},
+     {pat:'聞著／聽著＋疊字＋的＋（東西）', ex:'聞著淡淡的書香；聽著柔柔的音樂。'},
+     {pat:'疊字＋的＋（動作）', ex:'靜靜的看書；慢慢的寫字。'}],
+  2:[{pat:'（動作）＋（東西）', ex:'做早餐；烤吐司；塗果醬。'},
+     {pat:'AABB 疊字詞', ex:'四四方方；高高瘦瘦；方方正正。'},
+     {pat:'在＋（東西）＋上＋（動作）', ex:'在吐司上畫出笑臉；在白紙上塗滿顏色。'},
+     {pat:'……把……（動作）成＋疊字＋的……', ex:'媽媽把楊桃切成亮亮的「星星」。'},
+     {pat:'先……，接著……', ex:'他講完一則笑話，接著又說了一個故事。'}],
+  3:[{pat:'（形容）的＋（東西）', ex:'溫暖的陽光；親切的笑容。'},
+     {pat:'○上○下', ex:'跑上跑下；飛上飛下；爬上爬下。'},
+     {pat:'……正在……', ex:'小鳥正在大樹上唱歌。'},
+     {pat:'……忙著……', ex:'郵差忙著送信；我們忙著大掃除。'},
+     {pat:'越來越……', ex:'哥哥每天練習投籃，球技越來越進步了。'}],
+  4:[{pat:'（東西）＋（動作）', ex:'白雲飄；小鳥飛；小狗叫。'},
+     {pat:'（動作）＋不＋（結果）', ex:'跑不快；吃不完；拿不動。'},
+     {pat:'……正＋（形容）', ex:'運動大會正熱鬧；滿山櫻花正盛開。'},
+     {pat:'……，不過……', ex:'表弟的個子不高，不過他很有力氣。'}],
+};
+const KX2A_REVIEW_SRC = '成語、字音字形辨析、句型依 113學年度康軒「國語重點複習」（教用）第 1～4 課；生字與語詞依教育部教育雲 115學年度康軒版生字詞彙表。';
+
+// ---- 南一二上第 2 單元：加減應用題範本（自編情境；{N}=名字、{P}=他/她）----
+// op '+'：a、b 都是二位數，和不超過 198；op '-'：a 是二位數、b 比 a 小；cmp:true 代表「多幾個」的比較型
+const NANI_WORD = [
+  {op:'+', text:'{N}撿了 {a} 個寶特瓶，弟弟撿了 {b} 個。兩人一共撿了幾個寶特瓶？'},
+  {op:'+', text:'一個蛋糕 {a} 元，一個麵包 {b} 元。兩個一共要幾元？'},
+  {op:'+', text:'書架上有 {a} 本書，老師又放上去 {b} 本。現在書架上有幾本書？'},
+  {op:'+', text:'農場有 {a} 隻小雞，小鴨比小雞多 {b} 隻。小鴨有幾隻？'},
+  {op:'+', text:'二年一班有 {a} 個人，二年二班有 {b} 個人。兩班一共有幾個人？'},
+  {op:'-', text:'{N}有 {a} 張貼紙，送給同學 {b} 張。{P}還剩下幾張貼紙？'},
+  {op:'-', text:'籃子裡有 {a} 顆蘋果，吃掉了 {b} 顆。籃子裡還剩下幾顆蘋果？'},
+  {op:'-', text:'{N}有 {a} 元，買了一個 {b} 元的麵包。{P}還剩下幾元？'},
+  {op:'-', cmp:true, text:'草地上有 {a} 隻羊和 {b} 隻牛。羊比牛多幾隻？'},
+  {op:'-', cmp:true, text:'哥哥有 {a} 顆彈珠，弟弟有 {b} 顆彈珠。哥哥比弟弟多幾顆？'},
+];
+// 數學題與考前複習用到、原本字典沒有的字（都是單一讀音的常用字，讀音依教育部國語辭典）
+Object.entries({撿:'ㄐㄧㄢˇ',特:'ㄊㄜˋ',糕:'ㄍㄠ',麵:'ㄇㄧㄢˋ',架:'ㄐㄧㄚˋ',農:'ㄋㄨㄥˊ',場:'ㄔㄤˇ',雞:'ㄐㄧ',鴨:'ㄧㄚ',羊:'ㄧㄤˊ',代:'ㄉㄞˋ',表:'ㄅㄧㄠˇ',依:'ㄧ',序:'ㄒㄩˋ',式:'ㄕˋ',夠:'ㄍㄡˋ'})
+  .forEach(([c,z])=>{ if(!ZY_CHAR[c]) ZY_CHAR[c]=z; });
+Object.assign(ZY_WORD, {'彈珠':'ㄉㄢˋ ㄓㄨ'});
+
+</script>
+<script>
+/* ===================== 程式區（一般不需要修改） ===================== */
+(function(){
+'use strict';
+const $ = s => document.querySelector(s);
+const MISSING = new Set();
+const CN_TYPES = [
+  {key:'kxpick', name:'看注音選字'}, {key:'kxread', name:'生字讀音'}, {key:'fix', name:'改錯字'},
+  {key:'poly', name:'多音字辨別'}, {key:'similar', name:'相似字辨別（形近字）'}, {key:'usage', name:'造句（選出用對的句子）'},
+  {key:'order', name:'重組句子'}, {key:'pattern', name:'照樣造短語'}, {key:'sentpat', name:'照樣造句'}, {key:'idiom', name:'成語填空（課本）'}, {key:'idiomMean', name:'成語意思（課本）'},
+  {key:'idiomExtra', name:'成語（課外）'}, {key:'generic', name:'通用題（只出符合所選課的題目）'}];
+const DEFAULT_OFF = ['idiomExtra'];
+const MATH_TYPES = [
+  {key:'n1seq', name:'數的順序（數到 300）', unit:1}, {key:'n1place', name:'百位、十位、個位', unit:1}, {key:'n1cmp', name:'比大小（＞、＜）', unit:1},
+  {key:'n2add', name:'二位數加法直式（進位）', unit:2}, {key:'n2sub', name:'二位數減法直式（退位）', unit:2}, {key:'n2word', name:'加減應用題', unit:2},
+  {key:'add', name:'加法（含三位數）', unit:0}, {key:'sub', name:'減法（含三位數）', unit:0}, {key:'mul', name:'九九乘法', unit:0},
+  {key:'word', name:'應用題（綜合）', unit:0}, {key:'time', name:'時間', unit:0}, {key:'money', name:'錢幣', unit:0}, {key:'length', name:'長度', unit:0}];
+const FONT_PRESETS = ['BpmfGenSenRounded','源泉注音圓體','BpmfZihiKaiStd','字嗨注音標楷','BpmfIansui','芫荽注音','Bpmf Huninn','jf open 粉圓 注音','BpmfGenSenRounded-R'];
+
+// ---------- 設定 ----------
+const DEFAULTS = {zyMode:'side', font:'BpmfGenSenRounded', subject:'kx', count:10, lessons:[1,2], mathUnits:[1,2], exam:JSON.parse(JSON.stringify(EXAM_DEFAULT)), examBase:EXAM_DEFAULT.updated,
+  types:Object.fromEntries([...CN_TYPES, ...MATH_TYPES].map(t=>[t.key,!DEFAULT_OFF.includes(t.key)]))};
+let settings = load('kq-settings', DEFAULTS);
+settings = Object.assign({}, DEFAULTS, settings, {types:Object.assign({}, DEFAULTS.types, settings.types||{})});
+if(settings.subject==='chinese') settings.subject='kx';
+// 考試範圍：index.html 更新了新的範圍（EXAM_DEFAULT.updated 改變）就改用新的
+if(settings.examBase!==EXAM_DEFAULT.updated || !settings.exam || !settings.exam.kx){ settings.exam=JSON.parse(JSON.stringify(EXAM_DEFAULT)); settings.examBase=EXAM_DEFAULT.updated; }
+// 成語的注音併入詞語字典
+[...Object.values(KX2A_IDIOMS).flat(), ...IDIOMS_EXTRA].forEach(d=>{ if(d.idiom && d.zy) ZY_WORD[d.idiom]=d.zy; });
+function load(k, d){ try{ const v = JSON.parse(localStorage.getItem(k)); return v==null? JSON.parse(JSON.stringify(d)) : v; }catch(e){ return JSON.parse(JSON.stringify(d)); } }
+function save(k, v){ try{ localStorage.setItem(k, JSON.stringify(v)); }catch(e){} }
+function saveSettings(){ save('kq-settings', settings); applyFont(); }
+
+// ---------- 注音 ----------
+const isCJK = c => /[\u3400-\u9fff\uf900-\ufaff]/.test(c);
+const esc = s => String(s).replace(/[&<>"]/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function tokenize(s){
+  const out=[]; let i=0;
+  while(i<s.length){
+    const c=s[i];
+    if(c==='{'){ const j=s.indexOf('}',i); const [ch,z]=s.slice(i+1,j).split('|'); out.push({k:'cjk',ch,zy:z}); i=j+1; continue; }
+    if(c==='【'){ const j=s.indexOf('】',i); out.push({k:'target',ch:s.slice(i+1,j)}); i=j+1; continue; }
+    if(c==='＿'){ out.push({k:'blank'}); i++; continue; }
+    if(isCJK(c)){
+      let hit=false;
+      for(let L=4; L>=2; L--){
+        const w=s.substr(i,L);
+        if(w.length===L && ZY_WORD[w]){ const zs=ZY_WORD[w].trim().split(/\s+/); for(let t=0;t<L;t++) out.push({k:'cjk',ch:w[t],zy:zs[t]}); i+=L; hit=true; break; }
+      }
+      if(hit) continue;
+      const z=ZY_CHAR[c]; if(!z){ if(!MISSING.has(c)) console.warn('[注音] 字典裡找不到：'+c+'（請加到 ZY_CHAR）'); MISSING.add(c); }
+      out.push({k:'cjk',ch:c,zy:z||''}); i++; continue;
+    }
+    out.push({k:'txt',ch:c}); i++;
+  }
+  return out;
+}
+function zyCol(z){
+  if(!z) return '';
+  let light=false; if(z[0]==='˙'){ light=true; z=z.slice(1); }
+  let tone=''; const last=z[z.length-1]; if('ˊˇˋ'.includes(last)){ tone=last; z=z.slice(0,-1); }
+  const syms=[...z]; let h='<span class="zb">';
+  if(light) h+='<span class="zl">˙</span>';
+  syms.forEach((s,i)=>{ h+='<span class="zr">'+s+(i===syms.length-1&&tone?'<span class="zt">'+tone+'</span>':'')+'</span>'; });
+  return h+'</span>';
+}
+function charHTML(ch, zy){
+  if(settings.zyMode==='ruby') return '<ruby>'+esc(ch)+'<rt>'+esc(zy||'')+'</rt></ruby>';
+  if(settings.zyMode==='font') return '<span class="fz">'+esc(ch)+'</span>';
+  return '<span class="zc"><span class="zh">'+esc(ch)+'</span>'+zyCol(zy)+'</span>';
+}
+function renderTokens(tokens, o={}){
+  return tokens.map(t=>{
+    if(t.k==='cjk') return charHTML(t.ch, t.zy);
+    if(t.k==='target') return '<span class="target nozy">'+esc(t.ch)+'</span>';
+    if(t.k==='blank') return '<span class="blank">'+(o.blankZy? '<span class="zc"><span class="zh blankch">&#8203;</span>'+zyCol(o.blankZy)+'</span>' : '')+'</span>';
+    return esc(t.ch);
+  }).join('');
+}
+const Z = (s, o) => renderTokens(tokenize(s), o);
+// 把空格先填入正確答案查注音（讓前後的詞語讀音正確），再把空格放回去
+function fillZy(text, ans, zy){
+  const i=text.indexOf('＿'); if(i<0) return text;
+  const toks=tokenize(text.replace('＿', '{＃}')); // placeholder
+  const filled=tokenize(text.replace('＿', (zy && [...ans].length===1)? '{'+ans+'|'+zy+'}' : ans));
+  // 依序對齊：filled 裡對應位置的字讀音
+  let out=''; let k=0;
+  for(const t of toks){
+    if(t.k==='cjk' && t.ch==='＃'){ out+='＿'; k+=[...ans].length; continue; }
+    const f=filled[k]; k++;
+    if(t.k==='cjk' && f && f.ch===t.ch) out+='{'+t.ch+'|'+f.zy+'}'; else if(t.k==='target') out+='【'+t.ch+'】'; else out+= t.ch||'';
+  }
+  return out;
+}
+const plain = s => tokenize(s).map(t=>t.k==='blank'?'＿':(t.ch||'')).join('');
+
+// ---------- 工具 ----------
+const rnd = (a,b) => a + Math.floor(Math.random()*(b-a+1));
+const pick1 = arr => arr[Math.floor(Math.random()*arr.length)];
+function shuffle(a){ a=a.slice(); for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
+function mkOpts(correct, distractors){ const opts=shuffle([correct, ...distractors]); return {options:opts, answer:opts.indexOf(correct)}; }
+function numOpts(ans, extra=[], fmt=n=>String(n)){
+  const cand=[...extra, ans+1, ans-1, ans+10, ans-10, ans+2, ans-2, ans+9, ans-9, ans+11, ans+5, ans-5, ans+20];
+  const ds=[]; const cap = ans<1000? 999 : Infinity;
+  for(const c of cand){ if(c>=0 && c<=cap && c!==ans && !ds.includes(c) && Number.isInteger(c)) ds.push(c); }
+  const chosen=[...ds.slice(0, extra.filter(e=>e>=0&&e!==ans).length>0?1:0), ...shuffle(ds)].filter((v,i,a)=>a.indexOf(v)===i).slice(0,3);
+  return mkOpts(fmt(ans), chosen.map(fmt));
+}
+
+// ---------- 國語題目建立 ----------
+const TITLES = {pick:'看注音，選出正確的字。', kxpick:'看注音，選出正確的字。', wrong:'哪一個字寫錯了？', poly:'紅色的字要怎麼念？', kxread:'這個字怎麼念？', measure:'選出正確的量詞。', opposite:'選出相反詞。',
+  fix:'先找出寫錯的字，再選出正確的字。', similar:'選出正確的字，填進空格。', order:'把詞語排成通順的句子。', pattern:'照樣寫短語：', idiom:'選出適合的成語。', idiomExtra:'選出適合的成語。（課外）', sentpat:'照樣造句：', idiomMean:'這個成語是什麼意思？'};
+function buildChinese(it, idx){
+  const q={key:'cn-'+idx+'-'+(it.text||it.word||it.example||(it.chunks||[]).join('')||it.idiom), subject:'chinese', type:it.type, title:TITLES[it.type]};
+  if(it.lesson) q.lesson=it.lesson;
+  q.tg = it.tg || ({fix:it.fix, similar:it.ans, usage:it.word, kxpick:it.ans, pick:it.ans, wrong:it.fix, measure:it.ans, opposite:it.ans}[it.type]) || ((it.text||'').match(/【(.)】/)||[])[1] || it.idiom || '';
+  if(it.type==='fix'){
+    const bi=it.text.indexOf(it.bad); const good=tokenize(it.text.slice(0,bi)+it.fix+it.text.slice(bi+1)); const toks=tokenize(it.text.replace(it.bad,'{'+it.bad+'|'+it.zy+'}')); const sent=[]; const options=[]; let answer=-1;
+    toks.forEach((t,ti)=>{ if(t.k==='cjk'){ const z = (ti===toks.findIndex(x=>x.ch===it.bad))? it.zy : (good[ti]&&good[ti].zy) || t.zy; if(t.ch===it.bad && answer<0) answer=options.length; sent.push({o:options.length}); options.push('{'+t.ch+'|'+z+'}'); } else sent.push({p:t.ch}); });
+    const fo=mkOpts(it.fix, it.opts.filter(o=>o!==it.fix));
+    Object.assign(q, {body:'', layout:'fix', sentence:sent, options, answer, fixOpts:fo.options, fixAns:fo.answer, fixZy:it.zy});
+    q.explain='「'+it.bad+'」要改成「{'+it.fix+'|'+it.zy+'}」：'+it.text.slice(0,bi)+it.fix+it.text.slice(bi+1);
+    q.answerText='「'+it.bad+'」→「{'+it.fix+'|'+it.zy+'}」';
+    return q;
+  }
+  if(it.type==='similar'){
+    Object.assign(q, {body:fillZy(it.text, it.ans), layout:'grid', noZyOptions:true}, mkOpts(it.ans, it.opts.filter(o=>o!==it.ans)));
+    q.explain=it.text.replace('＿', it.ans); return q;
+  }
+  if(it.type==='usage'){
+    Object.assign(q, {title:'「'+it.word+'」用得對的是哪一句？', body:'', layout:'list'}, mkOpts(it.opts[0], it.opts.slice(1)));
+    q.explain=it.opts[0]; return q;
+  }
+  if(it.type==='order'){
+    Object.assign(q, {body:'', layout:'order', chunks:it.chunks, alts:it.alts||[], options:it.chunks.slice(), answer:-1});
+    q.explain=it.chunks.join('')+'。'; q.answerText=q.explain; return q;
+  }
+  if(it.type==='pattern'){
+    const long=it.opts.some(o=>o.length>3);
+    Object.assign(q, {example:it.example, body:fillZy(it.text, it.ans), layout: long?'list':'grid'}, mkOpts(it.ans, it.opts.filter(o=>o!==it.ans)));
+    q.explain = it.text.includes('＿')? it.text.replace('＿', it.ans) : it.ans; return q;
+  }
+  if(it.type==='sentpat'){
+    Object.assign(q, {title:'照樣造句：「'+it.pat+'」', example:it.example, body:'選出跟例子寫法一樣、意思也通順的句子。', layout:'list'}, mkOpts(it.ans, it.opts.filter(o=>o!==it.ans)));
+    q.explain=it.ans; return q;
+  }
+  if(it.mode==='mean'){
+    Object.assign(q, {title:'「'+it.idiom+'」是什麼意思？', body:'', layout:'list', meanQ:true}, mkOpts(it.mean, it.opts.filter(o=>o!==it.mean)));
+    q.key='cn-'+idx+'-mean-'+it.idiom; q.explain='「'+it.idiom+'」：'+it.mean; return q;
+  }
+  if(it.type==='idiom' || it.type==='idiomExtra'){
+    Object.assign(q, {body:fillZy(it.sentence, it.idiom), layout:'list'}, mkOpts(it.idiom, it.opts.filter(o=>o!==it.idiom)));
+    q.explain=it.sentence.replace('＿', it.idiom)+(it.mean? '（'+it.idiom+'：'+it.mean+'）' : ''); return q;
+  }
+  if(it.type==='kxpick'){ return Object.assign(buildChinese(Object.assign({}, it, {type:'pick'}), idx), {type:'kxpick', lesson:it.lesson, tg:it.tg}); }
+  if(it.type==='kxread'){ return Object.assign(buildChinese(Object.assign({}, it, {type:'poly'}), idx), {type:'kxread', title:TITLES.kxread, lesson:it.lesson, tg:it.tg}); }
+  if(it.type==='pick'){
+    Object.assign(q, {body:fillZy(it.text, it.ans, it.zy), blankZy:it.zy, layout:'grid', noZyOptions:true}, mkOpts(it.ans, it.opts.filter(o=>o!==it.ans)));
+    q.explain = '正確答案：'+'{'+it.ans+'|'+it.zy+'}'+'　'+it.text.replace('＿','{'+it.ans+'|'+it.zy+'}');
+  } else if(it.type==='wrong'){
+    const toks=tokenize(it.text.replace(it.bad,'{'+it.bad+'|'+it.zy+'}')); const sent=[]; const options=[]; let answer=-1;
+    toks.forEach(t=>{
+      if(t.k==='cjk'){ const z=(t.ch===it.bad)? it.zy : t.zy; if(t.ch===it.bad) answer=options.length; sent.push({o:options.length}); options.push('{'+t.ch+'|'+z+'}'); }
+      else sent.push({p:t.ch});
+    });
+    Object.assign(q, {body:'', layout:'sentence', sentence:sent, options, answer});
+    q.explain = '「{'+it.bad+'|'+it.zy+'}」要改成「{'+it.fix+'|'+it.zy+'}」：'+it.word;
+  } else if(it.type==='poly'){
+    Object.assign(q, {body:it.text, layout:'zhuyin'}, mkOpts(it.ans, it.opts.filter(o=>o!==it.ans)));
+    q.explain = it.tip;
+  } else if(it.type==='measure'){
+    Object.assign(q, {body:fillZy(it.text, it.ans), layout:'grid'}, mkOpts(it.ans, it.opts.filter(o=>o!==it.ans)));
+    q.explain = it.text.replace('＿', it.ans);
+  } else if(it.type==='opposite'){
+    Object.assign(q, {body:'「'+it.word+'」的相反詞是？', layout:'grid'}, mkOpts(it.ans, it.opts.filter(o=>o!==it.ans)));
+    q.explain = it.word+' ↔ '+it.ans;
+  }
+  return q;
+}
+
+// ---------- 數學題目產生 ----------
+function digitsNoCarry(a,b,op){ // 常見錯誤：忘記進位/退位
+  const A=String(a).split('').reverse(), B=String(b).split('').reverse(); let r=[];
+  for(let i=0;i<Math.max(A.length,B.length);i++){ const x=+(A[i]||0), y=+(B[i]||0); r.push(op==='+'? (x+y)%10 : Math.abs(x-y)); }
+  return +r.reverse().join('');
+}
+function genMath(type){
+  const q={subject:'math', type, layout:'grid'};
+  if(/^n[12]/.test(type)) return genNani(type, q);
+  if(type==='add' || type==='sub'){
+    let a,b; const three=Math.random()<0.45;
+    if(type==='add'){
+      if(three){ a=rnd(100,800); b=rnd(10, 999-a); } else { a=rnd(10,99); b=rnd(10,99); }
+      q.ans=a+b;
+    } else {
+      if(three){ a=rnd(150,999); b=rnd(10,a-10); } else { a=rnd(20,99); b=rnd(10,a-1); }
+      q.ans=a-b;
+    }
+    const op = type==='add'?'+':'−';
+    Object.assign(q, {title:'請算出答案。', vertical:{a, b, op}, body:''}, numOpts(q.ans, [digitsNoCarry(a,b,type==='add'?'+':'-')]));
+    q.key='m-'+type+a+op+b; q.explain=a+' '+op+' '+b+' = '+q.ans;
+  } else if(type==='mul'){
+    const a=rnd(2,9), b=rnd(1,9), c=a*b;
+    if(Math.random()<0.7){
+      Object.assign(q, {title:'請算出答案。', bodyBig:a+' × '+b+' = ？'}, numOpts(c, [a*(b+1), a*(b-1), (a+1)*b, a+b]));
+    } else {
+      Object.assign(q, {title:'（　）裡要填多少？', bodyBig:'（　） × '+b+' = '+c}, numOpts(a, [a+1, a-1, b]));
+      q.ans=a;
+    }
+    q.key='m-mul'+a+'x'+b+(q.bodyBig[0]); q.explain=a+' × '+b+' = '+c;
+  } else if(type==='word'){
+    const t=pick1(WORD_TEMPLATES); const [N,P]=pick1(NAMES);
+    let a=rnd(t.a[0],t.a[1]), b=rnd(t.b[0],t.b[1]);
+    if(t.op==='-' && b>=a) b=rnd(1,a-1);
+    const ans = t.op==='+'? a+b : t.op==='-'? a-b : a*b;
+    const text=t.text.replace(/\{N\}/g,N).replace(/\{P\}/g,P).replace('{a}',a).replace('{b}',b);
+    const extra = t.op==='*'? [a+b, a*(b+1)] : t.op==='+'? [Math.abs(a-b), digitsNoCarry(a,b,'+')] : [a+b, digitsNoCarry(a,b,'-')];
+    Object.assign(q, {title:'讀題目，算出答案。', body:text}, numOpts(ans, extra));
+    q.key='m-word'+text; q.explain = a+' '+({'+':'+','-':'−','*':'×'}[t.op])+' '+b+' = '+ans;
+  } else if(type==='time'){
+    if(Math.random()<0.7){
+      const h=rnd(1,12), m=rnd(0,11)*5; const f=(H,M)=> H+' 點'+(M===0?'整':' '+M+' 分');
+      const right=f(h,m); const cands=[];
+      const add=s=>{ if(s!==right && !cands.includes(s)) cands.push(s); };
+      add(f(h%12+1, m)); add(f(h===1?12:h-1, m)); if(m>=5) add(f(h, m/5)); add(f(h,(m+30)%60)); if(m/5>=1 && m/5<=12) add(f(m/5, (h*5)%60));
+      add(f(h,(m+5)%60));
+      Object.assign(q, {title:'時鐘上是幾點幾分？', clock:{h,m}, body:''}, mkOpts(right, shuffle(cands).slice(0,3)));
+      q.key='m-time'+h+':'+m; q.explain='時鐘上是 '+right;
+    } else {
+      const h=rnd(1,9), d=rnd(1,3); const right=(h+d)+' 點';
+      Object.assign(q, {title:'讀題目，算出答案。', body:'現在是 '+h+' 點，再過 '+d+' 小時是幾點？'}, mkOpts(right, shuffle([(h+d+1)+' 點', (h+d-1)+' 點', (h-d>0? h-d : h+d+2)+' 點']).slice(0,3)));
+      q.key='m-timeadd'+h+'+'+d; q.explain=h+' 點 + '+d+' 小時 = '+right;
+    }
+  } else if(type==='money'){
+    if(Math.random()<0.6){
+      let list=[]; do{ list=[]; [[100,rnd(0,1)],[50,rnd(0,1)],[10,rnd(0,4)],[5,rnd(0,1)],[1,rnd(0,4)]].forEach(([v,n])=>{ for(let i=0;i<n;i++) list.push(v); }); }while(list.length<2);
+      const sum=list.reduce((s,v)=>s+v,0);
+      Object.assign(q, {title:'一共有多少元？', coins:list, body:''}, numOpts(sum, [sum+5, sum-5, sum+50, sum-50].filter(x=>x>0), n=>n+' 元'));
+      q.key='m-money'+list.join(','); q.explain='一共 '+sum+' 元';
+    } else {
+      const p=rnd(11,95); const ans=100-p;
+      Object.assign(q, {title:'讀題目，算出答案。', body:'買一個 '+p+' 元的玩具，付了 100 元，要找回幾元？'}, numOpts(ans, [ans+10, 100-p+1], n=>n+' 元'));
+      q.key='m-change'+p; q.explain='100 − '+p+' = '+ans+'（元）';
+    }
+  } else if(type==='length'){
+    const r=Math.random();
+    if(r<0.4){
+      const items=[['一枝鉛筆大約長 15','公分'],['一扇門大約高 2','公尺'],['一張書桌大約長 1','公尺'],['一個橡皮擦大約長 4','公分'],['一棵大樹大約高 8','公尺'],['一本課本大約長 26','公分'],['教室大約長 9','公尺'],['一張紙大約長 30','公分']];
+      const [t,u]=pick1(items);
+      Object.assign(q, {title:'（　）裡要填哪一個單位？', body:t+'（　）。'}, mkOpts(u, [u==='公分'?'公尺':'公分']));
+      q.key='m-unit'+t; q.explain=t+' '+u+'。';
+    } else if(r<0.7){
+      const a=rnd(1,90);
+      Object.assign(q, {title:'請算出答案。', body:'1 公尺 '+a+' 公分是幾公分？'}, numOpts(100+a, [10+a, 1+a, 100+a+10], n=>n+' 公分'));
+      q.key='m-conv'+a; q.explain='1 公尺 = 100 公分，100 + '+a+' = '+(100+a)+' 公分';
+    } else {
+      const a=rnd(30,99), b=rnd(5,a-5);
+      Object.assign(q, {title:'讀題目，算出答案。', body:'一條繩子長 '+a+' 公分，剪掉 '+b+' 公分，還剩下幾公分？'}, numOpts(a-b, [a+b, digitsNoCarry(a,b,'-')], n=>n+' 公分'));
+      q.key='m-rope'+a+'-'+b; q.explain=a+' − '+b+' = '+(a-b)+'（公分）';
+    }
+  }
+  return q;
+}
+
+// ---------- 題組 ----------
+function enabled(list){ const k=list.filter(t=>settings.types[t.key]).map(t=>t.key); return k.length? k : list.map(t=>t.key); }
+function chineseQuestions(n){
+  const types=enabled(CN_TYPES);
+  const pool=BANK_CHINESE.map((it,i)=>({it,i})).filter(x=>types.includes(x.it.type));
+  let out=[]; while(out.length<n){ out=out.concat(shuffle(pool)); }
+  return out.slice(0,n).map(x=>buildChinese(x.it, x.i));
+}
+function mathQuestions(n, units){
+  units = units || mathUnitSel();
+  const inUnits=MATH_TYPES.filter(t=>units.includes(t.unit));
+  const types=enabled(inUnits.length? inUnits : MATH_TYPES); const out=[]; const seen=new Set(); let guard=0;
+  while(out.length<n && guard++<500){ const q=genMath(types[out.length % types.length === 0 ? rnd(0,types.length-1) : rnd(0,types.length-1)]); if(seen.has(q.key)) continue; seen.add(q.key); out.push(q); }
+  return shuffle(out);
+}
+// ---- 課程範圍 ----
+function lessonSel(){ return (settings.lessons&&settings.lessons.length)? settings.lessons.slice().sort((a,b)=>a-b) : [1]; }
+function lessonChars(ls){ return new Set(ls.flatMap(n=>[...KX2A_LESSONS[n-1].chars, ...KX2A_LESSONS[n-1].read])); }
+function lessonWords(ls){ return new Set(ls.flatMap(n=>KX2A_LESSONS[n-1].words.map(w=>w[0]))); }
+function allowedChars(maxL){ const s=new Set(KX_G1); for(let n=1;n<=maxL;n++){ [...KX2A_LESSONS[n-1].chars, ...KX2A_LESSONS[n-1].read].forEach(c=>s.add(c)); } return s; }
+const cjkOf = s => (s||'').replace(/\|[^}]*\}/g,'').replace(/【|】|[{}]/g,'').split('').filter(isCJK);
+// 成語干擾選項：同課優先，再用前面的課（不用後面的課）；意思太接近的（avoid）不當干擾選項
+function idiomDistract(d, same, earlier, key){
+  const bad=new Set([d.idiom, ...(d.avoid||[])]); [...same, ...earlier].forEach(x=>{ if((x.avoid||[]).includes(d.idiom)) bad.add(x.idiom); });
+  const pick=arr=>shuffle(arr.filter(x=>!bad.has(x.idiom)));
+  const c=[...pick(same), ...pick(earlier)]; const outp=[]; c.forEach(x=>{ const v=x[key]; if(!outp.includes(v) && outp.length<2) outp.push(v); });
+  return outp;
+}
+function idiomItems(ls, mode){
+  const out=[]; const maxL=Math.max(...ls);
+  ls.forEach(n=>{ const list=KX2A_IDIOMS[n]||[]; const earlier=[]; for(let k=1;k<=maxL;k++){ if(k!==n) earlier.push(...(KX2A_IDIOMS[k]||[]).filter(()=>k<n || ls.includes(k))); }
+    list.forEach(d=>{ const key= mode==='mean'? 'mean' : 'idiom'; const ds=idiomDistract(d, list, earlier, key); if(ds.length<1) return;
+      out.push(Object.assign({}, d, {type: mode==='mean'?'idiomMean':'idiom', mode, lesson:n, tg:d.idiom, opts:[d[key], ...ds]})); }); });
+  return out;
+}
+function idiomExtraItems(){ const out=[]; ['fill','mean'].forEach(mode=>IDIOMS_EXTRA.forEach(d=>{ const key=mode==='mean'?'mean':'idiom'; out.push(Object.assign({}, d, {type:'idiomExtra', mode, extra:true, opts:[d[key], ...idiomDistract(d, IDIOMS_EXTRA, [], key)]})); })); return out; }
+function genericFits(it, ls){
+  const maxL=Math.max(...ls), allow=allowedChars(maxL), lc=lessonChars(ls);
+  const q=buildChinese(it, 'g');
+  const tg=q.tg; if(!tg || ![...tg].every(c=>lc.has(c))) return false;
+  const txt=[q.body, q.explain, ...(q.options||[]), ...(q.fixOpts||[])].join('');
+  return cjkOf(txt).every(c=>allow.has(c));
+}
+function kxPool(ls){
+  const t=settings.types, pool=[];
+  BANK_KX2A_AUTO.forEach((it,i)=>{ if(ls.includes(it.lesson) && t[it.type]!==false) pool.push(buildChinese(it,'kxa'+i)); });
+  KX2A_MANUAL.forEach((it,i)=>{ if(ls.includes(it.lesson) && t[it.type]!==false) pool.push(buildChinese(it,'kxm'+i)); });
+  if(t.idiom!==false) idiomItems(ls,'fill').forEach((it,i)=>pool.push(buildChinese(it,'kxi'+i)));
+  if(t.idiomMean!==false) idiomItems(ls,'mean').forEach((it,i)=>pool.push(buildChinese(it,'kxim'+i)));
+  if(t.idiomExtra) idiomExtraItems().forEach((it,i)=>pool.push(buildChinese(it,'kxe'+i)));
+  if(t.generic!==false) BANK_CHINESE.forEach((it,i)=>{ if(genericFits(it, ls)){ const q=buildChinese(it,i); q.generic=true; pool.push(q); } });
+  return pool;
+}
+function kxQuestions(n, ls){
+  const pool=kxPool(ls || lessonSel()); if(!pool.length) return [];
+  // 各題型輪流出題，避免某一種題型太多
+  const by={}; pool.forEach(q=>{ (by[q.type]=by[q.type]||[]).push(q); });
+  Object.keys(by).forEach(k=>by[k]=shuffle(by[k]));
+  const out=[]; let types=shuffle(Object.keys(by)); const used={}; let guard=0;
+  while(out.length<n && guard++<5000){ for(const k of types){ if(out.length>=n) break; const arr=by[k]; const i=(used[k]=(used[k]||0)+1)-1; out.push(reshuffle(arr[i % arr.length])); } types=shuffle(types); }
+  return shuffle(out);
+}
+function makeSet(subject, n){
+  if(subject==='kx' || subject==='chinese') return kxQuestions(n);
+  if(subject==='math') return mathQuestions(n);
+  const a=kxQuestions(Math.ceil(n/2)), b=mathQuestions(n-a.length); const out=[];
+  for(let i=0;i<n;i++){ const s=(i%2===0? a:b).shift() || a.shift() || b.shift(); if(s) out.push(s); }
+  return out;
+}
+
+// ---------- 錯題本 ----------
+let wrongBook = load('kq-wrong', []);
+function addWrong(q){ const e=wrongBook.find(w=>w.q.key===q.key); if(e){ e.n++; e.t=Date.now(); } else wrongBook.unshift({q, n:1, t:Date.now()}); wrongBook=wrongBook.slice(0,200); save('kq-wrong', wrongBook); }
+function removeWrong(q){ wrongBook=wrongBook.filter(w=>w.q.key!==q.key); save('kq-wrong', wrongBook); }
+
+// ---------- 畫面 ----------
+const app = () => $('#app');
+let S=null; // session
+function applyFont(){
+  document.documentElement.style.setProperty('--bpmf-font', '"'+settings.font.replace(/"/g,'')+'"');
+  document.body.classList.toggle('fontmode', settings.zyMode==='font');
+}
+function home(){
+  S=null;
+  const sub=settings.subject, cnt=settings.count;
+  app().innerHTML = `
+  <div class="home">
+    <h1 class="logo">${Z('小二複習樂園')}</h1>
+    ${examBannerHTML()}
+    <div class="row chips">
+      ${[['kx','國語（康軒二上）','📘'],['math','數學','🔢'],['mix','綜合','🌈']].map(([k,l,e])=>`<button class="chip ${sub===k?'on':''}" data-sub="${k}">${e} ${Z(l)}</button>`).join('')}
+    </div>
+    ${sub!=='math'? `<div class="lessons"><div class="note">選擇要複習的課（可以多選）：</div>${KX2A_LESSONS.map(l=>`<button class="lchip ${settings.lessons.includes(l.lesson)?'on':''}" data-les="${l.lesson}" title="${esc(l.title)}">第 ${l.lesson} 課<small>${esc(l.title)}</small></button>`).join('')}</div>` : ''}
+    ${sub==='math'? `<div class="lessons"><div class="note">選擇數學單元（南一二上，可以多選）：</div>${NANI_UNITS.map(u=>`<button class="lchip ${mathUnitSel().includes(u.unit)?'on':''}" data-mu="${u.unit}">第 ${u.unit} 單元<small>${esc(u.title)}</small></button>`).join('')}<button class="lchip ${mathUnitSel().includes(0)?'on':''}" data-mu="0">綜合<small>九九乘法、時間、錢幣等（不分單元）</small></button></div>` : ''}
+    <div class="row chips">
+      ${[10,20].map(n=>`<button class="chip small ${cnt===n?'on':''}" data-cnt="${n}">${n} ${Z('題')}</button>`).join('')}
+    </div>
+    <div class="cards">
+      <button class="bigcard practice" id="go-practice"><span class="emoji">🐣</span><span>${Z('練習')}</span><small>答完馬上知道對不對</small></button>
+      <button class="bigcard test" id="go-test"><span class="emoji">📝</span><span>${Z('模擬測驗')}</span><small>全部寫完再看分數</small></button>
+    </div>
+    <div class="row">
+      <button class="pill" id="go-wrong">📒 ${Z('錯題本')}（${wrongBook.length}）</button>
+      <button class="pill" id="go-settings">⚙️ 家長設定</button>
+    </div>
+  </div>`;
+  app().querySelectorAll('[data-sub]').forEach(b=>b.onclick=()=>{ settings.subject=b.dataset.sub; saveSettings(); home(); });
+  app().querySelectorAll('[data-les]').forEach(b=>b.onclick=()=>{ const n=+b.dataset.les; const s=new Set(settings.lessons); s.has(n)? s.delete(n) : s.add(n); if(!s.size) s.add(n); settings.lessons=[...s].sort((x,y)=>x-y); saveSettings(); home(); });
+  app().querySelectorAll('[data-mu]').forEach(b=>b.onclick=()=>{ const n=+b.dataset.mu; const s=new Set(mathUnitSel()); s.has(n)? s.delete(n) : s.add(n); if(!s.size) s.add(n); settings.mathUnits=[...s].sort((x,y)=>x-y); saveSettings(); home(); });
+  bindExamBanner();
+  app().querySelectorAll('[data-cnt]').forEach(b=>b.onclick=()=>{ settings.count=+b.dataset.cnt; saveSettings(); home(); });
+  $('#go-practice').onclick=()=>start('practice', makeSet(settings.subject, settings.count));
+  $('#go-test').onclick=()=>start('test', makeSet(settings.subject, settings.count));
+  $('#go-wrong').onclick=wrongPage;
+  $('#go-settings').onclick=settingsPage;
+}
+function start(mode, questions, opts={}){
+  S={mode, questions, idx:0, results:[], fromWrongBook:!!opts.fromWrongBook, exam:opts.exam||null};
+  showQ();
+}
+function bodyHTML(q){
+  let h='';
+  if(q.vertical){ const {a,b,op}=q.vertical; h+=`<div class="vert"><div></div><div>${a}</div><div>${op}</div><div>${b}</div><div class="line"></div></div>`; }
+  if(q.bodyBig) h+=`<div class="bigexpr">${esc(q.bodyBig)}</div>`;
+  if(q.clock) h+=clockSVG(q.clock.h, q.clock.m);
+  if(q.coins) h+=coinsHTML(q.coins);
+  if(q.example) h+=`<div class="example">${Z('例：')}${Z(q.example)}</div>`;
+  if(q.body) h+=`<div class="sent">${Z(q.body, {blankZy:q.blankZy})}</div>`;
+  return h;
+}
+function optHTML(q, o){
+  if(q.layout==='zhuyin') return `<span class="zyopt nozy">${esc(o)}</span>`;
+  if(q.noZyOptions) return `<span class="nozy plainopt">${esc(o)}</span>`;
+  return Z(o);
+}
+function showQ(){
+  const q=S.questions[S.idx]; const n=S.questions.length;
+  S.tries=0; S.locked=false;
+  const stars=S.results.filter(r=>r.ok).length;
+  let opts='';
+  S.fixStep=1; S.mistake=false; S.tries2=0; S.orderSel=[];
+  if(q.layout==='sentence' || q.layout==='fix'){
+    opts='<div class="sentopts">'+q.sentence.map(s=> s.p!==undefined? `<span class="punct">${esc(s.p)}</span>` : `<button class="opt ch" data-i="${s.o}">${Z(q.options[s.o])}</button>`).join('')+'</div>';
+    if(q.layout==='fix') opts+=`<div class="opts grid n${q.fixOpts.length} hidden" id="fixstep">`+q.fixOpts.map((o,j)=>`<button class="fopt opt" data-j="${j}"><span class="nozy plainopt">${esc(o)}</span></button>`).join('')+'</div>';
+  } else if(q.layout==='order'){
+    let ord=shuffle(q.chunks.map((_,i)=>i)); let g=0; while(ord.every((v,i)=>v===i) && g++<10) ord=shuffle(ord);
+    S.chunkOrder=ord;
+    opts=`<div class="orderline" id="oline"><span class="ph">${Z('點下面的詞語，排成句子')}</span></div><div class="chunks" id="chunks"></div><div class="row"><button class="pill" id="oreset">↺ ${Z('重來')}</button><button class="next" id="ocheck" disabled>✓ ${Z('確定')}</button></div>`;
+  } else {
+    opts=`<div class="opts ${q.layout} n${q.options.length}">`+q.options.map((o,i)=>`<button class="opt" data-i="${i}">${optHTML(q,o)}</button>`).join('')+'</div>';
+  }
+  app().innerHTML = `
+  <div class="qscreen ${q.subject}">
+    <div class="topbar">
+      <button class="iconbtn" id="home">🏠</button>
+      <div class="progress"><div class="bar" style="width:${(S.idx/n*100).toFixed(1)}%"></div></div>
+      <div class="count">${Z('第')} ${S.idx+1}/${n} ${Z('題')}</div>
+      ${S.mode==='practice'?`<div class="stars">⭐ ${stars}</div>`:''}
+    </div>
+    <div class="qcard">
+      <div class="qtitle">${Z(q.title)}</div>
+      <div class="qbody">${bodyHTML(q)}</div>
+    </div>
+    ${opts}
+    <div class="feedback" id="fb"></div>
+    <div class="row"><button class="next hidden" id="next">${Z(S.idx+1<n?'下一題':'看結果')} ➜</button></div>
+  </div>`;
+  $('#home').onclick=()=>{ if(confirm('要回到首頁嗎？這次的作答不會保存。')) home(); };
+  if(q.layout==='fix'){
+    app().querySelectorAll('.opt.ch').forEach(b=>b.onclick=()=>fixStep1(+b.dataset.i, b));
+    app().querySelectorAll('.fopt').forEach(b=>b.onclick=()=>fixStep2(+b.dataset.j, b));
+  } else if(q.layout==='order'){ renderOrder(); $('#oreset').onclick=()=>{ if(S.locked) return; S.orderSel=[]; renderOrder(); }; $('#ocheck').onclick=checkOrder; }
+  else app().querySelectorAll('.opt').forEach(b=>b.onclick=()=>choose(+b.dataset.i, b));
+  $('#next').onclick=nextQ;
+}
+// ---- 共同：結束一題 ----
+function answerHTML(q){ return q.answerText? Z(q.answerText) : optHTML(q, q.options[q.answer]); }
+function chosenHTML(r){ return r.chosenText!=null? Z(r.chosenText) : (r.chosen!=null && r.chosen>=0 ? optHTML(r.q, r.q.options[r.chosen]) : ''); }
+function finishQ(ok, chosenText){
+  const q=S.questions[S.idx]; S.locked=true;
+  S.results.push({q, ok, chosen:-1, chosenText});
+  if(!ok) addWrong(q);
+  if(S.mode==='test'){ setTimeout(nextQ, 350); return; }
+  if(ok && S.fromWrongBook) removeWrong(q);
+  const fb=$('#fb');
+  if(ok){ fb.className='feedback good'; fb.innerHTML='🎉 '+Z(pick1(GOOD))+(q.explain?`<div class="explain">${Z(q.explain)}</div>`:''); }
+  else { fb.className='feedback soft'; fb.innerHTML='💡 '+Z('正確答案是：')+' '+answerHTML(q)+(q.explain&&q.explain!==q.answerText?`<div class="explain">${Z(q.explain)}</div>`:''); }
+  $('#next').classList.remove('hidden');
+}
+// ---- 改錯字：兩步驟 ----
+function fixStep1(i, btn){
+  const q=S.questions[S.idx]; if(S.locked || S.fixStep!==1) return;
+  const ch=plain(q.options[i]);
+  if(i===q.answer){
+    btn.classList.add('picked'); S.fixStep=2; $('#fixstep').classList.remove('hidden');
+    const fb=$('#fb'); fb.className='feedback good'; fb.innerHTML='👍 '+Z('找到了！再選出正確的字。'); return;
+  }
+  if(S.mode==='test'){ btn.classList.add('picked'); finishQ(false, '點了「'+ch+'」'); return; }
+  btn.classList.add('wrong','shake'); S.mistake=true; S.tries++;
+  const fb=$('#fb'); fb.className='feedback soft';
+  if(S.tries>=2){ const t=app().querySelector(`.opt.ch[data-i="${q.answer}"]`); t.classList.add('picked'); S.fixStep=2; $('#fixstep').classList.remove('hidden'); fb.innerHTML='💡 '+Z('寫錯的是這個字，再選出正確的字。'); }
+  else fb.innerHTML='🤔 '+Z(pick1(TRY));
+}
+function fixStep2(j, btn){
+  const q=S.questions[S.idx]; if(S.locked || S.fixStep!==2) return;
+  const bad=plain(q.options[q.answer]);
+  if(j===q.fixAns){ btn.classList.add('right'); finishQ(!S.mistake, '「'+bad+'」→「'+q.fixOpts[j]+'」'); return; }
+  if(S.mode==='test'){ btn.classList.add('picked'); finishQ(false, '「'+bad+'」→「'+q.fixOpts[j]+'」'); return; }
+  btn.classList.add('wrong','shake'); btn.disabled=true; S.mistake=true; S.tries2++;
+  if(S.tries2>=1){ app().querySelector(`.fopt[data-j="${q.fixAns}"]`).classList.add('right'); finishQ(false, '「'+bad+'」→「'+q.fixOpts[j]+'」'); }
+}
+// ---- 重組句子 ----
+function renderOrder(){
+  const q=S.questions[S.idx];
+  const line=$('#oline'), box=$('#chunks');
+  line.innerHTML = S.orderSel.length? S.orderSel.map((ci,k)=>`<button class="chunk inline" data-k="${k}">${Z(q.chunks[ci])}</button>`).join('')+'<span class="punct">。</span>' : `<span class="ph">${Z('點下面的詞語，排成句子')}</span>`;
+  box.innerHTML = S.chunkOrder.filter(ci=>!S.orderSel.includes(ci)).map(ci=>`<button class="chunk" data-c="${ci}">${Z(q.chunks[ci])}</button>`).join('');
+  line.querySelectorAll('.chunk').forEach(b=>b.onclick=()=>{ if(S.locked) return; S.orderSel.splice(+b.dataset.k,1); renderOrder(); });
+  box.querySelectorAll('.chunk').forEach(b=>b.onclick=()=>{ if(S.locked) return; S.orderSel.push(+b.dataset.c); renderOrder(); });
+  $('#ocheck').disabled = S.orderSel.length!==q.chunks.length;
+}
+function checkOrder(){
+  const q=S.questions[S.idx]; if(S.locked) return;
+  const str=S.orderSel.map(ci=>q.chunks[ci]).join('');
+  const ok = str===q.chunks.join('') || (q.alts||[]).includes(str);
+  if(ok || S.mode==='test'){ finishQ(ok && !S.mistake, str+'。'); return; }
+  S.mistake=true; S.tries++;
+  const fb=$('#fb'); fb.className='feedback soft';
+  $('#oline').classList.add('shake'); setTimeout(()=>$('#oline')&&$('#oline').classList.remove('shake'),400);
+  if(S.tries>=2) finishQ(false, str+'。'); else fb.innerHTML='🤔 '+Z(pick1(TRY));
+}
+const GOOD=['答對了！好棒！','太厲害了！','你真聰明！','完全正確！'];
+const TRY=['再想想看！','加油！再試一次！'];
+function choose(i, btn){
+  if(S.locked) return;
+  const q=S.questions[S.idx]; const ok=(i===q.answer);
+  if(S.mode==='test'){
+    S.locked=true; btn.classList.add('picked');
+    S.results.push({q, ok, chosen:i});
+    if(!ok) addWrong(q);
+    setTimeout(nextQ, 350); return;
+  }
+  // practice
+  const fb=$('#fb');
+  if(ok){
+    S.locked=true; btn.classList.add('right');
+    const first = S.tries===0;
+    S.results.push({q, ok:first, chosen:i});
+    if(first && S.fromWrongBook) removeWrong(q);
+    fb.className='feedback good'; fb.innerHTML='🎉 '+Z(pick1(GOOD))+(q.explain?`<div class="explain">${Z(q.explain)}</div>`:'');
+    $('#next').classList.remove('hidden');
+  } else {
+    btn.classList.add('wrong'); btn.disabled=true;
+    if(S.tries===0) addWrong(q);
+    S.tries++;
+    if(S.tries>=2 || q.options.length<=2){
+      S.locked=true;
+      S.results.push({q, ok:false, chosen:i});
+      app().querySelector(`.opt[data-i="${q.answer}"]`).classList.add('right');
+      fb.className='feedback soft'; fb.innerHTML='💡 '+Z('正確答案是：')+' '+optHTML(q, q.options[q.answer])+(q.explain?`<div class="explain">${Z(q.explain)}</div>`:'');
+      $('#next').classList.remove('hidden');
+    } else {
+      fb.className='feedback soft'; fb.innerHTML='🤔 '+Z(pick1(TRY));
+      btn.classList.add('shake');
+    }
+  }
+}
+function nextQ(){ S.idx++; if(S.idx>=S.questions.length) results(); else showQ(); }
+function results(){
+  const n=S.questions.length, right=S.results.filter(r=>r.ok).length, score=Math.round(right/n*100);
+  const wrong=S.results.filter(r=>!r.ok);
+  const msg= score>=90? '太棒了！' : score>=70? '很不錯！' : '加油！多練習就會更好！';
+  app().innerHTML = `
+  <div class="results">
+    <div class="scorecard">
+      <div class="emoji big">${score>=90?'🏆':score>=70?'🌟':'💪'}</div>
+      <div class="score">${score} <small>${Z('分')}</small></div>
+      <div class="sub">${S.mode==='practice'?'第一次就答對':'答對'} ${right} / ${n} ${Z('題')}</div>
+      <div class="msg">${Z(msg)}</div>
+    </div>
+    ${wrong.length? `<h2>${Z('錯的題目')}（${wrong.length}）</h2>
+    <div class="wronglist">${wrong.map(r=>`
+      <div class="witem">
+        <div class="wq"><span class="tag">${typeName(r.q)}</span> ${Z(r.q.title)}</div>
+        <div class="wbody">${qShort(r.q)}</div>
+        <div class="wa"><span class="mine">✗ ${chosenHTML(r)}</span>　<span class="ok">✓ ${answerHTML(r.q)}</span></div>
+        ${r.q.explain?`<div class="explain">${Z(r.q.explain)}</div>`:''}
+      </div>`).join('')}</div>` : `<h2>${Z('全部答對了！')} 🎉</h2>`}
+    ${S.exam? examResultsHTML(S) : ''}
+    <div class="row">
+      ${wrong.length? `<button class="next" id="retry">🔁 ${Z('再練習錯的題目')}</button>`:''}
+      <button class="pill" id="again">🆕 ${Z('再考一次')}</button>
+      <button class="pill" id="home">🏠 ${Z('回首頁')}</button>
+    </div>
+  </div>`;
+  const mode=S.mode, wrongQs=wrong.map(r=>reshuffle(r.q)), exam=S.exam;
+  if(exam) saveExamHistory(exam, score, right, n);
+  if(wrong.length) $('#retry').onclick=()=>start('practice', shuffle(wrongQs));
+  $('#again').onclick=()=> exam? startExam(exam.kind) : start(mode, makeSet(settings.subject, settings.count));
+  $('#home').onclick=home;
+}
+function reshuffle(q){
+  if(q.layout==='sentence' || q.layout==='order') return q;
+  if(q.layout==='fix'){ const r=q.fixOpts[q.fixAns]; const fo=shuffle(q.fixOpts); return Object.assign({}, q, {fixOpts:fo, fixAns:fo.indexOf(r)}); }
+  const right=q.options[q.answer]; const opts=shuffle(q.options); return Object.assign({}, q, {options:opts, answer:opts.indexOf(right)});
+}
+function qShort(q){ if(q.layout==='sentence'||q.layout==='fix') return q2sent(q); if(q.layout==='order') return '<div class="sent">'+q.chunks.map(c=>Z(c)).join(' ／ ')+'</div>'; return bodyHTML(q); }
+function q2sent(q){ return '<div class="sent">'+q.sentence.map(s=>s.p!==undefined? esc(s.p) : Z(q.options[s.o])).join('')+'</div>'; }
+function typeName(q){ const t0=[...CN_TYPES,...MATH_TYPES].find(t=>t.key===q.type); if(t0 && t0.unit) return '南一二上 第'+t0.unit+'單元・'+t0.name; if(q.lesson) return '康軒二上 L'+q.lesson+'・'+(t0?t0.name:''); const t=[...CN_TYPES,...MATH_TYPES].find(t=>t.key===q.type); return t? t.name : ''; }
+function wrongPage(){
+  app().innerHTML = `
+  <div class="results">
+    <h1>📒 ${Z('錯題本')}</h1>
+    <p class="note">這裡會記錄答錯過的題目（存在這台裝置的瀏覽器裡）。在「錯題練習」中第一次就答對，題目就會從錯題本移除。</p>
+    ${wrongBook.length? `<div class="wronglist">${wrongBook.slice(0,50).map(w=>`
+      <div class="witem"><div class="wq"><span class="tag">${typeName(w.q)}</span> 錯 ${w.n} 次</div>
+      <div class="wbody">${qShort(w.q)}</div>
+      <div class="wa"><span class="ok">✓ ${answerHTML(w.q)}</span></div></div>`).join('')}</div>` : `<h2>${Z('目前沒有錯題')} 👍</h2>`}
+    <div class="row">
+      ${wrongBook.length? `<button class="next" id="wp">🔁 ${Z('錯題練習')}</button><button class="pill" id="wc">🗑️ 清空錯題本</button>`:''}
+      <button class="pill" id="home">🏠 ${Z('回首頁')}</button>
+    </div>
+  </div>`;
+  if(wrongBook.length){
+    $('#wp').onclick=()=>start('practice', shuffle(wrongBook.map(w=>reshuffle(w.q))).slice(0,20), {fromWrongBook:true});
+    $('#wc').onclick=()=>{ if(confirm('確定要清空錯題本嗎？')){ wrongBook=[]; save('kq-wrong', wrongBook); wrongPage(); } };
+  }
+  $('#home').onclick=home;
+}
+function fontInstalled(name){
+  const c=document.createElement('canvas').getContext('2d'); const txt='注音測試ㄅㄆ一二';
+  return ['monospace','serif','sans-serif'].some(f=>{ c.font='40px '+f; const w1=c.measureText(txt).width; c.font='40px "'+name+'", '+f; return c.measureText(txt).width!==w1; });
+}
+function settingsPage(){
+  const saved=settings.types; settings.types=Object.fromEntries(Object.keys(saved).map(k=>[k,true])); const pool=kxPool(lessonSel()); settings.types=saved;
+  const cnCount=t=>pool.filter(q=>q.type===t || (t==='generic' && q.generic)).length;
+  app().innerHTML = `
+  <div class="results settings">
+    <h1>⚙️ 家長設定</h1>
+    <section>
+      <h3>注音顯示方式</h3>
+      <label class="radio"><input type="radio" name="zm" value="side" ${settings.zyMode==='side'?'checked':''}> 內建注音・右側直排（像課本，任何電腦都能用）</label>
+      <label class="radio"><input type="radio" name="zm" value="ruby" ${settings.zyMode==='ruby'?'checked':''}> 內建注音・上方橫排（HTML ruby）</label>
+      <label class="radio"><input type="radio" name="zm" value="font" ${settings.zyMode==='font'?'checked':''}> 使用電腦裡安裝的「注音字型」</label>
+      <div class="fontbox ${settings.zyMode==='font'?'':'dim'}">
+        <label>字型名稱：<input id="fontname" list="fontlist" value="${esc(settings.font)}"></label>
+        <datalist id="fontlist">${FONT_PRESETS.map(f=>`<option value="${esc(f)}">`).join('')}</datalist>
+        <span id="fontstat"></span>
+        <div class="preview" id="preview">小朋友，我們一起來學習！</div>
+        <p class="note">注意：注音字型只能顯示每個字的「預設讀音」，句子裡的多音字、輕聲可能會不準確（例如「睡覺」的「覺」）。多音字題目考的字和「看注音選字」的選項，會自動改用一般字型，避免洩漏答案。若要完全正確的注音，請用「內建注音」。</p>
+      </div>
+    </section>
+    ${examSettingsHTML()}
+    <section>
+      <h3>國語題型（括號內是目前選的課：第 ${lessonSel().join('、')} 課 的題數）</h3>
+      ${CN_TYPES.map(t=>`<label class="chk"><input type="checkbox" data-t="${t.key}" ${settings.types[t.key]?'checked':''}> ${t.name}（${cnCount(t.key)} 題）</label>`).join('')}
+      <h3>數學題型（自動出題，題目做不完；南一二上第 1、2 單元的題型依單元重點出題）</h3>
+      ${MATH_TYPES.map(t=>`<label class="chk"><input type="checkbox" data-t="${t.key}" ${settings.types[t.key]?'checked':''}> ${t.name}</label>`).join('')}
+    </section>
+    <section>
+      <h3>康軒版二上（115學年度）</h3>
+      <p class="note">共 ${KX2A_LESSONS.length} 課。自動題 ${BANK_KX2A_AUTO.length} 題（看注音選字＋生字讀音，全部 12 課）＋手寫題 ${KX2A_MANUAL.length} 題（第 1～6 課：改錯字、多音字、相似字、造句、重組句子、照樣造短語、照樣造句；相似字／改錯字／照樣造句參考「國語重點複習」的字音字形辨析與句型，句子為自編）。生字與語詞來源：教育部教育雲「生字詞彙表」；讀音依教育部國語辭典。出題只用選到的課；句子用字限「一年級學過的字＋到這一課為止的二上生字」。</p>
+      <p class="note">成語：第 1～4、6 課依 113 學年度「國語重點複習」所列成語（${Object.values(KX2A_IDIOMS).flat().length} 個，讀音與意思對照教育部國語辭典；例句與淺白解釋為自編）。113 學年第 5 課「水上木偶戲」115 學年已換成「坐竹籃船」，那課的成語放在課外成語。第 5、7～12 課還沒有成語，可在 index.html 的 KX2A_IDIOMS 依課填入。課外成語 ${IDIOMS_EXTRA.length} 個，預設關閉。</p>
+      ${KX2A_LESSONS.map(l=>`<div class="note">第 ${l.lesson} 課 ${esc(l.title)}：${esc(l.chars)}（認讀：${esc(l.read)}）</div>`).join('')}
+    </section>
+    <section>
+      <h3>新增題目</h3>
+      <p class="note">用文字編輯器打開 index.html，找到「題庫資料區」，照著範例格式加入課本的題目即可。</p>
+    </section>
+    <div class="row"><button class="next" id="done">✓ 完成</button></div>
+  </div>`;
+  app().querySelectorAll('input[name=zm]').forEach(r=>r.onchange=()=>{ settings.zyMode=r.value; saveSettings(); settingsPage(); });
+  app().querySelectorAll('input[data-t]').forEach(c=>c.onchange=()=>{ settings.types[c.dataset.t]=c.checked; saveSettings(); });
+  const fn=$('#fontname'), st=$('#fontstat'), pv=$('#preview');
+  const upd=()=>{ settings.font=fn.value.trim()||DEFAULTS.font; saveSettings(); pv.style.fontFamily='"'+settings.font+'"'; st.textContent = fontInstalled(settings.font)? '✓ 偵測到這個字型' : '✗ 這台裝置沒有偵測到這個字型'; st.className=fontInstalled(settings.font)?'okc':'badc'; };
+  fn.oninput=upd; upd();
+  bindExamSettings();
+  $('#done').onclick=home;
+}
+
+// ---------- 圖形：時鐘 / 錢幣 ----------
+function clockSVG(h, m){
+  let s='<svg class="clock" viewBox="0 0 200 200"><circle cx="100" cy="100" r="92" fill="#fff" stroke="#5b8def" stroke-width="6"/>';
+  for(let i=0;i<60;i++){ const a=i*6*Math.PI/180, r1=i%5?84:78; s+=`<line x1="${100+r1*Math.sin(a)}" y1="${100-r1*Math.cos(a)}" x2="${100+88*Math.sin(a)}" y2="${100-88*Math.cos(a)}" stroke="#555" stroke-width="${i%5?1:3}"/>`; }
+  for(let i=1;i<=12;i++){ const a=i*30*Math.PI/180; s+=`<text x="${100+66*Math.sin(a)}" y="${100-66*Math.cos(a)+7}" text-anchor="middle" font-size="20" font-weight="bold" fill="#333">${i}</text>`; }
+  const ha=((h%12)+m/60)*30, ma=m*6;
+  s+=`<line x1="100" y1="100" x2="${100+42*Math.sin(ha*Math.PI/180)}" y2="${100-42*Math.cos(ha*Math.PI/180)}" stroke="#e8505b" stroke-width="8" stroke-linecap="round"/>`;
+  s+=`<line x1="100" y1="100" x2="${100+66*Math.sin(ma*Math.PI/180)}" y2="${100-66*Math.cos(ma*Math.PI/180)}" stroke="#2d6cdf" stroke-width="5" stroke-linecap="round"/>`;
+  return s+'<circle cx="100" cy="100" r="6" fill="#333"/></svg><div class="legend"><span style="color:#e8505b">● 短針（時）</span>　<span style="color:#2d6cdf">● 長針（分）</span></div>';
+}
+function coinsHTML(list){ return '<div class="coins">'+list.map(v=> v===100? `<span class="bill">100<small>元</small></span>` : `<span class="coin c${v}">${v}</span>`).join('')+'</div>'; }
+
+// ---------- 自我檢查（給開發/家長用：在 Console 執行 __audit()）----------
+window.__audit = function(){
+  MISSING.clear(); const used={}; const ctx=[]; const wordErr=[];
+  Object.entries(ZY_WORD).forEach(([w,z])=>{ if(z.trim().split(/\s+/).length!==w.length) wordErr.push(w); });
+  const col=s=>{ if(!s) return; const toks=tokenize(s); ctx.push({s:plain(s), zy:toks.filter(t=>t.k==='cjk'||t.k==='target').map(t=>t.k==='target'?'?':t.zy), ch:toks.filter(t=>t.k==='cjk'||t.k==='target').map(t=>t.ch)}); toks.forEach(t=>{ if(t.k==='cjk'){ (used[t.ch]=used[t.ch]||new Set()).add(t.zy); } }); };
+  const qs=q=>{ col(q.title); col(q.body); col(q.explain); if(q.layout==='sentence'||q.layout==='fix') col(q.sentence.map(s=>s.p!==undefined?s.p:q.options[s.o]).join('')); if(q.example) col(q.example); if(q.layout==='order') col(q.chunks.join('')); else if(!q.noZyOptions && q.layout!=='zhuyin') q.options.forEach(col); };
+  BANK_CHINESE.forEach((it,i)=>qs(buildChinese(it,i)));
+  BANK_KX2A_AUTO.forEach((it,i)=>qs(buildChinese(it,'kxa'+i)));
+  KX2A_MANUAL.forEach((it,i)=>qs(buildChinese(it,'kxm'+i)));
+  idiomExtraItems().forEach((it,i)=>qs(buildChinese(it,'kxe'+i)));
+  const ALL12=[1,2,3,4,5,6,7,8,9,10,11,12]; idiomItems(ALL12,'fill').forEach((it,i)=>qs(buildChinese(it,'ai'+i))); idiomItems(ALL12,'mean').forEach((it,i)=>qs(buildChinese(it,'am'+i)));
+  for(let k=0;k<200;k++) MATH_TYPES.forEach(t=>qs(genMath(t.key)));
+  [...GOOD, ...TRY, '小二複習樂園','國語','數學','綜合','題','第','練習','模擬測驗','錯題本','下一題','看結果','正確答案是：','分','錯的題目','全部答對了！','再練習錯的題目','再考一次','回首頁','目前沒有錯題','錯題練習','找到了！再選出正確的字。','寫錯的是這個字，再選出正確的字。','點下面的詞語，排成句子','重來','確定','例：','國語（康軒二上）',...Object.values(TITLES),'太棒了！','很不錯！','加油！多練習就會更好！'].forEach(col);
+  const badWrong = BANK_CHINESE.map((it,i)=>[it,i]).filter(([it])=>it.type==='wrong' && it.text.split(it.bad).length!==2).map(([it])=>it.text);
+  const badAns = [...BANK_CHINESE, ...BANK_KX2A_AUTO, ...KX2A_MANUAL].filter(it=>it.opts && it.ans!==undefined && !it.opts.includes(it.ans)).map(it=>it.text||it.word);
+  return {missing:[...MISSING], wordErr, badWrong, badAns, used:Object.fromEntries(Object.entries(used).map(([k,v])=>[k,[...v]])), contexts:ctx};
+};
+// ---------- 課程範圍自動檢查：在 Console 執行 __lessonCheck() ----------
+window.__lessonCheck = function(){
+  const saved=JSON.stringify(settings); const report=[];
+  const sels=[[1],[2],[1,2],[3],[4],[5],[6],[1,2,3,4,5,6],[7],[8],[9],[10],[11],[12],[10,11,12],[1,2,3,4,5,6,7,8,9,10,11,12]];
+  settings.types=Object.fromEntries(Object.keys(settings.types).map(k=>[k, k!=='idiomExtra']));
+  for(const ls of sels){
+    settings.lessons=ls; const lc=lessonChars(ls), lw=lessonWords(ls), allow=allowedChars(Math.max(...ls));
+    const maxL=Math.max(...ls); const wb=new Set(); Object.entries(KX2A_WB_GROUPS).forEach(([k,g])=>{ if(+k<=maxL) g.join('').split('').forEach(c=>wb.add(c)); });
+    const idiomLesson={}; Object.entries(KX2A_IDIOMS).forEach(([k,l])=>l.forEach(d=>{ idiomLesson[d.idiom]=+k; idiomLesson[d.mean]=+k; }));
+    const pool=kxPool(ls); let tgFail=[], ctxFail=[], distr={}, wbUsed={}, idiomTxt=new Set(), idiomLater=[]; const types={};
+    const qs=pool.concat(kxQuestions(60));
+    pool.forEach(q=>{ types[q.type]=(types[q.type]||0)+1; });
+    qs.forEach(q=>{
+      const tg=q.tg||''; const isIdiom=/^idiom/.test(q.type); const tgOK = tg && (lw.has(tg) || [...tg].every(c=>lc.has(c)) || ((isIdiom||q.type==='sentpat') && ls.includes(q.lesson)));
+      if(!tgOK) tgFail.push(q.type+':'+tg);
+      // 題目內容（題幹、例子、說明、正確答案）
+      const correct = isIdiom? '' : q.layout==='order'? q.chunks.join('') : q.layout==='fix'? q.fixOpts[q.fixAns] : (q.options||[])[q.answer];
+      let ex=(q.explain||'').replace(/正確答案：|要改成/g,''); let bodyC=((q.type==='pattern'||q.type==='sentpat')&&!(q.body||'').includes('＿'))?'':q.body; // 純指示語不算
+      if(isIdiom){ // 成語本身和意思是習作教的延伸內容，另外列出；這裡只檢查自編句子
+        const d=Object.values(KX2A_IDIOMS).flat().find(x=>x.idiom===q.tg)||{}; const strip=s=>(s||'').split(d.idiom||'@@').join('').split(d.mean||'@@').join('');
+        cjkOf(strip(bodyC)+strip(ex)).forEach(c=>{ if(!allow.has(c)) idiomTxt.add(c); }); ex=''; bodyC='';
+        (q.options||[]).forEach(o=>{ const L=idiomLesson[o]; if(L && L>maxL) idiomLater.push(o); });
+      }
+      const ctx=[bodyC, q.example, ex, correct, q.layout==='fix'||q.layout==='sentence'? q.sentence.map(s=>s.p!==undefined?'':q.options[s.o]).join('') : ''].join('');
+      const badChar = q.layout==='fix'? plain(q.options[q.answer]) : '';
+      cjkOf(ctx).forEach(c=>{ if(!allow.has(c) && c!==badChar && !(q.layout==='fix' && q.explain.includes(c) && c===badChar)) ctxFail.push(q.type+':'+c); });
+      // 干擾選項（含改錯字裡故意寫錯的字）
+      const ds = q.layout==='fix'? [badChar, ...q.fixOpts.filter((_,j)=>j!==q.fixAns)] : q.layout==='order'? [] : (q.options||[]).filter((_,j)=>j!==q.answer);
+      if(!isIdiom) ds.forEach(d=>cjkOf(d).forEach(c=>{ if(!allow.has(c)){ const tgt = wb.has(c)? wbUsed : distr; (tgt[q.type]=tgt[q.type]||new Set()).add(c); } }));
+    });
+    report.push({lessons:ls.join(','), pool:pool.length, byType:types, targetOutsideSelected:[...new Set(tgFail)], contentOutsideAllowed:[...new Set(ctxFail)], distractorsOutsideAllowed:Object.fromEntries(Object.entries(distr).map(([k,v])=>[k,[...v].join('')])), workbookGroupDistractors:Object.fromEntries(Object.entries(wbUsed).map(([k,v])=>[k,[...v].join('')])), idiomSentenceCharsOutside:[...idiomTxt].join(''), idiomDistractorFromLaterLesson:[...new Set(idiomLater)]});
+  }
+  Object.assign(settings, JSON.parse(saved));
+  return report;
+};
+// ===================== 考前複習・小考・列印考卷・南一數學（第 1、2 單元） =====================
+function mathUnitSel(){ const u=(settings.mathUnits||[]).filter(x=>x===0||NANI_UNITS.some(n=>n.unit===x)); return u.length? u.slice().sort((a,b)=>a-b) : [1,2]; }
+const zyOK = s => [...String(s)].every(c=>!isCJK(c) || ZY_CHAR[c]);
+const ZS = s => zyOK(s)? Z(s) : esc(s);          // 字典都有注音才加注音，否則用一般文字
+const rangeTxt = (a, unit) => { a=a.slice().sort((x,y)=>x-y); const cont=a.every((v,i)=>i===0||v===a[i-1]+1); return '第 '+(cont&&a.length>2? a[0]+'～'+a[a.length-1] : a.join('、'))+' '+unit; };
+function examLabel(){ const e=settings.exam; return '國語（康軒）'+rangeTxt(e.kx,'課')+'・數學（南一）'+rangeTxt(e.math,'單元'); }
+
+// ---------- 南一二上 第 1、2 單元出題 ----------
+function genNani(type, q){
+  if(type==='n1seq'){
+    let seq, step, dir, g=0;
+    do{
+      step = Math.random()<0.5? 1 : 10; dir = Math.random()<0.7? 1 : -1;
+      let s0;
+      if(step===1){ const pivot=pick1([100,200,300,rnd(2,29)*10]); s0 = dir>0? pivot-rnd(1,3) : pivot+rnd(1,3); }
+      else s0 = rnd(0,29)*10 + (Math.random()<0.5? 0 : rnd(1,9));
+      seq=[0,1,2,3].map(i=>s0+dir*step*i);
+    } while(seq.some(v=>v<1||v>300) && g++<50);
+    const hole=rnd(0,3), ans=seq[hole];
+    Object.assign(q, {title:'照順序，（　）裡要填多少？', bodyBig:seq.map((v,i)=>i===hole?'（　）':v).join('、')}, numOpts(ans, [ans+dir*(step===1?10:1)]));
+    q.key='m-n1seq'+seq.join(',')+'#'+hole; q.explain=(dir>0?'每次多 ':'每次少 ')+step+'：'+seq.join('、'); q.check={kind:'seq', seq, hole, ans};
+    return q;
+  }
+  if(type==='n1place'){
+    const v=rnd(1,6);
+    if(v<=2){ // 幾個百、幾個十、幾個一合起來（含 16 個一這種要化聚的）
+      let h,t,o; if(v===1){ if(Math.random()<0.1){ h=3;t=0;o=0; } else { h=rnd(1,2); t=rnd(0,9); o=rnd(0,9); } } else { h=rnd(0,2); t=rnd(0,8); o=rnd(10,19); }
+      const ans=100*h+10*t+o; const parts=[h?h+' 個百':'', t?t+' 個十':'', o?o+' 個一':''].filter(Boolean);
+      const body=parts.length>1? parts.slice(0,-1).join('、')+'和 '+parts[parts.length-1]+'合起來是多少？' : parts[0]+'是多少？';
+      Object.assign(q, {title:'算算看。', body}, numOpts(ans, v===2? [100*h+10*t+(o%10)] : [100*h+10*o+t]));
+      q.key='m-n1pl'+h+'-'+t+'-'+o; q.explain=(h?h+' 個百是 '+(100*h)+'，':'')+(t?t+' 個十是 '+(10*t)+'，':'')+(o?o+' 個一是 '+o+'，':'')+'合起來是 '+ans; q.check={kind:'compose', h,t,o, ans};
+    } else if(v===3){
+      const n=rnd(10,30), ans=n*10;
+      Object.assign(q, {title:'算算看。', body:n+' 個十是多少？'}, numOpts(ans, [n, ans+10]));
+      q.key='m-n1ten'+n; q.explain='10 個十是 100，'+n+' 個十是 '+ans; q.check={kind:'tens', n, ans};
+    } else if(v===4){
+      const num=rnd(100,300), ds=String(num).split('').map(Number), names=['百位','十位','個位'], pi=rnd(0,2), ans=ds[pi];
+      const cand=[...new Set([...ds, ans+1, ans===0?2:ans-1, (ans+5)%10])].filter(d=>d!==ans && d>=0 && d<=9).slice(0,3);
+      Object.assign(q, {title:'算算看。', body:num+' 的「'+names[pi]+'」是多少？'}, mkOpts(String(ans), cand.map(String)));
+      q.key='m-n1dig'+num+pi; q.explain=num+'：百位是 '+ds[0]+'，十位是 '+ds[1]+'，個位是 '+ds[2]; q.check={kind:'digit', num, pi, ans};
+    } else if(v===5){
+      let num, pi, d, g=0; do{ num=rnd(100,300); pi=rnd(0,1); d=+String(num)[pi]; } while(d===0 && g++<50);
+      const val=d*(pi===0?100:10), names=['百位','十位'];
+      Object.assign(q, {title:'算算看。', body:num+' 的'+names[pi]+'上的 '+d+' 代表多少？'}, mkOpts(String(val), [String(d), String(pi===0? d*10 : d*100)]));
+      q.key='m-n1val'+num+pi; q.explain=names[pi]+'上的 '+d+' 代表 '+d+' 個'+(pi===0?'百':'十')+'，就是 '+val; q.check={kind:'value', num, pi, ans:val};
+    } else {
+      let num, h,t,o, g=0; do{ num=rnd(101,299); [h,t,o]=String(num).split('').map(Number); } while((t===o||h===t) && g++<50);
+      const f=(a,b,c)=>a+' 個百、'+b+' 個十、'+c+' 個一';
+      const right=f(h,t,o); const ds=[...new Set([f(h,o,t), f(t,h,o), f(o,t,h), f(h,t,(o+1)%10)])].filter(x=>x!==right).slice(0,2);
+      Object.assign(q, {title:'選出正確的說法。', body:num+' 是：', layout:'list'}, mkOpts(right, ds));
+      q.key='m-n1dec'+num; q.explain=num+' 是 '+right; q.check={kind:'decomp', num, ans:right};
+    }
+    return q;
+  }
+  if(type==='n1cmp'){
+    if(Math.random()<0.75){
+      const a=rnd(100,299); let b; const r=Math.random();
+      if(r<0.08) b=a; else if(r<0.45) b=Math.floor(a/100)*100 + rnd(0,99); else if(r<0.75) b=Math.floor(a/10)*10 + rnd(0,9); else b=rnd(100,300);
+      if(b===a && r>=0.08) b = a+ (a<300? 1 : -1);
+      const ans = a>b? '＞' : a<b? '＜' : '＝'; const opts=['＞','＜','＝'];
+      Object.assign(q, {title:'○ 裡要填「＞」、「＜」還是「＝」？', bodyBig:a+' ○ '+b, options:opts, answer:opts.indexOf(ans), fixedOpts:true});
+      q.key='m-n1cmp'+a+'-'+b; q.explain=a+' '+ans+' '+b+(a===b?'':'（先比百位，一樣再比十位，再比個位）'); q.check={kind:'cmp', a, b, ans};
+    } else {
+      const big=Math.random()<0.5, h=rnd(1,2)*100; const ns=new Set(); while(ns.size<3) ns.add(h+rnd(0,99)); const arr=[...ns]; const ans=big? Math.max(...arr) : Math.min(...arr);
+      Object.assign(q, {title:'哪一個數'+(big?'最大':'最小')+'？', body:''}, mkOpts(String(ans), arr.filter(x=>x!==ans).map(String)));
+      q.key='m-n1ext'+arr.join(',')+big; q.explain=arr.slice().sort((x,y)=>big?y-x:x-y).join(big?' ＞ ':' ＜ '); q.check={kind:'extreme', arr, big, ans};
+    }
+    return q;
+  }
+  if(type==='n2add'){
+    const kind=pick1(['none','ones','tens','both','both']); let a,b,g=0;
+    const cls=(a,b)=>{ const c1=(a%10+b%10)>=10, c2=(Math.floor(a/10)+Math.floor(b/10)+(c1?1:0))>=10; return c1&&c2?'both':c1?'ones':c2?'tens':'none'; };
+    do{ a=rnd(10,99); b= Math.random()<0.15? rnd(2,9) : rnd(10,99); } while(cls(a,b)!==kind && g++<500);
+    const ans=a+b, k=cls(a,b);
+    Object.assign(q, {title:'用直式算算看。', vertical:{a, b, op:'+'}, body:''}, numOpts(ans, [digitsNoCarry(a,b,'+')]));
+    q.key='m-n2add'+a+'+'+b; q.explain=a+' + '+b+' = '+ans+({none:'', ones:'（個位滿 10，進 1 到十位）', tens:'（十位滿 10，進 1 到百位）', both:'（個位進 1 到十位，十位再進 1 到百位）'}[k]); q.check={kind:'add', a, b, ans};
+    return q;
+  }
+  if(type==='n2sub'){
+    const borrow=Math.random()<0.6; let a,b,g=0;
+    do{ a=rnd(20,99); b= Math.random()<0.2? rnd(2,9) : rnd(10,a-1); } while((((b%10)>(a%10))!==borrow || b>=a) && g++<500);
+    const ans=a-b, br=(b%10)>(a%10);
+    Object.assign(q, {title:'用直式算算看。', vertical:{a, b, op:'−'}, body:''}, numOpts(ans, [digitsNoCarry(a,b,'-')]));
+    q.key='m-n2sub'+a+'-'+b; q.explain=a+' − '+b+' = '+ans+(br?'（個位不夠減，從十位借 1 個十）':''); q.check={kind:'sub', a, b, ans};
+    return q;
+  }
+  if(type==='n2word'){
+    const t=pick1(NANI_WORD), [N,P]=pick1(NAMES); let a,b;
+    if(t.op==='+'){ a=rnd(10,99); b=rnd(10,99); } else { a=rnd(21,99); b=rnd(10,a-1); }
+    const ans = t.op==='+'? a+b : a-b;
+    const text=t.text.replace(/\{N\}/g,N).replace(/\{P\}/g,P).replace('{a}',a).replace('{b}',b);
+    Object.assign(q, {title:'讀題目，算出答案。', body:text}, numOpts(ans, t.op==='+'? [a-b>0?a-b:b-a, digitsNoCarry(a,b,'+')] : [a+b, digitsNoCarry(a,b,'-')]));
+    q.key='m-n2word'+text; q.explain=a+' '+(t.op==='+'?'+':'−')+' '+b+' = '+ans; q.check={kind:'word', a, b, op:t.op, ans};
+    return q;
+  }
+  return q;
+}
+
+// ---------- 小考題組 ----------
+function dedupe(arr){ const seen=new Set(); return arr.filter(q=>{ if(seen.has(q.key)) return false; seen.add(q.key); return true; }); }
+function examKx(n){
+  const ls=settings.exam.kx.slice().sort((a,b)=>a-b); const out=[];
+  ls.forEach((l,i)=>{ const quota=Math.floor(n/ls.length)+(i<n%ls.length?1:0); out.push(...kxQuestions(quota+3,[l]).slice(0,quota+3)); });
+  // 每課平均，去掉重複，再補足
+  let res=[]; const by={}; dedupe(out).forEach(q=>(by[q.lesson]=by[q.lesson]||[]).push(q));
+  let guard=0; while(res.length<n && guard++<100){ ls.forEach(l=>{ if(res.length<n && by[l] && by[l].length) res.push(by[l].shift()); }); if(ls.every(l=>!by[l]||!by[l].length)) break; }
+  if(res.length<n) res=res.concat(kxQuestions(n-res.length, ls));
+  return shuffle(res.slice(0,n));
+}
+function examMath(n){ return mathQuestions(n, settings.exam.math.filter(u=>u>0).length? settings.exam.math : [1,2]); }
+function examSet(kind, n){
+  n=n||20;
+  if(kind==='kx') return examKx(n);
+  if(kind==='math') return examMath(n);
+  const a=examKx(Math.ceil(n/2)), b=examMath(n-a.length), out=[];
+  for(let i=0;i<n;i++){ const s=(i%2===0? a:b).shift() || a.shift() || b.shift(); if(s) out.push(s); }
+  return out;
+}
+const EXAM_NAMES={kx:'國語小考', math:'數學小考', mix:'綜合小考'};
+function startExam(kind){ start('test', examSet(kind, 20), {exam:{kind, label:EXAM_NAMES[kind]}}); }
+function saveExamHistory(exam, score, right, n){
+  const h=load('kq-exam-hist', []); h.unshift({t:Date.now(), kind:exam.kind, score, right, n}); save('kq-exam-hist', h.slice(0,20));
+}
+function examHistHTML(){
+  const h=load('kq-exam-hist', []); if(!h.length) return '';
+  return '<div class="examhist">最近小考：'+h.slice(0,3).map(x=>{ const d=new Date(x.t); return EXAM_NAMES[x.kind]+' '+x.score+' 分（'+(d.getMonth()+1)+'/'+d.getDate()+'）'; }).join('・')+'</div>';
+}
+function examBannerHTML(){
+  return `<div class="exambox">
+    <div class="examtitle">📅 ${Z('考前複習')}</div>
+    <div class="examrange">考試範圍：${esc(examLabel())}</div>
+    <div class="exambtns">
+      <button class="exbtn review" id="ex-review"><span>📖 ${Z('重點複習')}</span></button>
+      <button class="exbtn" data-exam="kx"><span>📝</span><span>${Z('國語小考')}</span><small>20 題</small></button>
+      <button class="exbtn" data-exam="math"><span>🔢</span><span>${Z('數學小考')}</span><small>20 題</small></button>
+      <button class="exbtn" data-exam="mix"><span>🌈</span><span>${Z('綜合小考')}</span><small>20 題</small></button>
+      <button class="exbtn print" id="ex-print">🖨️ 列印考卷<small>附解答</small></button>
+    </div>
+    ${examHistHTML()}
+  </div>`;
+}
+function bindExamBanner(){
+  $('#ex-review').onclick=reviewPage;
+  $('#ex-print').onclick=()=>printPage('mix');
+  app().querySelectorAll('[data-exam]').forEach(b=>b.onclick=()=>startExam(b.dataset.exam));
+}
+function groupOf(q){ if(q.subject==='math'){ const t=MATH_TYPES.find(t=>t.key===q.type); return t&&t.unit? '數學第 '+t.unit+' 單元' : '數學（綜合）'; } return q.lesson? '國語第 '+q.lesson+' 課' : '國語'; }
+function examResultsHTML(S){
+  const g={}; S.results.forEach(r=>{ const k=groupOf(r.q); (g[k]=g[k]||[0,0]); g[k][1]++; if(r.ok) g[k][0]++; });
+  const keys=Object.keys(g).sort();
+  return `<h2>📊 各課／單元</h2><div class="breakdown">${keys.map(k=>`<div class="bd ${g[k][0]===g[k][1]?'full':g[k][0]/g[k][1]<0.6?'low':''}"><b>${esc(k)}</b><span>${g[k][0]} / ${g[k][1]}</span></div>`).join('')}</div>
+  <details class="allans"><summary>📋 看全部題目和正確答案（${S.results.length} 題）</summary>
+  <div class="wronglist">${S.results.map((r,i)=>`<div class="witem ${r.ok?'okitem':''}"><div class="wq"><b>${i+1}.</b> ${r.ok?'✅':'❌'} <span class="tag">${typeName(r.q)}</span> ${Z(r.q.title)}</div><div class="wbody">${qShort(r.q)}</div><div class="wa">${r.ok?'':`<span class="mine">✗ ${chosenHTML(r)}</span>　`}<span class="ok">✓ ${answerHTML(r.q)}</span></div>${r.q.explain?`<div class="explain">${Z(r.q.explain)}</div>`:''}</div>`).join('')}</div></details>`;
+}
+
+// ---------- 重點複習頁 ----------
+function wordZy(w){ const zs=w[1].trim().split(/\s+/); return [...w[0]].map((c,i)=>'{'+c+'|'+(zs[i]||'')+'}').join(''); }
+// 單字卡的注音：先用自動題的讀音，再用本課語詞裡的讀音；輕聲（˙）改用字的本音
+function charZy(l, c){
+  const ok=z=>z && z[0]!=='˙';
+  const it=BANK_KX2A_AUTO.find(x=>x.type==='kxread' && x.lesson===l && x.tg===c); if(it && ok(it.ans)) return it.ans;
+  for(const w of KX2A_LESSONS[l-1].words){ const i=[...w[0]].indexOf(c); if(i>=0){ const z=w[1].trim().split(/\s+/)[i]; if(ok(z)) return z; } }
+  return ZY_CHAR[c]||'';
+}
+function reviewPage(){
+  const e=settings.exam; const ls=e.kx.slice().sort((a,b)=>a-b);
+  const kxHTML = ls.map(n=>{
+    const L=KX2A_LESSONS[n-1]; if(!L) return '';
+    const polys=[...new Set(KX2A_MANUAL.filter(x=>x.lesson===n && x.type==='poly').map(x=>x.tip))];
+    const groups=KX2A_WB_GROUPS[n]||[]; const idioms=KX2A_IDIOMS[n]||[]; const pats=KX2A_REVIEW_PATTERNS[n]||[];
+    return `<section class="rvcard">
+      <h2>📘 第 ${n} 課　${esc(L.title)}</h2>
+      <h3>✏️ 生字（要會寫）</h3><div class="rvchars">${[...L.chars].map(c=>`<span class="rvch">${charHTML(c, charZy(n,c))}</span>`).join('')}</div>
+      ${L.read? `<h3>👀 認讀字（會念就好）</h3><div class="rvchars">${[...L.read].map(c=>`<span class="rvch read">${charHTML(c, charZy(n,c))}</span>`).join('')}</div>`:''}
+      <h3>📗 語詞</h3><div class="rvwords">${L.words.map(w=>`<span class="rvw">${Z(wordZy(w))}</span>`).join('')}</div>
+      ${polys.length? `<h3>🔀 多音字</h3><ul class="rvlist">${polys.map(t=>`<li>${ZS(t)}</li>`).join('')}</ul>`:''}
+      ${groups.length? `<h3>🔍 長得像的字（字音字形辨析）</h3><div class="rvwords">${groups.map(g=>`<span class="rvw grp">${esc([...g].join('／'))}</span>`).join('')}</div>`:''}
+      ${idioms.length? `<h3>🐉 成語</h3><ul class="rvlist">${idioms.map(d=>`<li><b>${Z('{'+[...d.idiom].map((c,i)=>c+'|'+d.zy.split(/\s+/)[i]).join('}{')+'}')}</b>：${esc(d.mean)}</li>`).join('')}</ul>`:''}
+      ${pats.length? `<h3>🧩 句型</h3><ul class="rvlist">${pats.map(p=>`<li><b>${esc(p.pat)}</b>　例：${esc(p.ex)}</li>`).join('')}</ul>`:''}
+      <div class="row"><button class="next" data-prac-l="${n}">🐣 練習第 ${n} 課</button></div>
+    </section>`; }).join('');
+  const mathHTML = e.math.filter(u=>u>0).map(u=>{ const U=NANI_UNITS.find(x=>x.unit===u); if(!U) return '';
+    const ex1=genNani(u===1?'n1place':'n2add', {subject:'math', layout:'grid'}), ex2=genNani(u===1?'n1cmp':'n2sub', {subject:'math', layout:'grid'});
+    return `<section class="rvcard math">
+      <h2>🔢 數學第 ${u} 單元　${esc(U.title)}</h2>
+      <div class="note">${U.subs.map(esc).join('　')}</div>
+      <ul class="rvlist">${U.points.map(p=>`<li>${esc(p)}</li>`).join('')}</ul>
+      <h3>🌟 例題</h3><div class="rvex">${[ex1,ex2].map(q=>`<div class="rvexq"><div>${Z(q.title)}</div>${bodyHTML(q)}<div class="ok">✓ ${esc(q.explain)}</div></div>`).join('')}</div>
+      <div class="row"><button class="next" data-prac-u="${u}">🐣 練習第 ${u} 單元</button></div>
+    </section>`; }).join('');
+  app().innerHTML = `<div class="results review">
+    <h1><span>📖 ${Z('重點複習')}</span></h1>
+    <p class="note">考試範圍：${esc(examLabel())}</p>
+    ${kxHTML}${mathHTML}
+    <p class="note">${esc(KX2A_REVIEW_SRC)}多音字說明與數學例題為自編。<br>${esc(NANI_SRC)}</p>
+    <div class="row"><button class="next" data-exam="mix">🌈 ${Z('綜合小考')}</button><button class="pill" id="home">🏠 ${Z('回首頁')}</button></div>
+  </div>`;
+  app().querySelectorAll('[data-prac-l]').forEach(b=>b.onclick=()=>start('practice', kxQuestions(10, [+b.dataset.pracL])));
+  app().querySelectorAll('[data-prac-u]').forEach(b=>b.onclick=()=>start('practice', mathQuestions(10, [+b.dataset.pracU])));
+  app().querySelectorAll('[data-exam]').forEach(b=>b.onclick=()=>startExam(b.dataset.exam));
+  $('#home').onclick=home; window.scrollTo(0,0);
+}
+
+// ---------- 列印考卷（附解答） ----------
+const LETTERS='ABCDEFG';
+function printQHTML(q, i){
+  let h=`<div class="pq"><div class="pqt"><b>${i+1}.</b> ${Z(q.title)}</div>`;
+  if(q.layout==='fix'){ h+=q2sent(q)+`<div class="pfill">寫錯的字：＿＿＿　改成：＿＿＿</div>`; }
+  else if(q.layout==='sentence'){ h+=q2sent(q)+`<div class="pfill">寫錯的字：＿＿＿</div>`; }
+  else if(q.layout==='order'){ h+='<div class="sent">'+shuffle(q.chunks).map(c=>Z(c)).join('　／　')+'</div><div class="pfill">＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿</div>'; }
+  else { h+=`<div class="qbody">${bodyHTML(q)}</div><div class="popts ${q.layout}">${q.options.map((o,j)=>`<span class="popt">（${LETTERS[j]}）${optHTML(q,o)}</span>`).join('')}</div>`; }
+  return h+'</div>';
+}
+function printAnsHTML(q, i){
+  let a;
+  if(q.layout==='fix' || q.layout==='order') a=Z(q.answerText||q.explain);
+  else if(q.layout==='sentence') a=Z(q.explain);
+  else a='（'+LETTERS[q.answer]+'）'+optHTML(q, q.options[q.answer])+(q.subject==='math'&&q.explain? '　'+esc(q.explain) : '');
+  return `<li><b>${i+1}.</b> ${a}</li>`;
+}
+function printPage(kind){
+  const qs=examSet(kind, 20);
+  app().innerHTML = `<div class="printpage">
+    <div class="noprint row chips">${['kx','math','mix'].map(k=>`<button class="chip small ${k===kind?'on':''}" data-pk="${k}">${EXAM_NAMES[k]}</button>`).join('')}</div>
+    <div class="noprint row"><button class="next" id="doprint">🖨️ 列印</button><button class="pill" id="regen">🔄 換一份</button><button class="pill" id="home">🏠 回首頁</button></div>
+    <h1 class="ptitle">${esc(EXAM_NAMES[kind])}</h1>
+    <div class="phead">姓名：＿＿＿＿＿＿　日期：＿＿＿＿＿＿　分數：＿＿＿＿＿（每題 5 分）<br><small>範圍：${esc(examLabel())}</small></div>
+    ${qs.map(printQHTML).join('')}
+    <div class="pkey"><h2>解答</h2><ol class="pans">${qs.map(printAnsHTML).join('')}</ol></div>
+  </div>`;
+  app().querySelectorAll('[data-pk]').forEach(b=>b.onclick=()=>printPage(b.dataset.pk));
+  $('#doprint').onclick=()=>window.print(); $('#regen').onclick=()=>printPage(kind); $('#home').onclick=home;
+}
+
+// ---------- 家長設定：考試範圍 ----------
+function examSettingsHTML(){
+  const e=settings.exam;
+  return `<section>
+    <h3>📅 考試範圍（首頁「考前複習」、小考、列印考卷都用這個範圍）</h3>
+    <div class="note">國語（康軒二上）：</div>
+    <div class="lessons">${KX2A_LESSONS.map(l=>`<button class="lchip ${e.kx.includes(l.lesson)?'on':''}" data-ek="${l.lesson}">第 ${l.lesson} 課<small>${esc(l.title)}</small></button>`).join('')}</div>
+    <div class="note">數學（南一二上）：</div>
+    <div class="lessons">${NANI_UNITS.map(u=>`<button class="lchip ${e.math.includes(u.unit)?'on':''}" data-em="${u.unit}">第 ${u.unit} 單元<small>${esc(u.title)}</small></button>`).join('')}</div>
+    <p class="note">目前只做好南一第 1、2 單元的數學題；之後的單元要等確認單元內容後再加入。成語／句型目前有第 1～4、6 課。</p>
+  </section>`;
+}
+function bindExamSettings(){
+  app().querySelectorAll('[data-ek]').forEach(b=>b.onclick=()=>{ const n=+b.dataset.ek; const s=new Set(settings.exam.kx); s.has(n)? s.delete(n) : s.add(n); if(!s.size) s.add(n); settings.exam.kx=[...s].sort((x,y)=>x-y); saveSettings(); settingsPage(); });
+  app().querySelectorAll('[data-em]').forEach(b=>b.onclick=()=>{ const n=+b.dataset.em; const s=new Set(settings.exam.math); s.has(n)? s.delete(n) : s.add(n); if(!s.size) s.add(n); settings.exam.math=[...s].sort((x,y)=>x-y); saveSettings(); settingsPage(); });
+}
+
+window.__debug = {genNani, examSet, startExam, reviewPage, printPage, mathQuestions, kxQuestions, kxPool, lessonSel, makeSet, start, results:()=>results(), genMath, buildChinese, settings, home};
+
+applyFont(); home();
+})();
+
+</script>
+</body>
+</html>
