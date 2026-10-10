@@ -200,6 +200,10 @@ details.allans summary{font-family:var(--zyfont);font-size:22px;cursor:pointer;b
   .rvch{font-size:36px}.rvw{font-size:26px}.pans{columns:1}
 }
 .pans .zyopt{font-size:22px}.pans .plainopt{font-size:24px}
+.ruler{width:100%;max-width:680px;height:auto;display:block;margin:6px auto}
+.wbody .ruler,.rvexq .ruler{max-width:420px}.pq .ruler{max-width:460px;margin:4px 0}
+.math .opts.grid .opt{white-space:nowrap}
+@media (max-width:640px){.math .opts.grid .opt{font-size:28px;padding:10px 4px}}
 
 </style>
 </head>
@@ -925,7 +929,7 @@ const KX2A_WB_GROUPS = {1:['座坐','木未末','書畫','考老','師帥','刀�
    考試範圍（每週由小幫手依進度更新）＋重點複習資料
    ===================================================================== */
 // 預設考試範圍：國語＝康軒二上第幾課；數學＝南一二上第幾單元。家長設定裡也可以改（存在這台裝置）。
-const EXAM_DEFAULT = {kx:[1,2,3,4], math:[1,2], updated:'2026-10-04'};
+const EXAM_DEFAULT = {kx:[1,2,3,4], math:[1,2,3], updated:'2026-10-11'};
 
 // 南一版 二上 數學（115學年度）單元名稱與重點
 // 來源：嘉義縣新美國小「115學年度第一學期二年級數學領域課程計畫」（教材版本：南一版第三冊）、
@@ -942,8 +946,16 @@ const NANI_UNITS = [
            '加法：個位加起來滿 10，要進 1 到十位（不進位、一次進位、連續進位）。',
            '減法：個位不夠減，要從十位借 1 個十（= 10 個一）來減（不退位、退位）。',
            '應用題：「一共、合起來、又多了」常用加法；「還剩下、拿走、多幾個」常用減法。']},
+  {unit:3, title:'幾公分', subs:['3-1 有多長','3-2 認識 1 公分','3-3 長度的測量','3-4 長度的加減','3-5 畫長度'],
+   points:['用不同的東西（個別單位）量同一個長度，個數會不一樣：用來量的東西越長，個數越少；越短，個數越多。',
+           '尺上的 1 大格是 1 公分，1 公分寫成 1 cm；5 個 1 公分是 5 公分。',
+           '用尺量長度：東西的一端對齊刻度 0，看另一端在刻度幾；尺要放直，不可以歪斜。',
+           '用斷掉的尺量：用「後面的刻度 − 前面的刻度」，例：從 4 到 13 是 13 − 4 = 9 公分。',
+           '長度也可以加減：4 公分和 9 公分接起來是 13 公分；9 公分比 4 公分長 5 公分。',
+           '畫 8 公分的直線：從刻度 0 畫到 8；或從刻度 4 畫到 12（4 + 8 = 12）。',
+           '估一估：沒有尺時，可以用手指寬（大約 1 公分）來估長度。']},
 ];
-const NANI_SRC = '南一版二上數學單元名稱依：115學年度學校課程計畫（教材版本：南一版第三冊）與均一教育平台「類南一版」。';
+const NANI_SRC = '南一版二上數學單元名稱與重點依：115學年度學校課程計畫（嘉義縣新美國小，教材版本：南一版第三冊；臺北市立農國小）與均一教育平台「類南一版」。';
 
 // 國語重點複習：句型（依 113學年度康軒「國語重點複習」（教用）第 1～4 課所列；115學年課本可能略有不同）
 const KX2A_REVIEW_PATTERNS = {
@@ -983,9 +995,12 @@ const NANI_WORD = [
   {op:'-', cmp:true, text:'哥哥有 {a} 顆彈珠，弟弟有 {b} 顆彈珠。哥哥比弟弟多幾顆？'},
 ];
 // 數學題與考前複習用到、原本字典沒有的字（都是單一讀音的常用字，讀音依教育部國語辭典）
-Object.entries({撿:'ㄐㄧㄢˇ',特:'ㄊㄜˋ',糕:'ㄍㄠ',麵:'ㄇㄧㄢˋ',架:'ㄐㄧㄚˋ',農:'ㄋㄨㄥˊ',場:'ㄔㄤˇ',雞:'ㄐㄧ',鴨:'ㄧㄚ',羊:'ㄧㄤˊ',代:'ㄉㄞˋ',表:'ㄅㄧㄠˇ',依:'ㄧ',序:'ㄒㄩˋ',式:'ㄕˋ',夠:'ㄍㄡˋ'})
+Object.entries({撿:'ㄐㄧㄢˇ',特:'ㄊㄜˋ',糕:'ㄍㄠ',麵:'ㄇㄧㄢˋ',架:'ㄐㄧㄚˋ',農:'ㄋㄨㄥˊ',場:'ㄔㄤˇ',雞:'ㄐㄧ',鴨:'ㄧㄚ',羊:'ㄧㄤˊ',代:'ㄉㄞˋ',表:'ㄅㄧㄠˇ',依:'ㄧ',序:'ㄒㄩˋ',式:'ㄕˋ',夠:'ㄍㄡˋ',迴:'ㄏㄨㄟˊ',紋:'ㄨㄣˊ',印:'ㄧㄣˋ',刻:'ㄎㄜˋ',度:'ㄉㄨˋ',較:'ㄐㄧㄠˋ',根:'ㄍㄣ',斷:'ㄉㄨㄢˋ',積:'ㄐㄧ',木:'ㄇㄨˋ',藍:'ㄌㄢˊ',綠:'ㄌㄩˋ',食:'ㄕˊ',指:'ㄓˇ',寬:'ㄎㄨㄢ',所:'ㄙㄨㄛˇ',估:'ㄍㄨ',段:'ㄉㄨㄢˋ',端:'ㄉㄨㄢ',齊:'ㄑㄧˊ',另:'ㄌㄧㄥˋ',旦:'ㄉㄢˋ'})
   .forEach(([c,z])=>{ if(!ZY_CHAR[c]) ZY_CHAR[c]=z; });
 Object.assign(ZY_WORD, {'彈珠':'ㄉㄢˋ ㄓㄨ'});
+
+// ---- 南一二上第 3 單元：估一估（大約幾公分；干擾選項差很多，只考長度感）----
+const NANI_EST = [['我的食指寬大約是', 1, [10,100]], ['一個橡皮擦大約長', 5, [50,500]], ['一枝新鉛筆大約長', 18, [180,2]], ['一本國語課本大約長', 26, [260,3]]];
 
 </script>
 <script>
@@ -1003,18 +1018,19 @@ const DEFAULT_OFF = ['idiomExtra'];
 const MATH_TYPES = [
   {key:'n1seq', name:'數的順序（數到 300）', unit:1}, {key:'n1place', name:'百位、十位、個位', unit:1}, {key:'n1cmp', name:'比大小（＞、＜）', unit:1},
   {key:'n2add', name:'二位數加法直式（進位）', unit:2}, {key:'n2sub', name:'二位數減法直式（退位）', unit:2}, {key:'n2word', name:'加減應用題', unit:2},
+  {key:'n3unit', name:'有多長（個別單位）', unit:3}, {key:'n3cm', name:'認識 1 公分、估一估', unit:3}, {key:'n3ruler', name:'用尺量長度、畫長度', unit:3}, {key:'n3add', name:'長度的加減', unit:3},
   {key:'add', name:'加法（含三位數）', unit:0}, {key:'sub', name:'減法（含三位數）', unit:0}, {key:'mul', name:'九九乘法', unit:0},
   {key:'word', name:'應用題（綜合）', unit:0}, {key:'time', name:'時間', unit:0}, {key:'money', name:'錢幣', unit:0}, {key:'length', name:'長度', unit:0}];
 const FONT_PRESETS = ['BpmfGenSenRounded','源泉注音圓體','BpmfZihiKaiStd','字嗨注音標楷','BpmfIansui','芫荽注音','Bpmf Huninn','jf open 粉圓 注音','BpmfGenSenRounded-R'];
 
 // ---------- 設定 ----------
-const DEFAULTS = {zyMode:'side', font:'BpmfGenSenRounded', subject:'kx', count:10, lessons:[1,2], mathUnits:[1,2], exam:JSON.parse(JSON.stringify(EXAM_DEFAULT)), examBase:EXAM_DEFAULT.updated,
+const DEFAULTS = {zyMode:'side', font:'BpmfGenSenRounded', subject:'kx', count:10, lessons:[1,2], mathUnits:[1,2,3], exam:JSON.parse(JSON.stringify(EXAM_DEFAULT)), examBase:EXAM_DEFAULT.updated,
   types:Object.fromEntries([...CN_TYPES, ...MATH_TYPES].map(t=>[t.key,!DEFAULT_OFF.includes(t.key)]))};
 let settings = load('kq-settings', DEFAULTS);
 settings = Object.assign({}, DEFAULTS, settings, {types:Object.assign({}, DEFAULTS.types, settings.types||{})});
 if(settings.subject==='chinese') settings.subject='kx';
 // 考試範圍：index.html 更新了新的範圍（EXAM_DEFAULT.updated 改變）就改用新的
-if(settings.examBase!==EXAM_DEFAULT.updated || !settings.exam || !settings.exam.kx){ settings.exam=JSON.parse(JSON.stringify(EXAM_DEFAULT)); settings.examBase=EXAM_DEFAULT.updated; }
+if(settings.examBase!==EXAM_DEFAULT.updated || !settings.exam || !settings.exam.kx){ settings.exam=JSON.parse(JSON.stringify(EXAM_DEFAULT)); settings.examBase=EXAM_DEFAULT.updated; settings.mathUnits=[...new Set([...(settings.mathUnits||[]).filter(u=>u===0), ...EXAM_DEFAULT.math])].sort((a,b)=>a-b); }
 // 成語的注音併入詞語字典
 [...Object.values(KX2A_IDIOMS).flat(), ...IDIOMS_EXTRA].forEach(d=>{ if(d.idiom && d.zy) ZY_WORD[d.idiom]=d.zy; });
 function load(k, d){ try{ const v = JSON.parse(localStorage.getItem(k)); return v==null? JSON.parse(JSON.stringify(d)) : v; }catch(e){ return JSON.parse(JSON.stringify(d)); } }
@@ -1176,7 +1192,7 @@ function digitsNoCarry(a,b,op){ // 常見錯誤：忘記進位/退位
 }
 function genMath(type){
   const q={subject:'math', type, layout:'grid'};
-  if(/^n[12]/.test(type)) return genNani(type, q);
+  if(/^n\d/.test(type)) return genNani(type, q);
   if(type==='add' || type==='sub'){
     let a,b; const three=Math.random()<0.45;
     if(type==='add'){
@@ -1378,6 +1394,7 @@ function bodyHTML(q){
   if(q.bodyBig) h+=`<div class="bigexpr">${esc(q.bodyBig)}</div>`;
   if(q.clock) h+=clockSVG(q.clock.h, q.clock.m);
   if(q.coins) h+=coinsHTML(q.coins);
+  if(q.ruler) h+=rulerSVG(q.ruler);
   if(q.example) h+=`<div class="example">${Z('例：')}${Z(q.example)}</div>`;
   if(q.body) h+=`<div class="sent">${Z(q.body, {blankZy:q.blankZy})}</div>`;
   return h;
@@ -1608,7 +1625,7 @@ function settingsPage(){
     <section>
       <h3>國語題型（括號內是目前選的課：第 ${lessonSel().join('、')} 課 的題數）</h3>
       ${CN_TYPES.map(t=>`<label class="chk"><input type="checkbox" data-t="${t.key}" ${settings.types[t.key]?'checked':''}> ${t.name}（${cnCount(t.key)} 題）</label>`).join('')}
-      <h3>數學題型（自動出題，題目做不完；南一二上第 1、2 單元的題型依單元重點出題）</h3>
+      <h3>數學題型（自動出題，題目做不完；南一二上第 1～3 單元的題型依單元重點出題）</h3>
       ${MATH_TYPES.map(t=>`<label class="chk"><input type="checkbox" data-t="${t.key}" ${settings.types[t.key]?'checked':''}> ${t.name}</label>`).join('')}
     </section>
     <section>
@@ -1696,14 +1713,14 @@ window.__lessonCheck = function(){
   Object.assign(settings, JSON.parse(saved));
   return report;
 };
-// ===================== 考前複習・小考・列印考卷・南一數學（第 1、2 單元） =====================
-function mathUnitSel(){ const u=(settings.mathUnits||[]).filter(x=>x===0||NANI_UNITS.some(n=>n.unit===x)); return u.length? u.slice().sort((a,b)=>a-b) : [1,2]; }
+// ===================== 考前複習・小考・列印考卷・南一數學（第 1～3 單元） =====================
+function mathUnitSel(){ const u=(settings.mathUnits||[]).filter(x=>x===0||NANI_UNITS.some(n=>n.unit===x)); return u.length? u.slice().sort((a,b)=>a-b) : NANI_UNITS.map(n=>n.unit); }
 const zyOK = s => [...String(s)].every(c=>!isCJK(c) || ZY_CHAR[c]);
 const ZS = s => zyOK(s)? Z(s) : esc(s);          // 字典都有注音才加注音，否則用一般文字
 const rangeTxt = (a, unit) => { a=a.slice().sort((x,y)=>x-y); const cont=a.every((v,i)=>i===0||v===a[i-1]+1); return '第 '+(cont&&a.length>2? a[0]+'～'+a[a.length-1] : a.join('、'))+' '+unit; };
 function examLabel(){ const e=settings.exam; return '國語（康軒）'+rangeTxt(e.kx,'課')+'・數學（南一）'+rangeTxt(e.math,'單元'); }
 
-// ---------- 南一二上 第 1、2 單元出題 ----------
+// ---------- 南一二上 第 1～3 單元出題 ----------
 function genNani(type, q){
   if(type==='n1seq'){
     let seq, step, dir, g=0;
@@ -1791,7 +1808,68 @@ function genNani(type, q){
     q.key='m-n2word'+text; q.explain=a+' '+(t.op==='+'?'+':'−')+' '+b+' = '+ans; q.check={kind:'word', a, b, op:t.op, ans};
     return q;
   }
+  if(type==='n3unit'){
+    if(Math.random()<0.5){
+      const thing=pick1(['一張卡片','一枝鉛筆','一本書']); let a=rnd(3,12), b=rnd(3,12); while(b===a) b=rnd(3,12);
+      const [c1,c2]=shuffle(['紅色','藍色','綠色','黃色']); const ans=(a<b? c1 : c2)+'積木';
+      Object.assign(q, {title:'讀題目，想一想。', body:thing+'和 '+a+' 個'+c1+'積木一樣長，也和 '+b+' 個'+c2+'積木一樣長。哪一種積木比較長？'}, mkOpts(ans, [(a<b? c2 : c1)+'積木', '一樣長']));
+      q.key='m-n3u'+thing+a+c1+b+c2; q.explain='量同一個東西，用的個數越少，那種積木越長：'+Math.min(a,b)+' 個比 '+Math.max(a,b)+' 個少，所以'+ans+'比較長。'; q.check={kind:'unit', a, b, c1, c2, ans};
+    } else {
+      const who=['爸爸','媽媽','哥哥']; const ns=new Set(); while(ns.size<3) ns.add(rnd(5,15)); const cnt=[...ns]; const longest=Math.random()<0.6;
+      const v= longest? Math.min(...cnt) : Math.max(...cnt); const ans=who[cnt.indexOf(v)];
+      Object.assign(q, {title:'讀題目，想一想。', body:'爸爸、媽媽和哥哥用自己的腳印走同一段路。爸爸走了 '+cnt[0]+' 個腳印，媽媽走了 '+cnt[1]+' 個腳印，哥哥走了 '+cnt[2]+' 個腳印。誰的腳印最'+(longest?'長':'短')+'？'}, mkOpts(ans, who.filter(w=>w!==ans)));
+      q.key='m-n3f'+cnt.join(',')+longest; q.explain='同一段路，腳印越長，走的個數越少；腳印越短，個數越多。所以是'+ans+'（'+v+' 個）。'; q.check={kind:'foot', cnt, longest, ans};
+    }
+    return q;
+  }
+  if(type==='n3ruler'){
+    const r=Math.random();
+    if(r<0.75){
+      const broken=r>=0.4; let len=rnd(2,11); const s0= broken? rnd(1,6) : 0; const start= broken? rnd(1,s0) : 0;
+      if(s0+len>start+15) len=start+15-s0; const e0=s0+len;
+      Object.assign(q, {title: broken? '尺斷掉了，這條彩帶長幾公分？' : '這條彩帶長幾公分？', ruler:{from:start, to:start+Math.max(8, e0-start+rnd(1,3)), s:s0, e:e0, broken}, body:''}, numOpts(len, broken? [e0, len+1] : [len+1, len-1], n=>n+' 公分'));
+      q.key='m-n3r'+start+':'+s0+'-'+e0; q.explain= broken? '從刻度 '+s0+' 到 '+e0+'：'+e0+' − '+s0+' = '+len+'（公分）' : '一端對齊 0，另一端在刻度 '+e0+'，是 '+len+' 公分'; q.check={kind:'ruler', s:s0, e:e0, ans:len};
+    } else {
+      const n=rnd(3,12), st=rnd(1,8), ans=st+n;
+      Object.assign(q, {title:'畫長度：', body:'用尺畫一條 '+n+' 公分的直線，從刻度 '+st+' 開始畫，要畫到刻度多少？'}, numOpts(ans, [n, ans-1]));
+      q.key='m-n3d'+n+'@'+st; q.explain=st+' + '+n+' = '+ans+'，從刻度 '+st+' 畫到刻度 '+ans; q.check={kind:'draw', n, st, ans};
+    }
+    return q;
+  }
+  if(type==='n3add'){
+    const k=pick1(['add','cmp','cut']); let a,b,ans,text,ex;
+    const [c1,c2]=shuffle(['紅','藍','綠','黃']);
+    if(k==='add'){ a=rnd(3,60); b=rnd(3,60); ans=a+b; text=c1+'彩帶長 '+a+' 公分，'+c2+'彩帶長 '+b+' 公分。兩條彩帶接起來是幾公分？'; ex=a+' + '+b+' = '+ans+'（公分）'; }
+    else if(k==='cmp'){ a=rnd(8,60); b=rnd(2,a-1); ans=a-b; text=c1+'彩帶長 '+a+' 公分，'+c2+'彩帶長 '+b+' 公分。'+c1+'彩帶比'+c2+'彩帶長幾公分？'; ex=a+' − '+b+' = '+ans+'（公分）'; }
+    else { a=rnd(15,90); b=rnd(2,a-2); ans=a-b; text='一條繩子長 '+a+' 公分，剪掉 '+b+' 公分，還剩下幾公分？'; ex=a+' − '+b+' = '+ans+'（公分）'; }
+    Object.assign(q, {title:'讀題目，算出答案。', body:text}, numOpts(ans, k==='add'? [Math.abs(a-b)||ans+3] : [a+b], n=>n+' 公分'));
+    q.key='m-n3a'+text; q.explain=ex; q.check={kind:'len'+k, a, b, ans};
+    return q;
+  }
+  if(type==='n3cm'){
+    if(Math.random()<0.5){
+      const n=rnd(2,30);
+      Object.assign(q, {title:'算算看。', body:n+' 個 1 公分合起來是幾公分？'}, numOpts(n, [n*10], x=>x+' 公分'));
+      q.key='m-n3c'+n; q.explain=n+' 個 1 公分是 '+n+' 公分（'+n+' cm）'; q.check={kind:'cm', n, ans:n};
+    } else {
+      const [t,v,ds]=pick1(NANI_EST);
+      Object.assign(q, {title:'估一估：', body:t+'幾公分？'}, mkOpts(v+' 公分', ds.map(x=>x+' 公分')));
+      q.key='m-n3e'+t; q.explain=t+' '+v+' 公分。'; q.check={kind:'est', v, ans:v};
+    }
+    return q;
+  }
   return q;
+}
+// ---------- 尺（SVG）----------
+function rulerSVG(R){
+  const px=40, pad=24, n=R.to-R.from, W=n*px+pad*2, H=150, x=c=>pad+(c-R.from)*px;
+  let s=`<svg class="ruler" viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg">`;
+  s+=`<rect x="${x(R.s)}" y="18" width="${(R.e-R.s)*px}" height="30" rx="8" fill="#ff8a65" stroke="#e0704f" stroke-width="2"/>`;
+  s+=`<line x1="${x(R.s)}" y1="10" x2="${x(R.s)}" y2="62" stroke="#888" stroke-dasharray="4 3"/><line x1="${x(R.e)}" y1="10" x2="${x(R.e)}" y2="62" stroke="#888" stroke-dasharray="4 3"/>`;
+  const left = R.broken? `${pad-14},62 ${pad-4},74 ${pad-16},86 ${pad-4},98 ${pad-14},110 ${pad-4},122 ${pad-14},134` : `${pad-14},62 ${pad-14},134`;
+  s+=`<polygon points="${left} ${W-pad+14},134 ${W-pad+14},62" fill="#fff6c8" stroke="#c49a2c" stroke-width="2"/>`;
+  for(let c=R.from;c<=R.to;c++){ s+=`<line x1="${x(c)}" y1="62" x2="${x(c)}" y2="88" stroke="#333" stroke-width="2"/><text x="${x(c)}" y="112" text-anchor="middle" font-size="24" font-weight="bold" fill="#333">${c}</text>`; if(c<R.to) s+=`<line x1="${x(c)+px/2}" y1="62" x2="${x(c)+px/2}" y2="76" stroke="#666" stroke-width="1.5"/>`; }
+  return s+`<text x="${W-pad+8}" y="130" text-anchor="end" font-size="14" fill="#7a6f96">cm</text></svg>`;
 }
 
 // ---------- 小考題組 ----------
@@ -1878,12 +1956,12 @@ function reviewPage(){
       <div class="row"><button class="next" data-prac-l="${n}">🐣 練習第 ${n} 課</button></div>
     </section>`; }).join('');
   const mathHTML = e.math.filter(u=>u>0).map(u=>{ const U=NANI_UNITS.find(x=>x.unit===u); if(!U) return '';
-    const ex1=genNani(u===1?'n1place':'n2add', {subject:'math', layout:'grid'}), ex2=genNani(u===1?'n1cmp':'n2sub', {subject:'math', layout:'grid'});
+    const EX={1:['n1place','n1cmp'], 2:['n2add','n2sub'], 3:['n3ruler','n3add']}[u]||[]; const [ex1,ex2]=EX.map(t=>genNani(t, {subject:'math', type:t, layout:'grid'}));
     return `<section class="rvcard math">
       <h2>🔢 數學第 ${u} 單元　${esc(U.title)}</h2>
       <div class="note">${U.subs.map(esc).join('　')}</div>
       <ul class="rvlist">${U.points.map(p=>`<li>${esc(p)}</li>`).join('')}</ul>
-      <h3>🌟 例題</h3><div class="rvex">${[ex1,ex2].map(q=>`<div class="rvexq"><div>${Z(q.title)}</div>${bodyHTML(q)}<div class="ok">✓ ${esc(q.explain)}</div></div>`).join('')}</div>
+      <h3>🌟 例題</h3><div class="rvex">${[ex1,ex2].filter(Boolean).map(q=>`<div class="rvexq"><div>${Z(q.title)}</div>${bodyHTML(q)}<div class="ok">✓ ${esc(q.explain)}</div></div>`).join('')}</div>
       <div class="row"><button class="next" data-prac-u="${u}">🐣 練習第 ${u} 單元</button></div>
     </section>`; }).join('');
   app().innerHTML = `<div class="results review">
@@ -1939,7 +2017,7 @@ function examSettingsHTML(){
     <div class="lessons">${KX2A_LESSONS.map(l=>`<button class="lchip ${e.kx.includes(l.lesson)?'on':''}" data-ek="${l.lesson}">第 ${l.lesson} 課<small>${esc(l.title)}</small></button>`).join('')}</div>
     <div class="note">數學（南一二上）：</div>
     <div class="lessons">${NANI_UNITS.map(u=>`<button class="lchip ${e.math.includes(u.unit)?'on':''}" data-em="${u.unit}">第 ${u.unit} 單元<small>${esc(u.title)}</small></button>`).join('')}</div>
-    <p class="note">目前只做好南一第 1、2 單元的數學題；之後的單元要等確認單元內容後再加入。成語／句型目前有第 1～4、6 課。</p>
+    <p class="note">目前做好南一第 1～3 單元的數學題；之後的單元要等確認單元內容後再加入。成語／句型目前有第 1～4、6 課。</p>
   </section>`;
 }
 function bindExamSettings(){
